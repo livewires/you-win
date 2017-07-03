@@ -65,7 +65,6 @@
     this._requestPaint()
     this.sprites = []
     this._toPaint = []
-    this._loops = []
     this.wrap = document.createElement('div')
     this.wrap.appendChild(this.el = document.createElement('div'))
     document.body.appendChild(this.wrap)
@@ -77,15 +76,8 @@
     return value
   }
 
-  World.prototype._doLoops = function() {
-    var loops = this._loops
-    for (var i=0; i<loops.length; i++) {
-      loops[i]()
-    }
-  }
-
   World.prototype.frame = function() {
-    this._doLoops()
+    this.emit('frame')
 
     if (this._needsPaint) {
       // TODO resize
@@ -259,7 +251,7 @@
   // forever
 
   function forever(cb) {
-    world._loops.push(cb)
+    world.on('frame', cb)
   }
 
 
