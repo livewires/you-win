@@ -242,7 +242,9 @@
   }
 
   Sprite.prototype.paint = function() {
-    this.el.style.transform = 'translate(' + this.x + 'px, ' + this.y + 'px)'
+    var transform = 'translate(' + this.x + 'px, ' + this.y + 'px) '
+    if (this.flipped) transform += 'scaleX(-1) '
+    this.el.style.transform = transform
     this._needsPaint = false
   }
 
