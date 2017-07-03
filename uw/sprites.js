@@ -66,15 +66,29 @@
 
   const Phone = function() {
     if (this === undefined) { throw new Error('requires `new` keyword') }
-    this.motion = null
+    this.motion = {x: 0, y: 0, z: 0}
     this.zAngle = 0
-
-    setTimeout(() => {
-      console.log(this.motion)
-      if (!this.hasMotion) {
+    
+    var gn = new GyroNorm()
+    gn.init().then(() => {
+      gn.start(data => {
+        if (data.dm.gx == 0 && data.dm.gy == 0 && data.dm.gz == 0) return
+        
+        const dm = data.dm
+        this.motion = {x: dm.gx, y: dm.gy, z: dm.gz}
+        const hasGyro = dm.x != null
+        const gx = hasGyro ? dm.gx - dm.x : dm.gx
+        const gy = hasGyro ? dm.gy - dm.y : dm.gy
+        const gz = hasGyro ? dm.gz - dm.z : dm.gz
+        const planar = maths.dist(gx, gy)
+        const strength = 1 // / (1 + Math.abs(gz) / planar)
+        this.zAngle = -data.do.alpha || strength * maths.atan2(gx, gy)
+        
+        debug.textContent = JSON.stringify({motion: this.motion,zAngle: this.zAngle,rotation:data.do}).replace(/,/g, '\n') + '\nusing alpha' 
+      })
+    }).catch(e => {
         alert('not a phone')
-      }
-    }, 100)
+    })
 
     setTimeout(() => {
       world._wrap.appendChild(debug)
@@ -83,18 +97,6 @@
     var debug = document.createElement('pre')
     debug.color = 'red'
     debug.zIndex = 100
-
-    window.addEventListener('devicemotion', e => {
-      const motion = this.motion = e.accelerationIncludingGravity
-      const motionNoGravity = e.acceleration
-      const gx = motionNoGravity ? motion.x - motionNoGravity.x : motion.x
-      const gy = motionNoGravity ? motion.y - motionNoGravity.y : motion.y
-      const gz = motionNoGravity ? motion.z - motionNoGravity.z : motion.z
-      const planar = maths.dist(gx, gy)
-      const strength = 1 / (1 + Math.abs(gz) / planar)
-      this.zAngle = strength * maths.atan2(gx, gy)
-      debug.textContent = JSON.stringify({gx,gy,planar,gz,strength}).replace(/,/g, '\n')
-    })
   }
 
   Object.defineProperty(Phone.prototype, 'hasMotion', {
@@ -288,7 +290,7 @@
 
     Object.assign(this, {
       x: (world.width / 2 + this.xOffset)|0,
-      y: (world.height / 2 + this.yOffset)|0,
+      y: (world.height / 2 - this.yOffset)|0,
       xOffset: this.xOffset,
       yOffset: this.yOffset,
       scale: 1,
@@ -338,7 +340,7 @@
   Sprite.prototype.paint = function() {
     this.el.style.opacity = this.opacity
     var transform = ''
-    transform += 'translate(' + this.x + 'px, ' + this.y + 'px) '
+    transform += 'translate(' + this.x + 'px, ' + (world.height - this.y) + 'px) '
     if (this.angle !== 0) { transform += 'rotate(' + this.angle + 'deg) ' }
     if (this.scale !== 1) { transform += 'scale(' + this.scale + ') ' }
     if (this.flipped) { transform += 'scaleX(-1) ' }

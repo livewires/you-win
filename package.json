@@ -5,7 +5,7 @@
   "main": "uw.js",
   "browser": "uw.js",
   "scripts": {
-    "start": "http-server example/"
+    "start": "http-server ."
   },
   "devDependencies": {
     "http-server": ""

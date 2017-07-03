@@ -1,0 +1,76 @@
+<!doctype html>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name=apple-mobile-web-app-capable content=yes>
+<meta name=apple-mobile-web-app-status-bar-style content=black>
+
+<style>
+body {
+  overflow: hidden;
+  position: fixed;
+  background: #000;
+}
+</style>
+<body>
+<script src=uw/gyronorm.js></script>
+<script src=uw/emitter.js></script>
+<script src=uw/emojis.js></script>
+<script src=uw/sprites.js?1></script>
+<script>
+var {forever, maths, Phone, Costume, Sprite, World} = UW
+var world
+
+var phone = new Phone()
+
+UW.init({
+  smile: 'https://emojipedia-us.s3.amazonaws.com/thumbs/320/emoji-one/104/grinning-face_1f600.png',
+  eight: Costume.emoji('8️⃣'),
+  bird: Costume.emoji('🐦'),
+  cow: Costume.emoji('🐄'),
+}, () => {
+
+  world = new World({
+    width: 400,
+    height: 300,
+    background: '#fff',
+  })
+
+  var smile = new Sprite('smile', {
+    scale: 0.5,
+  })
+  smile.el.addEventListener('click', function() {
+    smile.destroy()
+  })
+
+  forever(() => {
+    smile.angle = -phone.zAngle
+  })
+
+  function moo() {
+    var bird = new Sprite('cow', {
+      opacity: 0.5,
+      flipped: true,
+      //y: world.height / 2,
+    })
+
+    forever(() => {
+      //bird.x += 1
+      bird.opacity += 0.01
+      //bird.scale *= 1.01
+      bird.angle += 3
+      //bird.costume = Math.random() < 0.5 ? 'cow' : 'bird'
+      //world.scrollX += maths.sin(phone.angle.z)
+      bird.x += phone.motion.x
+      bird.y += phone.motion.y
+    })
+  }
+
+  moo()
+  //setInterval(moo, 100)
+
+  world.start()
+
+})
+
+</script>
+
