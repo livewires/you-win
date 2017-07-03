@@ -209,6 +209,8 @@
     Object.assign(this, {
       x: world.width / 2 || 0,
       y: world.height / 2 || 0,
+      xOffset: costume.width / 2,
+      yOffset: costume.height / 2,
       scale: 1,
       opacity: 1,
       angle: 0,
@@ -255,6 +257,7 @@
     if (this.scale !== 1) { transform += 'scale(' + this.scale + ') ' }
     if (this.flipped) { transform += 'scaleX(-1) ' }
     this.el.style.transform = transform
+    this.el.style.transformOrigin = -this.xOffset + 'px ' + -this.yOffset + 'px';
     this._needsPaint = false
   }
 
