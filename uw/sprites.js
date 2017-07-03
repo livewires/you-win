@@ -19,6 +19,18 @@
     })
   }
 
+  function canvasToURL(canvas) {
+    return new Promise((resolve, reject) => {
+      if (canvas.toBlob) {
+        canvas.toBlob(blob => {
+          resolve(URL.createObjectURL(blob))
+        })
+      } else {
+        resolve(canvas.toDataURL('image/png'))
+      }
+    })
+  }
+
 
   /* init */
 
@@ -173,12 +185,10 @@
     const ctx = canvas.getContext('2d')
     ctx.drawImage(this.img, -x, -y)
 
-    return new Promise((resolve, reject) => {
-      canvas.toBlob(blob => {
-        const img = new Image
-        img.src = URL.createObjectURL(blob)
-        resolve(new Costume(img))
-      })
+    return canvasToURL(canvas).then(url => {
+      const img = new Image
+      img.src = url
+      return new Costume(img)
     })
   }
 
