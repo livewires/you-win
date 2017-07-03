@@ -73,25 +73,70 @@
     if (!props.width || !props.height) {
       throw new Error('needs size: try `new World({width: phone.width, height: phone.height})`')
     }
+
+    this._wrap = document.createElement('div')
+    this._wrap.style.position = 'absolute'
+    this._wrap.style.overflow = 'hidden'
+    this._wrap.style.boxShadow = '0 0 0 1px rgba(0, 0, 0, .4)'
+    this._wrap.appendChild(this._root = document.createElement('div'))
+    this._root.style.position = 'absolute'
+    document.body.style.padding = '0px'
+    document.body.style.margin = '0px'
+    document.body.appendChild(this._wrap)
+    this._resize()
+    this._requestResize()
+    this._requestScroll()
+
     Object.assign(this, props)
-    this._requestPaint()
+    this.sprites = []
     this._toPaint = []
-    this.wrap = document.createElement('div')
-    this.wrap.appendChild(this.el = document.createElement('div'))
-    document.body.appendChild(this.wrap)
+
+    window.addEventListener('resize', e => this._requestResize())
   }
   emitter(World.prototype)
 
-  World.prototype._requestPaint = function(value) {
-    this._needsPaint = true
+  World.prototype._requestResize = function(value) {
+    this._needsResize = true
     return value
+  }
+
+  World.prototype._requestScroll = function(value) {
+    this._needsScroll = true
+    return value
+  }
+
+  World.prototype._resize = function() {
+    this._wrap.style.width = this.width + 'px'
+    this._wrap.style.height = this.height + 'px'
+    const s = Math.min(1, window.innerWidth / this.width, window.innerHeight / this.height)
+    const x = ((window.innerWidth - this.width * s) / 2)|0
+    const y = ((window.innerHeight - this.height * s) / 2)|0
+    this._wrap.style.transform = (
+      'translate(' + x + 'px, ' + y + 'px) ' +
+      'scale(' + s + ')'
+    )
+    this._wrap.style.transformOrigin = '0 0';
+    this.scale = s
+    this.translateX = x
+    this.translateY = y
+    this._needsResize = false
+  }
+
+  World.prototype._scroll = function() {
+    this._root.style.transform = 'translate(' + -this.scrollX + 'px, ' + -this.scrollY + 'px)'
+    this._needsScroll = false
   }
 
   World.prototype.frame = function() {
     this.emit('frame')
 
-    if (this._needsPaint) {
-      // TODO resize
+    if (this._needsResize) this._resize()
+    if (this._needsScroll) {
+      this._scroll()
+      var sprites = this.sprites
+      for (var i=0; i<sprites.length; i++) {
+        // TODO update visibility
+      }
     }
 
     var sprites = this._toPaint
@@ -104,9 +149,14 @@
   }
   World.prototype.start = World.prototype.frame
 
-  // TODO ??
-  prop(World, 'width', World.prototype._requestPaint)
-  prop(World, 'height', World.prototype._requestPaint)
+  prop(World, 'width', World.prototype._requestResize)
+  prop(World, 'height', World.prototype._requestResize)
+  prop(World, 'scrollX', World.prototype._requestScroll)
+  prop(World, 'scrollY', World.prototype._requestScroll)
+  prop(World, 'background', function(color) {
+    this._wrap.style.background = color
+    return color
+  })
 
 
   /* Costume */
@@ -176,7 +226,7 @@
     canvas.width = props.xSize
     canvas.height = props.ySize
     const ctx = canvas.getContext('2d')
-    ctx.drawImage(this.img, -x, -y)
+    ctx.drawImage(this.img, -x|0, -y|0)
     return canvasToURL(canvas).then(Costume.load)
   }
 
@@ -204,12 +254,14 @@
       angle: 0,
       flipped: false,
     }, props)
-    world.el.appendChild(this.el)
+    this.dead = false
+    world._root.appendChild(this.el)
   }
   emitter(Sprite.prototype)
 
   const requestPaint = Sprite.prototype._requestPaint = function(value) {
     if (!this._needsPaint) {
+      if (this.dead) { return }
       this._needsPaint = true
       world._toPaint.push(this)
     }
@@ -231,7 +283,14 @@
   })
 
   Sprite.prototype.destroy = function() {
-    world.el.removeChild(this.el)
+    if (this.dead) return
+    world._root.removeChild(this.el)
+    this.dead = true
+    var index = world.sprites.indexOf(this)
+    if (index !== -1) {
+      // assume destroy() is rare
+      world.sprites.splice(index, 1)
+    }
   }
 
   Sprite.prototype.paint = function() {
