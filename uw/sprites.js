@@ -75,7 +75,6 @@
     }
     Object.assign(this, props)
     this._requestPaint()
-    this.sprites = []
     this._toPaint = []
     this.wrap = document.createElement('div')
     this.wrap.appendChild(this.el = document.createElement('div'))
@@ -119,18 +118,12 @@
   }
 
   Costume.load = function(url) {
-    return new Promise((resolve, reject) => {
-      var img = document.createElement('img')
-      img.src = url
-      img.addEventListener('load', function(e) {
-        const canvas = document.createElement('canvas')
-        canvas.width = img.naturalWidth
-        canvas.height = img.naturalHeight
-        const ctx = canvas.getContext('2d')
-        ctx.drawImage(img, 0, 0)
-        resolve(new Costume(canvas))
+    const img = new Image
+    img.src = url
+    return new Promise(resolve => {
+      img.addEventListener('load', () => {
+        resolve(new Costume(img))
       })
-      // TODO emit errors
     })
   }
 
@@ -184,12 +177,7 @@
     canvas.height = props.ySize
     const ctx = canvas.getContext('2d')
     ctx.drawImage(this.img, -x, -y)
-
-    return canvasToURL(canvas).then(url => {
-      const img = new Image
-      img.src = url
-      return new Costume(img)
-    })
+    return canvasToURL(canvas).then(Costume.load)
   }
 
 
@@ -209,8 +197,8 @@
     Object.assign(this, {
       x: world.width / 2 || 0,
       y: world.height / 2 || 0,
-      xOffset: costume.width / 2,
-      yOffset: costume.height / 2,
+      xOffset: this.xOffset,
+      yOffset: this.yOffset,
       scale: 1,
       opacity: 1,
       angle: 0,
@@ -237,16 +225,13 @@
   prop(Sprite, 'costume', function (costume) {
     var costume = Costume.get(costume)
     this.el.src = costume.img.src
+    this.xOffset = -costume.width / 2
+    this.yOffset = -costume.height / 2
     return costume
   })
 
   Sprite.prototype.destroy = function() {
-    world.removeChild(this.el)
-    // var index = world.sprites.indexOf(this)
-    // if (index !== -1) {
-    //   // assume destroy() is rare
-    //   world.sprites.splice(index, 1)
-    // }
+    world.el.removeChild(this.el)
   }
 
   Sprite.prototype.paint = function() {
