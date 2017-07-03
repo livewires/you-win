@@ -64,6 +64,39 @@
 
   /* Phone */
 
+  const Phone = function() {
+    if (this === undefined) { throw new Error('requires `new` keyword') }
+    this.motion = null
+    this.angle = null
+
+    setTimeout(() => {
+      if (!this.hasMotion) {
+        alert('not a phone')
+      }
+    }, 100)
+
+    window.addEventListener('devicemotion', e => {
+      // e.acceleration ?
+      this.motion = e.accelerationIncludingGravity
+    })
+    window.addEventListener('deviceorientation', e => {
+      this.angle = {
+        x: e.alpha, // ??
+        y: e.beta, // -180..180deg
+        z: e.gamma, // -90..90deg
+      }
+    })
+  }
+
+  Object.defineProperty(Phone.prototype, 'hasMotion', {
+    get: function() { return this.motion !== null },
+    enumerable: true,
+  })
+  Object.defineProperty(Phone.prototype, 'hasAngle', {
+    get: function() { return this.angle !== null },
+    enumerable: true,
+  })
+
 
   /* World */
 
@@ -247,8 +280,8 @@
     this.costume = costume
 
     Object.assign(this, {
-      x: world.width / 2 || 0,
-      y: world.height / 2 || 0,
+      x: (world.width / 2 + this.xOffset)|0,
+      y: (world.height / 2 + this.yOffset)|0,
       xOffset: this.xOffset,
       yOffset: this.yOffset,
       scale: 1,
@@ -332,14 +365,27 @@
   for (var i=65; i<=90; i++) { keyCodes[String.fromCharCode(i + 32)] = i; }
 
 
+  /* math */
+
+  const degrees = x => x * (180 / Math.PI)
+  const radians = x => x * (Math.PI / 180)
+  const maths = {
+    degrees,
+    radians,
+    sin: a => Math.sin(radians(a)),
+    cos: a => Math.cos(radians(a)),
+    atan: (x, y) => degrees(Math.atan2(x, -y)),
+    dist: (dx, dy) => Math.sqrt(dx * dx, dy * dy),
+  }
 
 
-  return {
+  return Object.assign({
     init,
     assets,
+    Phone,
     World,
     Sprite,
     Costume,
     forever,
-  }
+  }, maths)
 }))
