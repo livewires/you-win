@@ -17,58 +17,63 @@ body {
 <script src=uw/emojis.js></script>
 <script src=uw/sprites.js></script>
 <script>
-var {forever, maths, Phone, Costume, Sprite, World} = UW
+var {forever, Phone, Costume, Sprite, World} = UW
 var world
-
 var phone = new Phone()
 
+var debug = document.createElement('pre')
+
 UW.init({
-  //smile: 'https://emojipedia-us.s3.amazonaws.com/thumbs/320/emoji-one/104/grinning-face_1f600.png',
-  smile: Costume.emoji('😀'),
-  eight: Costume.emoji('8️⃣'),
+  smile: 'https://emojipedia-us.s3.amazonaws.com/thumbs/320/emoji-one/104/grinning-face_1f600.png',
+  platform: Costume.emoji('🕳️'),
   bird: Costume.emoji('🐦'),
-  cow: Costume.emoji('🐄'),
 }, () => {
 
   world = new World({
-    width: 400,
-    height: 300,
     background: '#fff',
   })
+  world._root.appendChild(debug)
 
-  var smile = new Sprite('smile', {
-    scale: 6,
-  })
-  smile.el.addEventListener('click', function() {
-    smile.destroy()
-  })
+  var scrollVel = 0
 
+  var player = new Sprite('bird', {
+    scale: 5,
+  })
+  player.yVel = 0
   forever(() => {
-    //smile.angle = 2 * UW.atan2(phone.zForce, 1) //-phone.zAngle
-    smile.angle = phone.zForce < 0.4 ? 0 : -phone.zAngle
+    var xVel = 10 * UW.sin(phone.zAngle)
+    if (xVel > 1) player.flipped = true
+    if (xVel < -1) player.flipped = false
+    player.x += xVel
+    debug.textContent = JSON.stringify({xVel, phone}).replace(/,/g, '\n')
+    player.y += player.yVel
+    player.yVel -= 1
+    player.x = Math.max(72, Math.min(world.width - 72, player.x))
+    if (player.yVel < -16) { // < 72) {
+      //player.y = 72
+      player.yVel = 42
+    }
+    const barrier = world.height * 0.75
+    const diff = player.y + world.scrollY - barrier
+    if (diff > 0) {
+      world.scrollY -= diff
+    }
+    if (player.y > world.height / 2 && player.yVel > 0) {
+      // world.scrollY -= player.yVel
+      // scrollVel += 0.1 * player.yVel
+      // world.scrollY -= scrollVel
+      // scrollVel *= 0.8
+    }
   })
 
-  function moo() {
-    var bird = new Sprite('cow', {
-      opacity: 0.5,
-      flipped: true,
-      //y: world.height / 2,
+  for (var i=0; i<100; i++) {
+    var platform = new Sprite('platform', {
+      x: Math.random() * world.width,
+      y: 200 * i,
+      scale: 6,
     })
-
-    forever(() => {
-      //bird.x += 1
-      bird.opacity += 0.01
-      //bird.scale *= 1.01
-      bird.angle += 3
-      //bird.costume = Math.random() < 0.5 ? 'cow' : 'bird'
-      //world.scrollX += maths.sin(phone.angle.z)
-      bird.x += phone.motion.x
-      bird.y += phone.motion.y
-    })
+    player.raise()
   }
-
-  moo()
-  //setInterval(moo, 100)
 
   world.start()
 

@@ -114,9 +114,6 @@
   var World = function(props) {
     if (this === undefined) { throw new Error('requires `new` keyword') }
     world = this
-    if (!props.width || !props.height) {
-      throw new Error('needs size: try `new World({width: phone.width, height: phone.height})`')
-    }
 
     this._wrap = document.createElement('div')
     this._wrap.style.position = 'absolute'
@@ -131,8 +128,11 @@
     this._requestResize()
     this._requestScroll()
 
+    //const de = document.documentElement
     Object.assign(this, {
       background: '#fff',
+      width: window.innerWidth,
+      height: window.innerHeight,
       scrollX: 0,
       scrollY: 0,
     }, props)
@@ -291,8 +291,8 @@
     this.costume = costume
 
     Object.assign(this, {
-      x: (world.width / 2 + this.xOffset)|0,
-      y: (world.height / 2 - this.yOffset)|0,
+      x: (world.width / 2)|0,
+      y: (world.height / 2)|0,
       xOffset: this.xOffset,
       yOffset: this.yOffset,
       scale: 1,
@@ -301,7 +301,7 @@
       flipped: false,
     }, props)
     this.dead = false
-    world._root.appendChild(this.el)
+    this.raise()
   }
   emitter(Sprite.prototype)
 
@@ -325,8 +325,14 @@
     this.el.src = costume.img.src
     this.xOffset = -costume.width / 2
     this.yOffset = -costume.height / 2
+    this._height = costume.height
     return costume
   })
+
+  Sprite.prototype.raise = function() {
+    if (this.dead) return
+    world._root.appendChild(this.el)
+  }
 
   Sprite.prototype.destroy = function() {
     if (this.dead) return
@@ -341,10 +347,13 @@
 
   Sprite.prototype.paint = function() {
     this.el.style.opacity = this.opacity
+    const s = this.scale
     var transform = ''
-    transform += 'translate(' + this.x + 'px, ' + (world.height - this.y) + 'px) '
+    const x = this.x + this.xOffset
+    const y = world.height - this.y - this._height - this.yOffset/s
+    transform += 'translate(' + x + 'px, ' + y + 'px) '
     if (this.angle !== 0) { transform += 'rotate(' + this.angle + 'deg) ' }
-    if (this.scale !== 1) { transform += 'scale(' + this.scale + ') ' }
+    if (this.scale !== 1) { transform += 'scale(' + s + ') ' }
     if (this.flipped) { transform += 'scaleX(-1) ' }
     this.el.style.transform = transform
     this.el.style.transformOrigin = -this.xOffset + 'px ' + -this.yOffset + 'px'
