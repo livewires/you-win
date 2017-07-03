@@ -87,23 +87,17 @@
     this._requestResize()
     this._requestScroll()
 
-    Object.assign(this, props)
+    Object.assign(this, {
+      background: '#fff',
+      scrollX: 0,
+      scrollY: 0,
+    }, props)
     this.sprites = []
     this._toPaint = []
 
     window.addEventListener('resize', e => this._requestResize())
   }
   emitter(World.prototype)
-
-  World.prototype._requestResize = function(value) {
-    this._needsResize = true
-    return value
-  }
-
-  World.prototype._requestScroll = function(value) {
-    this._needsScroll = true
-    return value
-  }
 
   World.prototype._resize = function() {
     this._wrap.style.width = this.width + 'px'
@@ -115,7 +109,7 @@
       'translate(' + x + 'px, ' + y + 'px) ' +
       'scale(' + s + ')'
     )
-    this._wrap.style.transformOrigin = '0 0';
+    this._wrap.style.transformOrigin = '0 0'
     this.scale = s
     this.translateX = x
     this.translateY = y
@@ -149,6 +143,14 @@
   }
   World.prototype.start = World.prototype.frame
 
+  World.prototype._requestResize = function(value) {
+    this._needsResize = true
+    return value
+  }
+  World.prototype._requestScroll = function(value) {
+    this._needsScroll = true
+    return value
+  }
   prop(World, 'width', World.prototype._requestResize)
   prop(World, 'height', World.prototype._requestResize)
   prop(World, 'scrollX', World.prototype._requestScroll)
@@ -301,7 +303,7 @@
     if (this.scale !== 1) { transform += 'scale(' + this.scale + ') ' }
     if (this.flipped) { transform += 'scaleX(-1) ' }
     this.el.style.transform = transform
-    this.el.style.transformOrigin = -this.xOffset + 'px ' + -this.yOffset + 'px';
+    this.el.style.transformOrigin = -this.xOffset + 'px ' + -this.yOffset + 'px'
     this._needsPaint = false
   }
 
@@ -324,10 +326,12 @@
     return: 13,
     backspace: 8,
     tab: 9,
-  };
+  }
   for (var i=0; i<=10; i++) { keyCodes[''+i] = i + 48; }
   for (var i=1; i<=12; i++) { keyCodes['F'+i] = i + 111; }
   for (var i=65; i<=90; i++) { keyCodes[String.fromCharCode(i + 32)] = i; }
+
+
 
 
   return {
