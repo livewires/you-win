@@ -1,10 +1,10 @@
 (function(root, factory) {
-    if (typeof module === 'object' && module.exports) {
-        module.exports = factory(require('./emitter'))
-    } else {
-        root.UW = factory(root.emitter)
-    }
-}(this, function(emitter) {
+  if (typeof module === 'object' && module.exports) {
+    module.exports = factory(require('./emitter'), require('./emojis'))
+  } else {
+    root.UW = factory(root.emitter, root.emojiList)
+  }
+}(this, function(emitter, emojiList) {
 
   function prop(O, name, setter) {
     Object.defineProperty(O.prototype, name, {
@@ -23,11 +23,11 @@
   /* init */
 
   var assets = Object.create(null)
-  var world
   function init(promiseMap, cb) {
     if (typeof cb !== 'function') {
       throw new Error('usage: init({ ... }, () => { ... })')
     }
+
     const promises = []
     for (let key of Object.keys(promiseMap)) {
       var promise = promiseMap[key]
@@ -108,10 +108,10 @@
 
   /* Costume */
 
-  const Costume = function(image) {
-    this.el = image
-    this.width = image.naturalWidth
-    this.height = image.naturalHeight
+  const Costume = function(img) {
+    this.el = img
+    this.width = img.naturalWidth
+    this.height = img.naturalHeight
   }
 
   Costume.load = function(url) {
@@ -119,7 +119,12 @@
       var img = document.createElement('img')
       img.src = url
       img.addEventListener('load', function(e) {
-        resolve(new Costume(img))
+        const canvas = document.createElement('canvas')
+        canvas.width = img.naturalWidth
+        canvas.height = img.naturalHeight
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(img, 0, 0)
+        resolve(new Costume(canvas))
       })
       // TODO emit errors
     })
@@ -137,7 +142,22 @@
     }
   }
 
-  Costume.prototype.slice = function(names, props) {
+  Costume.emoji = function(emoji) {
+    if (!emojiList) { throw new Error('emoji list not available') }
+    const index = emojiList.indexOf(emoji)
+    if (index === -1) { throw new Error('unknown emoji: ' + emoji) }
+    return Costume.load('emoji.png').then(sheet => {
+      return sheet.slice(index, {
+        xSize: 32,
+        ySize: 32,
+        xMargin: 2,
+        yMargin: 2,
+        xCount: 30,
+      })
+    })
+  }
+
+  Costume.prototype.slice = function(index, props) {
     // (xSize + xMargin) * xCount = width
     // xSize = width / xCount - xMargin
     // (xSize + xMargin) * xCount = width
@@ -145,21 +165,29 @@
       xSize: null,
       ySize: null,
       xCount: null,
-      yCount: null,
       xMargin: 0,
       yMargin: 0,
     }, props)
     props.xSize = props.xSize || this.width / props.xCount - props.xMargin
     props.ySize = props.ySize || this.height / props.yCount - props.yMargin
     props.xCount = props.xCount || this.width / (props.xSize + props.xMargin)
-    props.yCount = props.yCount || this.height / (props.ySize + props.yMargin)
     const result = {}
-    for (var i=0; i<names.length; i++) {
-      const name = names[i]
-      // TODO 
-      result[name] = null
-    }
-    return result
+    const x = 1 + (props.xSize + props.xMargin) * (index % props.xCount)
+    const y = (props.ySize + props.yMargin) * Math.floor(index / props.xCount)
+
+    const canvas = document.createElement('canvas')
+    canvas.width = props.xSize
+    canvas.height = props.ySize
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(this.el, -x, -y)
+
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(blob => {
+        const img = new Image
+        img.src = URL.createObjectURL(blob)
+        resolve(new Costume(img))
+      })
+    })
   }
 
 
@@ -198,7 +226,8 @@
   prop(Sprite, 'flipped', requestPaint)
   prop(Sprite, 'costume', function (costume) {
     var costume = Costume.get(costume)
-    if (this.el) { this.el.src = costume.el }
+    this.el = costume.el
+    if (this.el) { this.el.src = costume.el.src }
     else { this.el = costume.el }
     return costume
   })
@@ -224,11 +253,30 @@
   }
 
 
+  /* events */
+
+  var keyCodes = {
+    up: 38,
+    down: 40,
+    left: 37,
+    right: 39,
+    space: 32,
+    escape: 27,
+    return: 13,
+    backspace: 8,
+    tab: 9,
+  };
+  for (var i=0; i<=10; i++) { keyCodes[''+i] = i + 48; }
+  for (var i=1; i<=12; i++) { keyCodes['F'+i] = i + 111; }
+  for (var i=65; i<=90; i++) { keyCodes[String.fromCharCode(i + 32)] = i; }
+
+
   return {
     init,
     assets,
     World,
     Sprite,
+    Costume,
     forever,
   }
 }))
