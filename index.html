@@ -25,14 +25,14 @@ var debug = document.createElement('pre')
 
 UW.init({
   smile: 'https://emojipedia-us.s3.amazonaws.com/thumbs/320/emoji-one/104/grinning-face_1f600.png',
-  platform: Costume.emoji('🕳️'),
+  platform: Costume.emoji('➖'), //Costume.emoji('🕳️'),
   bird: Costume.emoji('🐦'),
 }, () => {
 
   world = new World({
     background: '#fff',
   })
-  world._root.appendChild(debug)
+  //world._root.appendChild(debug)
 
   var scrollVel = 0
 
@@ -41,39 +41,71 @@ UW.init({
   })
   player.yVel = 0
   forever(() => {
+    // move horizontally
     var xVel = 10 * UW.sin(phone.zAngle)
     if (xVel > 1) player.flipped = true
     if (xVel < -1) player.flipped = false
     player.x += xVel
-    debug.textContent = JSON.stringify({xVel, phone}).replace(/,/g, '\n')
+
+    // crash into walls
+    if (player.x < 72) player.x = 72
+    if (player.x > world.width - 72) player.x = world.width - 72
+
+    // fall down
     player.y += player.yVel
     player.yVel -= 1
-    player.x = Math.max(72, Math.min(world.width - 72, player.x))
-    if (player.yVel < -16) { // < 72) {
-      //player.y = 72
+
+    // temp
+    if (player.y + world.scrollY < 72) { 
       player.yVel = 42
     }
+
+    // bounce off platforms
+    // if (player.yVel < 0) {
+    //   for (var other of player.touching()) {
+    //     if (other.isPlatform) {
+    //       player.yVel = 42
+    //     }
+    //   }
+    // }
+
+    // scroll up, if we're near the top of the screen
     const barrier = world.height * 0.75
-    const diff = player.y + world.scrollY - barrier
+    const diff = (player.y + world.scrollY) - barrier
     if (diff > 0) {
       world.scrollY -= diff
     }
-    if (player.y > world.height / 2 && player.yVel > 0) {
-      // world.scrollY -= player.yVel
-      // scrollVel += 0.1 * player.yVel
-      // world.scrollY -= scrollVel
-      // scrollVel *= 0.8
-    }
   })
 
-  for (var i=0; i<100; i++) {
-    var platform = new Sprite('platform', {
+  function makePlatform() {
+    count += 1
+    lastPlatform = new Sprite('platform', {
       x: Math.random() * world.width,
-      y: 200 * i,
+      y: 200 * count,
       scale: 6,
+      isPlatform: true,
     })
+    platforms.push(lastPlatform)
+
+    // make sure the player is on top
     player.raise()
   }
+
+  function destroyPlatform() {
+    platforms.shift().destroy()
+  }
+
+  var count = 0
+  var platforms = []
+  var lastPlatform
+  makePlatform()
+  forever(() => {
+    if (lastPlatform.y + world.scrollY < world.height * 2) {
+      makePlatform()
+    } else if (platforms[0].y + world.scrollY < -world.height) {
+      destroyPlatform()
+    }
+  })
 
   world.start()
 

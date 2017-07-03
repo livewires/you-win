@@ -6,13 +6,20 @@
   }
 }(this, function(emitter, emojiList) {
 
-  function prop(O, name, setter) {
+  let num = x => +x
+  let round = x => (x + 0.5)|0
+  let bool = x => !!x
+  let str = x => {
+    if (typeof x !== 'string') throw new Error("not a string: " + x)
+    return x
+  }
+
+  function prop(O, name, normalise, changed) {
     Object.defineProperty(O.prototype, name, {
-      get: function() {
-        return this['_' + name]
-      },
+      get: function() { return this['_' + name] },
       set: function(value) {
-        this['_' + name] = setter.call(this, value)
+        this['_' + name] = normalise(value)
+        changed.call(this, value)
       },
       enumerable: true,
       configurable: true,
@@ -125,8 +132,7 @@
     document.body.style.margin = '0px'
     document.body.appendChild(this._wrap)
     this._resize()
-    this._requestResize()
-    this._requestScroll()
+    this._needsScroll = true
 
     //const de = document.documentElement
     Object.assign(this, {
@@ -137,9 +143,8 @@
       scrollY: 0,
     }, props)
     this.sprites = []
-    this._toPaint = []
 
-    window.addEventListener('resize', e => this._requestResize())
+    window.addEventListener('resize', function() { this._needsResize = true })
   }
   emitter(World.prototype)
 
@@ -169,39 +174,27 @@
     this.emit('frame')
 
     if (this._needsResize) this._resize()
-    if (this._needsScroll) {
-      this._scroll()
-      var sprites = this.sprites
-      for (var i=0; i<sprites.length; i++) {
-        // TODO update visibility
-      }
-    }
 
-    var sprites = this._toPaint
+    const didScroll = this._needsScroll
+    if (this._needsScroll) this._scroll()
+
+    var sprites = this.sprites
     for (var i=sprites.length; i--; ) {
-      sprites[i].paint()
+      const sprite = sprites[i]
+      if (sprite._needsPaint) sprite.paint()
+      sprite._touching = null
     }
-    this._toPaint = []
 
     requestAnimationFrame(this.frame.bind(this))
   }
   World.prototype.start = World.prototype.frame
 
-  World.prototype._requestResize = function(value) {
-    this._needsResize = true
-    return value
-  }
-  World.prototype._requestScroll = function(value) {
-    this._needsScroll = true
-    return value
-  }
-  prop(World, 'width', World.prototype._requestResize)
-  prop(World, 'height', World.prototype._requestResize)
-  prop(World, 'scrollX', World.prototype._requestScroll)
-  prop(World, 'scrollY', World.prototype._requestScroll)
-  prop(World, 'background', function(color) {
-    this._wrap.style.background = color
-    return color
+  prop(World, 'width', round, function() { this._needsResize = true })
+  prop(World, 'height', round, function() { this._needsResize = true })
+  prop(World, 'scrollX', round, function() { this._needsScroll = true })
+  prop(World, 'scrollY', round, function() { this._needsScroll = true })
+  prop(World, 'background', str, function(background) {
+    this._wrap.style.background = background
   })
 
 
@@ -301,26 +294,19 @@
       flipped: false,
     }, props)
     this.dead = false
+    world.sprites.push(this)
     this.raise()
+    this._touching = null
   }
   emitter(Sprite.prototype)
 
-  const requestPaint = Sprite.prototype._requestPaint = function(value) {
-    if (!this._needsPaint) {
-      if (this.dead) { return }
-      this._needsPaint = true
-      world._toPaint.push(this)
-    }
-    return value
-  }
-
-  prop(Sprite, 'x', requestPaint)
-  prop(Sprite, 'y', requestPaint)
-  prop(Sprite, 'scale', requestPaint)
-  prop(Sprite, 'opacity', requestPaint)
-  prop(Sprite, 'angle', requestPaint)
-  prop(Sprite, 'flipped', requestPaint)
-  prop(Sprite, 'costume', function (costume) {
+  prop(Sprite, 'x', round, function() { this._needsPaint = true; this._updateBBox() })
+  prop(Sprite, 'y', round, function() { this._needsPaint = true; this._updateBBox() })
+  prop(Sprite, 'scale', num, function() { this._needsPaint = true; this._updateBBox() })
+  prop(Sprite, 'angle', num, function() { this._needsPaint = true; this._updateBBox() })
+  prop(Sprite, 'flipped', bool, function() { this._needsPaint = true })
+  prop(Sprite, 'opacity', num, function() { this._needsPaint = true })
+  prop(Sprite, 'costume', str, function(costume) {
     var costume = Costume.get(costume)
     this.el.src = costume.img.src
     this.xOffset = -costume.width / 2
@@ -328,6 +314,16 @@
     this._height = costume.height
     return costume
   })
+
+  Sprite.prototype._updateBBox = function() {
+    // TODO use rotated rect
+    this.bbox = {
+      top: this.y + this.yOffset,
+      left: this.x - this.xOffset,
+      bot: this.y - this.yOffset,
+      right: this.x + this.xOffset,
+    }
+  }
 
   Sprite.prototype.raise = function() {
     if (this.dead) return
@@ -359,6 +355,28 @@
     this.el.style.transformOrigin = -this.xOffset + 'px ' + -this.yOffset + 'px'
     this._needsPaint = false
   }
+
+  Sprite.prototype.touching = function() {
+    if (this._touching) return this._touching
+    const sprites = world.sprites
+    const bbox = this.bbox
+    this._touching = []
+    for (var i=sprites.length; i--; ) {
+      const s = sprites[i]
+      if (s === this) continue
+      if (collideBBox(bbox, s.bbox)) {
+        // TODO filter collide
+        this._touching.push(s)
+      }
+    }
+    return this._touching
+    
+  }
+
+  function collideBBox(a, b) {
+    return a.left < b.right && a.right > b.left && a.top > b.bot && a.bot < b.top
+  }
+
 
   // forever
 
