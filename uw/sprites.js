@@ -109,7 +109,7 @@
   /* Costume */
 
   const Costume = function(img) {
-    this.el = img
+    this.img = img
     this.width = img.naturalWidth
     this.height = img.naturalHeight
   }
@@ -179,7 +179,7 @@
     canvas.width = props.xSize
     canvas.height = props.ySize
     const ctx = canvas.getContext('2d')
-    ctx.drawImage(this.el, -x, -y)
+    ctx.drawImage(this.img, -x, -y)
 
     return new Promise((resolve, reject) => {
       canvas.toBlob(blob => {
@@ -197,7 +197,13 @@
     if (this === undefined) { throw new Error('requires `new` keyword') }
     if (!costume) { throw new Error('Sprite needs costume name') }
     if (!world) { throw new Error('make World first') }
+
+    this.el = document.createElement('img')
+    this.el.style.position = 'absolute'
+    this.el.style.imageRendering = 'pixelated'
+    this.el.style.imageRendering = 'crisp-edges'
     this.costume = costume
+
     Object.assign(this, {
       x: world.width / 2 || 0,
       y: world.height / 2 || 0,
@@ -226,9 +232,7 @@
   prop(Sprite, 'flipped', requestPaint)
   prop(Sprite, 'costume', function (costume) {
     var costume = Costume.get(costume)
-    this.el = costume.el
-    if (this.el) { this.el.src = costume.el.src }
-    else { this.el = costume.el }
+    this.el.src = costume.img.src
     return costume
   })
 
@@ -242,8 +246,12 @@
   }
 
   Sprite.prototype.paint = function() {
-    var transform = 'translate(' + this.x + 'px, ' + this.y + 'px) '
-    if (this.flipped) transform += 'scaleX(-1) '
+    this.el.style.opacity = this.opacity
+    var transform = ''
+    transform += 'translate(' + this.x + 'px, ' + this.y + 'px) '
+    if (this.angle !== 0) { transform += 'rotate(' + this.angle + 'deg) ' }
+    if (this.scale !== 1) { transform += 'scale(' + this.scale + ') ' }
+    if (this.flipped) { transform += 'scaleX(-1) ' }
     this.el.style.transform = transform
     this._needsPaint = false
   }
