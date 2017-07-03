@@ -15,7 +15,7 @@ body {
 <script src=uw/gyronorm.js></script>
 <script src=uw/emitter.js></script>
 <script src=uw/emojis.js></script>
-<script src=uw/sprites.js?1></script>
+<script src=uw/sprites.js></script>
 <script>
 var {forever, maths, Phone, Costume, Sprite, World} = UW
 var world
@@ -23,7 +23,8 @@ var world
 var phone = new Phone()
 
 UW.init({
-  smile: 'https://emojipedia-us.s3.amazonaws.com/thumbs/320/emoji-one/104/grinning-face_1f600.png',
+  //smile: 'https://emojipedia-us.s3.amazonaws.com/thumbs/320/emoji-one/104/grinning-face_1f600.png',
+  smile: Costume.emoji('😀'),
   eight: Costume.emoji('8️⃣'),
   bird: Costume.emoji('🐦'),
   cow: Costume.emoji('🐄'),
@@ -36,14 +37,15 @@ UW.init({
   })
 
   var smile = new Sprite('smile', {
-    scale: 0.5,
+    scale: 6,
   })
   smile.el.addEventListener('click', function() {
     smile.destroy()
   })
 
   forever(() => {
-    smile.angle = -phone.zAngle
+    //smile.angle = 2 * UW.atan2(phone.zForce, 1) //-phone.zAngle
+    smile.angle = phone.zForce < 0.4 ? 0 : -phone.zAngle
   })
 
   function moo() {

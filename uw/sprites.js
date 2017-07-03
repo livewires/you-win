@@ -66,37 +66,39 @@
 
   const Phone = function() {
     if (this === undefined) { throw new Error('requires `new` keyword') }
+    this.hasMotion = undefined
     this.motion = {x: 0, y: 0, z: 0}
     this.zAngle = 0
+    this.zForce = 0
     
     var gn = new GyroNorm()
     gn.init().then(() => {
       gn.start(data => {
-        if (data.dm.gx == 0 && data.dm.gy == 0 && data.dm.gz == 0) return
-        
+        if (data.dm.gx == 0 && data.dm.gy == 0 && data.dm.gz == 0) {
+          if (this.hasMotion === undefined) {
+            this.hasMotion = false
+            alert('not a phone')
+          }
+          return
+        }
+        this.hasMotion = true
+
         const dm = data.dm
         this.motion = {x: dm.gx, y: dm.gy, z: dm.gz}
         const hasGyro = dm.x != null
         const gx = hasGyro ? dm.gx - dm.x : dm.gx
         const gy = hasGyro ? dm.gy - dm.y : dm.gy
         const gz = hasGyro ? dm.gz - dm.z : dm.gz
-        const planar = maths.dist(gx, gy)
-        const strength = 1 // / (1 + Math.abs(gz) / planar)
-        this.zAngle = -data.do.alpha || strength * maths.atan2(gx, gy)
-        
-        debug.textContent = JSON.stringify({motion: this.motion,zAngle: this.zAngle,rotation:data.do}).replace(/,/g, '\n') + '\nusing alpha' 
+        const planar = maths.dist(gx, gy) || 0
+        const ratio = Math.abs(gz) / planar
+        var mag = 1 / (1 + ratio) || 0
+        this.zForce = mag
+        this.zAngle = mag == 0 ? 0 : maths.atan2(gx, gy)
+        //debug.textContent = JSON.stringify({motion: this.motion,zAngle: this.zAngle,rotation:data.do, mag:this.zMagnitude}).replace(/,/g, '\n') + '\nusing gravity' 
       })
     }).catch(e => {
-        alert('not a phone')
+      alert('not a phone')
     })
-
-    setTimeout(() => {
-      world._wrap.appendChild(debug)
-    }, 2000)
-
-    var debug = document.createElement('pre')
-    debug.color = 'red'
-    debug.zIndex = 100
   }
 
   Object.defineProperty(Phone.prototype, 'hasMotion', {
