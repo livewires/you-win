@@ -67,33 +67,40 @@
   const Phone = function() {
     if (this === undefined) { throw new Error('requires `new` keyword') }
     this.motion = null
-    this.angle = null
+    this.zAngle = 0
 
     setTimeout(() => {
+      console.log(this.motion)
       if (!this.hasMotion) {
         alert('not a phone')
       }
     }, 100)
 
+    setTimeout(() => {
+      world._wrap.appendChild(debug)
+    }, 2000)
+
+    var debug = document.createElement('pre')
+    debug.color = 'red'
+    debug.zIndex = 100
+
     window.addEventListener('devicemotion', e => {
-      // e.acceleration ?
-      this.motion = e.accelerationIncludingGravity
-    })
-    window.addEventListener('deviceorientation', e => {
-      this.angle = {
-        x: e.alpha, // ??
-        y: e.beta, // -180..180deg
-        z: e.gamma, // -90..90deg
-      }
+      const motion = this.motion = e.accelerationIncludingGravity
+      const motionNoGravity = e.acceleration
+      const gx = motionNoGravity ? motion.x - motionNoGravity.x : motion.x
+      const gy = motionNoGravity ? motion.y - motionNoGravity.y : motion.y
+      const gz = motionNoGravity ? motion.z - motionNoGravity.z : motion.z
+      const planar = maths.dist(gx, gy)
+      const strength = 1 / (1 + Math.abs(gz) / planar)
+      this.zAngle = strength * maths.atan2(gx, gy)
+      debug.textContent = JSON.stringify({gx,gy,planar,gz,strength}).replace(/,/g, '\n')
     })
   }
 
   Object.defineProperty(Phone.prototype, 'hasMotion', {
-    get: function() { return this.motion !== null },
-    enumerable: true,
-  })
-  Object.defineProperty(Phone.prototype, 'hasAngle', {
-    get: function() { return this.angle !== null },
+    get: function() {
+      return this.motion !== null && this.motion.x != null && this.motion.y != null && this.motion.z != null
+    },
     enumerable: true,
   })
 
@@ -374,8 +381,8 @@
     radians,
     sin: a => Math.sin(radians(a)),
     cos: a => Math.cos(radians(a)),
-    atan: (x, y) => degrees(Math.atan2(x, -y)),
-    dist: (dx, dy) => Math.sqrt(dx * dx, dy * dy),
+    atan2: (x, y) => degrees(Math.atan2(x, -y)),
+    dist: (dx, dy) => Math.sqrt(dx * dx + dy * dy),
   }
 
 
