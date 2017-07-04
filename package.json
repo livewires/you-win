@@ -5,10 +5,10 @@
   "main": "uw.js",
   "browser": "uw.js",
   "scripts": {
-    "start": "http-server ."
+    "start": "reload -b -p 8000"
   },
   "devDependencies": {
-    "http-server": ""
+    "reload": "^1.1.7"
   },
   "author": "Tim Radvan <tim@tjvr.org>",
   "license": "BSD-3-Clause"
