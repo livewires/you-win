@@ -286,6 +286,8 @@
 
   const collisionCanvas = document.createElement('canvas')
   const collisionContext = collisionCanvas.getContext('2d')
+  collisionContext.imageSmoothingEnabled = false
+  //collisionCanvas.style.border = '1px solid blue'
 
   const Sprite = function(costume, props) {
     if (this === undefined) { throw new Error('requires `new` keyword') }
@@ -298,6 +300,7 @@
     this.el.style.imageRendering = 'crisp-edges'
     this.costume = costume
 
+    const s = props.scale || 1
     Object.assign(this, {
       x: (world.width / 2)|0,
       y: (world.height / 2)|0,
@@ -373,8 +376,8 @@
   Sprite.prototype._transform = function() {
     const s = this.scale
     var transform = ''
-    const x = this.x + this.xOffset/s
-    const y = world.height - this.y - this._height - this.yOffset/s
+    const x = this.x + this.xOffset
+    const y = world.height - this.y - this._height - this.yOffset
     transform += 'translate(' + x + 'px, ' + y + 'px) '
     if (this.angle !== 0) { transform += 'rotate(' + this.angle + 'deg) ' }
     if (this.scale !== 1) { transform += 'scale(' + s + ') ' }
@@ -432,11 +435,13 @@
   Sprite.prototype._draw = function(ctx) {
     const costume = this.costume
     ctx.save()
-    ctx.translate(this.x, -this.y) //(this.x * z | 0) / z, (-this.y * z | 0) / z)
+    ctx.translate(this.x|0, -this.y|0) //(this.x * z | 0) / z, (-this.y * z | 0) / z)
     ctx.rotate(this.angle * Math.PI / 180)
+    if (this.flipped) {
+      ctx.scale(-1, 1)
+    }
     ctx.scale(this.scale, this.scale)
-    ctx.scale(costume.scale, costume.scale)
-    ctx.translate(-costume.rotationCenterX, -costume.rotationCenterY)
+    ctx.translate(this.xOffset, this.yOffset)
     ctx.drawImage(costume.img, 0, 0)
     ctx.restore()
   }
@@ -447,17 +452,23 @@
     if (s.opacity === 0) return false
     const mb = this.bbox
     const ob = s.bbox
-    if (!collideBBox(mb, ob)) return false
+    if (mb.left >= ob.right || mb.right <= ob.left || mb.top <= ob.bottom || mb.bottom >= ob.top) {
+      return false
+    }
 
     const left = Math.max(mb.left, ob.left)
     const top = Math.min(mb.top, ob.top)
     const right = Math.min(mb.right, ob.right)
     const bottom = Math.max(mb.bottom, ob.bottom)
 
-    // TODO: bugs
-
-    collisionCanvas.width = right - left
-    collisionCanvas.height = top - bottom
+    const cw = (right - left + 0.5)|0
+    const ch = (top - bottom + 0.5)|0
+    if (cw === 0 || ch === 0) {
+      // avoid 'source height cannot be 0'
+      return false
+    }
+    collisionCanvas.width = cw
+    collisionCanvas.height = ch
 
     collisionContext.save()
     collisionContext.translate(-left, top)
@@ -465,10 +476,11 @@
     this._draw(collisionContext)
     collisionContext.globalCompositeOperation = 'source-in'
     s._draw(collisionContext)
+    //world._wrap.appendChild(collisionCanvas)
 
     collisionContext.restore()
 
-    var data = collisionContext.getImageData(0, 0, right - left, top - bottom).data
+    var data = collisionContext.getImageData(0, 0, cw, ch).data
 
     var length = (right - left) * (top - bottom) * 4
     for (var j = 0; j < length; j += 4) {
@@ -491,10 +503,6 @@
       }
     }
     return this._touching
-  }
-
-  function collideBBox(a, b) {
-    return a.left < b.right && a.right > b.left && a.top > b.bottom && a.bottom < b.top
   }
 
 

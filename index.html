@@ -44,9 +44,6 @@ UW.init({
   })
   player.yVel = -12
   forever(() => {
-    // player.angle += 1
-    // return
-
     // move horizontally
     var xVel = 10 * UW.sin(phone.zAngle)
     if (xVel > 1) player.flipped = true
@@ -64,7 +61,8 @@ UW.init({
     // bounce off platforms
     if (player.yVel < 0) {
       for (var other of player.touching()) {
-        if (other.isPlatform) {
+        // are our feet on top of it?
+        if (other.isPlatform && player.bbox.bottom > other.y - 32) {
           player.yVel = 42
         }
       }
@@ -103,7 +101,7 @@ UW.init({
   forever(() => {
     if (lastPlatform.y + world.scrollY < world.height * 2) {
       makePlatform()
-    } else if (platforms[0].y + world.scrollY < -world.height) {
+    } else if (!platforms[0].isOnScreen()) {
       destroyPlatform()
     }
   })
