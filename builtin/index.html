@@ -1,0 +1,39 @@
+<!doctype html>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name=apple-mobile-web-app-capable content=yes>
+<meta name=apple-mobile-web-app-status-bar-style content=black>
+
+<style>
+body {
+  overflow: hidden;
+  position: fixed;
+  background: #000;
+}
+</style>
+
+<body>
+<script src="gyronorm.js"></script>
+<script src="uw.built.js"></script>
+<script src="app.js"></script>
+<script>
+const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:'
+const host = location.host
+var ws
+function connect() {
+  ws = new WebSocket(`${protocol}//${host}/ws`)
+  ws.addEventListener('message', onMessage)
+  ws.addEventListener('close', () => setTimeout(connect, 1000))
+  ws.addEventListener('open', () => console.log('watching'))
+}
+connect()
+
+function onMessage(e) {
+  const json = JSON.parse(e.data)
+  if (json._type === 'refresh') {
+    console.log('refreshing')
+    location.reload()
+  }
+}
+</script>
+

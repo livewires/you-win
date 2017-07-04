@@ -64,4 +64,4 @@
     Object.defineProperties(o, PROPERTIES)
   }
 
-}))
+}));

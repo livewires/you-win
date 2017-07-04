@@ -2,13 +2,14 @@
   "name": "you-win",
   "version": "0.0.1",
   "description": "a friendly games library for geeky people who've probably used Scratch before",
+  "bin": {
+    "you-win": "server.js"
+  },
   "main": "uw.js",
   "browser": "uw.js",
   "scripts": {
-    "start": "reload -b -p 8000"
-  },
-  "devDependencies": {
-    "reload": "^1.1.7"
+    "start": "node server.js app.js",
+    "cat": "cat uw/emitter.js uw/emojis.js uw/sprites.js > builtin/uw.built.js"
   },
   "author": "Tim Radvan <tim@tjvr.org>",
   "license": "BSD-3-Clause"
