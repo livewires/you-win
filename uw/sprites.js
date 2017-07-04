@@ -219,7 +219,8 @@
 
   Costume.load = function(url) {
     const img = new Image
-    img.src = url
+    img.crossOrigin = 'anonymous'
+    img.src = url ///^http/.test(url) ? 'http://crossorigin.me/' + url : url
     return new Promise(resolve => {
       img.addEventListener('load', () => {
         resolve(new Costume(img))
@@ -392,6 +393,7 @@
   Sprite.prototype.isOnScreen = function() {
     const b = this.bbox
     const w = world.width, h = world.height
+    // TODO
     return true //!(b.right > 0 && b.left < w && b.bottom > 0 && b.top < h)
   }
 
@@ -427,6 +429,18 @@
     }
   }
 
+  Sprite.prototype._draw = function(ctx) {
+    const costume = this.costume
+    ctx.save()
+    ctx.translate(this.x, -this.y) //(this.x * z | 0) / z, (-this.y * z | 0) / z)
+    ctx.rotate(this.angle * Math.PI / 180)
+    ctx.scale(this.scale, this.scale)
+    ctx.scale(costume.scale, costume.scale)
+    ctx.translate(-costume.rotationCenterX, -costume.rotationCenterY)
+    ctx.drawImage(costume.img, 0, 0)
+    ctx.restore()
+  }
+
   Sprite.prototype.isTouching = function(s) {
     if (s.constructor !== Sprite) { throw new Error('not a sprite: ' + s) }
     if (s === this) return false
@@ -434,7 +448,35 @@
     const mb = this.bbox
     const ob = s.bbox
     if (!collideBBox(mb, ob)) return false
-    return true
+
+    const left = Math.max(mb.left, ob.left)
+    const top = Math.min(mb.top, ob.top)
+    const right = Math.min(mb.right, ob.right)
+    const bottom = Math.max(mb.bottom, ob.bottom)
+
+    // TODO: bugs
+
+    collisionCanvas.width = right - left
+    collisionCanvas.height = top - bottom
+
+    collisionContext.save()
+    collisionContext.translate(-left, top)
+
+    this._draw(collisionContext)
+    collisionContext.globalCompositeOperation = 'source-in'
+    s._draw(collisionContext)
+
+    collisionContext.restore()
+
+    var data = collisionContext.getImageData(0, 0, right - left, top - bottom).data
+
+    var length = (right - left) * (top - bottom) * 4
+    for (var j = 0; j < length; j += 4) {
+      if (data[j + 3]) {
+        return true
+      }
+    }
+    return false
   }
 
   Sprite.prototype.touching = function() {

@@ -24,7 +24,7 @@ var phone = new Phone()
 var debug = document.createElement('pre')
 
 UW.init({
-  smile: 'https://emojipedia-us.s3.amazonaws.com/thumbs/320/emoji-one/104/grinning-face_1f600.png',
+  //smile: 'https://emojipedia-us.s3.amazonaws.com/thumbs/320/emoji-one/104/grinning-face_1f600.png',
   platform: Costume.emoji('➖'), //Costume.emoji('🕳️'),
   bird: Costume.emoji('🐦'),
   bigeyes: 'https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png?1499126150626',
@@ -40,7 +40,7 @@ UW.init({
   var player = new Sprite('bigeyes', {
     //scale: 4,
     scale: 0.5,
-    y: world.height * 0.75,
+    y: 1200,
   })
   player.yVel = -12
   forever(() => {
@@ -62,7 +62,7 @@ UW.init({
     player.yVel -= 1
 
     // bounce off platforms
-    if (player.yVel < -2) {
+    if (player.yVel < 0) {
       for (var other of player.touching()) {
         if (other.isPlatform) {
           player.yVel = 42
@@ -71,7 +71,7 @@ UW.init({
     }
 
     // scroll up, if we're near the top of the screen
-    const barrier = world.height * 0.75
+    const barrier = world.height * 0.9
     const diff = (player.y + world.scrollY) - barrier
     if (diff > 0) {
       world.scrollY -= diff
