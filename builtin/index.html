@@ -6,6 +6,8 @@
 
 <style>
 body {
+  margin: 0;
+  padding: 0;
   overflow: hidden;
   position: fixed;
   background: #000;
@@ -19,6 +21,7 @@ body {
   color: #e40046;
   font-size: 1.125em;
   font-family: Source Code Pro, Monaco, Menlo, monospace;
+  white-space: pre-wrap;
 }
 </style>
 
@@ -55,18 +58,21 @@ function refresh() {
   isRefreshing = true
   const error = () => { isRefreshing = false; setTimeout(refresh, 100) }
   const xhr = new XMLHttpRequest
-  xhr.open('GET', 'app.js', true)
+  const url = 'app.js?' + (new Date|0)
+  xhr.open('GET', url, true)
   xhr.onload = function() {
     if (xhr.status === 200) {
       UW.destroy()
+      stackTrace.style.display = 'none'
+      seenError = false
+      document.body.removeChild(document.querySelector('#game'))
+
+      // now it's in cache!
       isRefreshing = false
-      try {
-        stackTrace.style.display = 'none'
-        eval(xhr.responseText)
-      } catch (err) {
-        stackTrace.textContent = err.stack
-        stackTrace.style.display = 'block'
-      }
+      const script = document.createElement('script')
+      script.setAttribute('id', 'game')
+      script.setAttribute('src', url)
+      document.body.appendChild(script)
     } else {
       error()
     }
@@ -76,12 +82,20 @@ function refresh() {
   xhr.send()
 }
 
-window.onerror = (msg, source, line, col, err) => {
-  if (/\/app.js$/.test(source)) {
-    stackTrace.textContent = err.stack + '\n  ⇒ app.js, line ' + line
+var seenError = false
+window.addEventListener('error', showError)
+
+function showError(msg, source, line, col, err) {
+  if (seenError) return
+  seenError = true
+  var err = err || msg
+  var line = line || err.lineno || 'unknown'
+  if (!source || /\/app.js$/.test(source)) {
+    stackTrace.textContent = (err.stack || err.message || err) + '\n  ⇒ line ' + line
     stackTrace.style.display = 'block'
   }
 }
 </script>
 
-<script src="app.js"></script>
+<script id=game src="app.js"></script>
+

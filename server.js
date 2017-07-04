@@ -38,8 +38,11 @@ const moo = (req, res) => {
 const app = (req, res) => {
   return serveStatic(req, res, fail => {
     serveBuiltin(req, res, fail => {
-      if (req.url === '/app.js') {
-        res.writeHead(200, {'Content-Type': 'text/html'})
+      if (req.url === '/app.js' || /^\/app\.js\?/.test(req.url)) {
+        res.writeHead(200, {
+          'Content-Type': 'text/html',
+          'Cache-Control': 'max-age=30',
+        })
         res.end(gameContent)
       } else {
         res.end('not found: ' + req.url)
@@ -63,7 +66,12 @@ function throttle() {
 }
 function refresh() {
   // fs.watch often gives extra notifications :-(
-  const newContent = fs.readFileSync(gamePath, 'utf-8')
+  let newContent
+  try {
+    newContent = fs.readFileSync(gamePath, 'utf-8')
+  } catch (e) {
+    return
+  }
   if (gameContent === newContent) return
   gameContent = newContent
 

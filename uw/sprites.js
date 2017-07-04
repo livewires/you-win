@@ -303,6 +303,7 @@
     if (this === undefined) { throw new Error('requires `new` keyword') }
     if (!costume) { throw new Error('Sprite needs costume name') }
     if (!world) { throw new Error('make World first') }
+    this.world = world
     var props = props || {}
 
     this.el = document.createElement('img')
@@ -367,17 +368,17 @@
 
   Sprite.prototype.raise = function() {
     if (this.dead) return
-    world._root.appendChild(this.el)
+    this.world._root.appendChild(this.el)
   }
 
   Sprite.prototype.destroy = function() {
     if (this.dead) return
-    world._root.removeChild(this.el)
+    this.world._root.removeChild(this.el)
     this.dead = true
-    var index = world.sprites.indexOf(this)
+    var index = this.world.sprites.indexOf(this)
     if (index !== -1) {
       // assume destroy() is rare
-      world.sprites.splice(index, 1)
+      this.world.sprites.splice(index, 1)
     }
   }
 
@@ -390,7 +391,7 @@
     const s = this.scale
     var transform = ''
     const x = this.x + this.xOffset
-    const y = world.height - this.y - this._height - this.yOffset
+    const y = this.world.height - this.y - this._height - this.yOffset
     transform += 'translate(' + x + 'px, ' + y + 'px) '
     if (this.angle !== 0) { transform += 'rotate(' + this.angle + 'deg) ' }
     if (this.scale !== 1) { transform += 'scale(' + s + ') ' }
@@ -402,13 +403,13 @@
 
   Sprite.prototype.isTouchingEdge = function() {
     const b = this.bbox
-    const w = world.width, h = world.height
+    const w = this.world.width, h = this.world.height
     return b.left <= 0 || b.right >= w || b.bottom <= 0 || b.top >= h
   }
 
   Sprite.prototype.isOnScreen = function() {
     const b = this.bbox
-    const w = world.width, h = world.height
+    const w = this.world.width, h = this.world.height
     // TODO
     return true //!(b.right > 0 && b.left < w && b.bottom > 0 && b.top < h)
   }
@@ -506,7 +507,7 @@
 
   Sprite.prototype.touching = function() {
     if (this._touching) return this._touching
-    const sprites = world.sprites
+    const sprites = this.world.sprites
     const bbox = this.bbox
     this._touching = []
     for (var i=sprites.length; i--; ) {
@@ -522,9 +523,10 @@
   // forever
 
   function forever(cb) {
-    world.on('frame', function listener() {
+    const w = world
+    w.on('frame', function listener() {
       if (cb() === false) {
-        world.unlisten('frame', listener)
+        w.unlisten('frame', listener)
       }
     })
   }
@@ -561,6 +563,8 @@
     dist: (dx, dy) => Math.sqrt(dx * dx + dy * dy),
   }
 
+
+  var world
   return Object.assign({
     init,
     assets,
@@ -569,6 +573,6 @@
     Sprite,
     Costume,
     forever,
-    destroy: () => if (world) world.destroy(),
+    destroy: () => { if (world) world.destroy() },
   }, maths)
 }));
