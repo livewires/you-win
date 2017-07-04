@@ -5,6 +5,10 @@
   "bin": {
     "you-win": "server.js"
   },
+  "dependencies": {
+    "ecstatic": "^2.2.1",
+    "ws": "^3.0.0"
+  },
   "main": "uw.js",
   "browser": "uw.js",
   "scripts": {
