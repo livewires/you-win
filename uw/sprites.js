@@ -157,6 +157,7 @@
       s.destroy()
     }
     document.body.removeChild(this._wrap)
+    world = null
   }
 
   World.prototype._resize = function() {
@@ -568,6 +569,6 @@
     Sprite,
     Costume,
     forever,
-    destroy: () => world.destroy(),
+    destroy: () => if (world) world.destroy(),
   }, maths)
 }));

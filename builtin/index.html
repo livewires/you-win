@@ -10,13 +10,26 @@ body {
   position: fixed;
   background: #000;
 }
+
+#error {
+  padding: 1em;
+  margin: 0;
+  display: none;
+  background: #fff;
+  color: #e40046;
+  font-size: 1.125em;
+  font-family: Source Code Pro, Monaco, Menlo, monospace;
+}
 </style>
 
 <body>
+<pre id=error></pre>
+
 <script src="gyronorm.js"></script>
 <script src="uw.built.js"></script>
-<script src="app.js"></script>
+
 <script>
+const stackTrace = document.querySelector('#error')
 const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:'
 const host = location.host
 var ws
@@ -47,7 +60,13 @@ function refresh() {
     if (xhr.status === 200) {
       UW.destroy()
       isRefreshing = false
-      eval(xhr.responseText)
+      try {
+        stackTrace.style.display = 'none'
+        eval(xhr.responseText)
+      } catch (err) {
+        stackTrace.textContent = err.stack
+        stackTrace.style.display = 'block'
+      }
     } else {
       error()
     }
@@ -56,5 +75,13 @@ function refresh() {
   xhr.responseType = 'text'
   xhr.send()
 }
+
+window.onerror = (msg, source, line, col, err) => {
+  if (/\/app.js$/.test(source)) {
+    stackTrace.textContent = err.stack + '\n  ⇒ app.js, line ' + line
+    stackTrace.style.display = 'block'
+  }
+}
 </script>
 
+<script src="app.js"></script>
