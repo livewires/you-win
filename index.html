@@ -25,9 +25,10 @@ var debug = document.createElement('pre')
 
 UW.init({
   //smile: 'https://emojipedia-us.s3.amazonaws.com/thumbs/320/emoji-one/104/grinning-face_1f600.png',
-  platform: Costume.emoji('➖'), //Costume.emoji('🕳️'),
+  platform: Costume.emoji('➖'),
   bird: Costume.emoji('🐦'),
   bigeyes: 'https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png?1499126150626',
+  party: Costume.emoji('🎉'),
 }, () => {
 
   world = new World({
@@ -40,7 +41,7 @@ UW.init({
   var player = new Sprite('bigeyes', {
     //scale: 4,
     scale: 0.5,
-    y: 1200,
+    y: world.height * 0.9,
   })
   player.yVel = -12
   forever(() => {
@@ -59,11 +60,11 @@ UW.init({
     player.yVel -= 1
 
     // bounce off platforms
-    if (player.yVel < 0) {
+    if (player.yVel < -2) {
       for (var other of player.touching()) {
         // are our feet on top of it?
         if (other.isPlatform && player.bbox.bottom > other.y - 32) {
-          player.yVel = 42
+          player.yVel = 36
         }
       }
     }
@@ -74,14 +75,31 @@ UW.init({
     if (diff > 0) {
       world.scrollY -= diff
     }
+
+    // fall off the bottom of the screen
+    if (player.y + world.scrollY < -32) {
+      var party = new Sprite('party', {
+        scale: 1,
+        opacity: 0,
+      })
+      party.y += 100
+      forever(() => {
+        party.scale *= 1.05
+        party.opacity += 0.05
+        if (party.scale > 4) return false
+      })
+
+      // TODO show score
+      return false
+    }
   })
 
   function makePlatform() {
     count += 1
     lastPlatform = new Sprite('platform', {
       x: Math.random() * world.width,
-      y: 200 * count,
-      scale: 6,
+      y: 300 * count,
+      scale: 5,
       isPlatform: true,
     })
     platforms.push(lastPlatform)

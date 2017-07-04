@@ -293,6 +293,7 @@
     if (this === undefined) { throw new Error('requires `new` keyword') }
     if (!costume) { throw new Error('Sprite needs costume name') }
     if (!world) { throw new Error('make World first') }
+    var props = props || {}
 
     this.el = document.createElement('img')
     this.el.style.position = 'absolute'
@@ -302,8 +303,8 @@
 
     const s = props.scale || 1
     Object.assign(this, {
-      x: (world.width / 2)|0,
-      y: (world.height / 2)|0,
+      x: (world.width / 2 - world.scrollX)|0,
+      y: (world.height / 2 - world.scrollY)|0,
       xOffset: this.xOffset,
       yOffset: this.yOffset,
       scale: 1,
@@ -509,7 +510,11 @@
   // forever
 
   function forever(cb) {
-    world.on('frame', cb)
+    world.on('frame', function listener() {
+      if (cb() === false) {
+        world.unlisten('frame', listener)
+      }
+    })
   }
 
 
