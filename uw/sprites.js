@@ -136,6 +136,7 @@
     document.body.appendChild(this._wrap)
     this._resize()
     this._needsScroll = true
+    this._dead = false
 
     //const de = document.documentElement
     Object.assign(this, {
@@ -181,6 +182,7 @@
   }
 
   World.prototype.frame = function() {
+    if (this._dead) return
     this.emit('frame')
 
     if (this._needsResize) this._resize()

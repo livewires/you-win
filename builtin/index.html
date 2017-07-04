@@ -36,13 +36,17 @@ function onMessage(e) {
   }
 }
 
+var isRefreshing = false
 function refresh() {
-  const error = () => setTimeout(refresh, 100)
+  if (isRefreshing) return
+  isRefreshing = true
+  const error = () => { isRefreshing = false; setTimeout(refresh, 100) }
   const xhr = new XMLHttpRequest
   xhr.open('GET', 'app.js', true)
   xhr.onload = function() {
     if (xhr.status === 200) {
       UW.destroy()
+      isRefreshing = false
       eval(xhr.responseText)
     } else {
       error()
