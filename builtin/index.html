@@ -32,8 +32,25 @@ function onMessage(e) {
   const json = JSON.parse(e.data)
   if (json._type === 'refresh') {
     console.log('refreshing')
-    location.reload()
+    refresh()
   }
+}
+
+function refresh() {
+  const error = () => setTimeout(refresh, 100)
+  const xhr = new XMLHttpRequest
+  xhr.open('GET', 'app.js', true)
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      UW.destroy()
+      eval(xhr.responseText)
+    } else {
+      error()
+    }
+  }
+  xhr.onerror = error
+  xhr.responseType = 'text'
+  xhr.send()
 }
 </script>
 

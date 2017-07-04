@@ -229,6 +229,13 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
   }
   emitter(World.prototype)
 
+  World.prototype.destroy = function() {
+    for (let s of this.sprites) {
+      s.destroy()
+    }
+    document.body.removeChild(this._wrap)
+  }
+
   World.prototype._resize = function() {
     this._wrap.style.width = this.width + 'px'
     this._wrap.style.height = this.height + 'px'
@@ -629,7 +636,6 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     dist: (dx, dy) => Math.sqrt(dx * dx + dy * dy),
   }
 
-
   return Object.assign({
     init,
     assets,
@@ -638,5 +644,6 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     Sprite,
     Costume,
     forever,
+    destroy: () => world.destroy(),
   }, maths)
 }));

@@ -72,8 +72,8 @@ function refresh() {
     try {
       ws.send(JSON.stringify({_type: 'refresh'}))
     } catch (e) {
+      sockets.delete(ws)
     }
-    sockets.delete(ws)
   })
   watcher.close()
   watcher = fs.watch(gamePath, throttle)
