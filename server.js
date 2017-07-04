@@ -11,11 +11,11 @@ if (process.argv.length !== 3) {
   console.error('usage: you-win app.js')
   process.exit(1)
 }
-const gamePath = path.join(__dirname, process.argv[2])
+const gamePath = path.join(process.cwd(), process.argv[2])
 
 // static files & app.js are relative to the cwd
 const serveStatic = ecstatic({
-  root: path.join(__dirname, 'static/'),
+  root: path.join(process.cwd(), 'static/'),
   handleError: false,
   showDir: false,
   showDotfiles: false,
