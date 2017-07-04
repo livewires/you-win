@@ -18,8 +18,11 @@
     Object.defineProperty(O.prototype, name, {
       get: function() { return this['_' + name] },
       set: function(value) {
-        this['_' + name] = normalise(value)
-        changed.call(this, value)
+        var oldValue = this['_' + name]
+        var value = this['_' + name] = normalise(value)
+        if (value !== oldValue) {
+          changed.call(this, value)
+        }
       },
       enumerable: true,
       configurable: true,
@@ -181,8 +184,16 @@
     var sprites = this.sprites
     for (var i=sprites.length; i--; ) {
       const sprite = sprites[i]
-      if (sprite._needsPaint) sprite.paint()
+      if (sprite._needsPaint) sprite._paint()
+      if (sprite._needsTransform) sprite._transform()
       sprite._touching = null
+
+      // don't render offscreen sprites
+      const show = sprite.isOnScreen()
+      if (sprite._show !== show) {
+        sprite._show = show
+        sprite.el.style.display = show ? 'block' : 'none'
+      }
     }
 
     requestAnimationFrame(this.frame.bind(this))
@@ -272,6 +283,9 @@
 
   /* Sprite */
 
+  const collisionCanvas = document.createElement('canvas')
+  const collisionContext = collisionCanvas.getContext('2d')
+
   const Sprite = function(costume, props) {
     if (this === undefined) { throw new Error('requires `new` keyword') }
     if (!costume) { throw new Error('Sprite needs costume name') }
@@ -300,28 +314,37 @@
   }
   emitter(Sprite.prototype)
 
-  prop(Sprite, 'x', round, function() { this._needsPaint = true; this._updateBBox() })
-  prop(Sprite, 'y', round, function() { this._needsPaint = true; this._updateBBox() })
-  prop(Sprite, 'scale', num, function() { this._needsPaint = true; this._updateBBox() })
-  prop(Sprite, 'angle', num, function() { this._needsPaint = true; this._updateBBox() })
-  prop(Sprite, 'flipped', bool, function() { this._needsPaint = true })
+  prop(Sprite, 'x', round, function() { this._needsTransform = true; this._updateBBox() })
+  prop(Sprite, 'y', round, function() { this._needsTransform = true; this._updateBBox() })
+  prop(Sprite, 'xOffset', round, function() { this._needsTransform = true; this._updateBBox() })
+  prop(Sprite, 'yOffset', round, function() { this._needsTransform = true; this._updateBBox() })
+  prop(Sprite, 'scale', num, function() { this._needsTransform = true; this._updateBBox() })
+  prop(Sprite, 'angle', num, function() { this._needsTransform = true; this._updateBBox() })
+  prop(Sprite, 'flipped', bool, function() { this._needsTransform = true })
   prop(Sprite, 'opacity', num, function() { this._needsPaint = true })
-  prop(Sprite, 'costume', str, function(costume) {
-    var costume = Costume.get(costume)
+  prop(Sprite, 'costume', Costume.get, function(costume) {
     this.el.src = costume.img.src
     this.xOffset = -costume.width / 2
     this.yOffset = -costume.height / 2
+    this._width = costume.width
     this._height = costume.height
+    this._updateBBox()
     return costume
   })
 
   Sprite.prototype._updateBBox = function() {
-    // TODO use rotated rect
-    this.bbox = {
-      top: this.y + this.yOffset,
-      left: this.x - this.xOffset,
-      bot: this.y - this.yOffset,
-      right: this.x + this.xOffset,
+    if (this.angle === 0) {
+      const s = this.scale
+      const x = this.x + this.xOffset * s
+      const y = this.y + this.yOffset * s
+      this.bbox = {
+        left: x,
+        bottom: y,
+        right: x + this._width * s,
+        top: y + this._height * s,
+      }
+    } else {
+      this.bbox = this.rotatedBounds()
     }
   }
 
@@ -341,11 +364,15 @@
     }
   }
 
-  Sprite.prototype.paint = function() {
+  Sprite.prototype._paint = function() {
     this.el.style.opacity = this.opacity
+    this._needsPaint = false
+  }
+
+  Sprite.prototype._transform = function() {
     const s = this.scale
     var transform = ''
-    const x = this.x + this.xOffset
+    const x = this.x + this.xOffset/s
     const y = world.height - this.y - this._height - this.yOffset/s
     transform += 'translate(' + x + 'px, ' + y + 'px) '
     if (this.angle !== 0) { transform += 'rotate(' + this.angle + 'deg) ' }
@@ -353,7 +380,61 @@
     if (this.flipped) { transform += 'scaleX(-1) ' }
     this.el.style.transform = transform
     this.el.style.transformOrigin = -this.xOffset + 'px ' + -this.yOffset + 'px'
-    this._needsPaint = false
+    this._needsTransform = false
+  }
+
+  Sprite.prototype.isTouchingEdge = function() {
+    const b = this.bbox
+    const w = world.width, h = world.height
+    return b.left <= 0 || b.right >= w || b.bottom <= 0 || b.top >= h
+  }
+
+  Sprite.prototype.isOnScreen = function() {
+    const b = this.bbox
+    const w = world.width, h = world.height
+    return true //!(b.right > 0 && b.left < w && b.bottom > 0 && b.top < h)
+  }
+
+  Sprite.prototype.rotatedBounds = function() {
+    const costume = this.costume
+    const s = this.scale
+    const left = this.xOffset * s
+    const top = -this.yOffset * s
+    const right = left + costume.width * s
+    const bottom = top - costume.height * s
+
+    const dir = this.angle + 90
+    const mSin = Math.sin(dir * Math.PI / 180)
+    const mCos = Math.cos(dir * Math.PI / 180)
+
+    const tlX = mSin * left - mCos * top
+    const tlY = mCos * left + mSin * top
+
+    const trX = mSin * right - mCos * top
+    const trY = mCos * right + mSin * top
+
+    const blX = mSin * left - mCos * bottom
+    const blY = mCos * left + mSin * bottom
+
+    const brX = mSin * right - mCos * bottom
+    const brY = mCos * right + mSin * bottom
+
+    return {
+      left: this.x + Math.min(tlX, trX, blX, brX),
+      right: this.x + Math.max(tlX, trX, blX, brX),
+      top: this.y + Math.max(tlY, trY, blY, brY),
+      bottom: this.y + Math.min(tlY, trY, blY, brY)
+    }
+  }
+
+  Sprite.prototype.isTouching = function(s) {
+    if (s.constructor !== Sprite) { throw new Error('not a sprite: ' + s) }
+    if (s === this) return false
+    if (s.opacity === 0) return false
+    const mb = this.bbox
+    const ob = s.bbox
+    if (!collideBBox(mb, ob)) return false
+    return true
   }
 
   Sprite.prototype.touching = function() {
@@ -363,18 +444,15 @@
     this._touching = []
     for (var i=sprites.length; i--; ) {
       const s = sprites[i]
-      if (s === this) continue
-      if (collideBBox(bbox, s.bbox)) {
-        // TODO filter collide
+      if (this.isTouching(s)) {
         this._touching.push(s)
       }
     }
     return this._touching
-    
   }
 
   function collideBBox(a, b) {
-    return a.left < b.right && a.right > b.left && a.top > b.bot && a.bot < b.top
+    return a.left < b.right && a.right > b.left && a.top > b.bottom && a.bottom < b.top
   }
 
 

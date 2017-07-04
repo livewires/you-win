@@ -27,6 +27,7 @@ UW.init({
   smile: 'https://emojipedia-us.s3.amazonaws.com/thumbs/320/emoji-one/104/grinning-face_1f600.png',
   platform: Costume.emoji('➖'), //Costume.emoji('🕳️'),
   bird: Costume.emoji('🐦'),
+  bigeyes: 'https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png?1499126150626',
 }, () => {
 
   world = new World({
@@ -36,11 +37,16 @@ UW.init({
 
   var scrollVel = 0
 
-  var player = new Sprite('bird', {
-    scale: 5,
+  var player = new Sprite('bigeyes', {
+    //scale: 4,
+    scale: 0.5,
+    y: world.height * 0.75,
   })
-  player.yVel = 0
+  player.yVel = -12
   forever(() => {
+    // player.angle += 1
+    // return
+
     // move horizontally
     var xVel = 10 * UW.sin(phone.zAngle)
     if (xVel > 1) player.flipped = true
@@ -48,26 +54,21 @@ UW.init({
     player.x += xVel
 
     // crash into walls
-    if (player.x < 72) player.x = 72
-    if (player.x > world.width - 72) player.x = world.width - 72
+    if (player.x < 64) player.x = 64
+    if (player.x > world.width - 64) player.x = world.width - 64
 
     // fall down
     player.y += player.yVel
     player.yVel -= 1
 
-    // temp
-    if (player.y + world.scrollY < 72) { 
-      player.yVel = 42
-    }
-
     // bounce off platforms
-    // if (player.yVel < 0) {
-    //   for (var other of player.touching()) {
-    //     if (other.isPlatform) {
-    //       player.yVel = 42
-    //     }
-    //   }
-    // }
+    if (player.yVel < -2) {
+      for (var other of player.touching()) {
+        if (other.isPlatform) {
+          player.yVel = 42
+        }
+      }
+    }
 
     // scroll up, if we're near the top of the screen
     const barrier = world.height * 0.75
