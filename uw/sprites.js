@@ -87,7 +87,7 @@
         if (data.dm.gx == 0 && data.dm.gy == 0 && data.dm.gz == 0) {
           if (this.hasMotion === undefined) {
             this.hasMotion = false
-            alert('not a phone')
+            //alert('not a phone')
           }
           return
         }
@@ -107,7 +107,7 @@
         //debug.textContent = JSON.stringify({motion: this.motion,zAngle: this.zAngle,rotation:data.do, mag:this.zMagnitude}).replace(/,/g, '\n') + '\nusing gravity' 
       })
     }).catch(e => {
-      alert('not a phone')
+      //alert('not a phone')
     })
   }
 
@@ -299,6 +299,8 @@
     this.el.style.position = 'absolute'
     this.el.style.imageRendering = 'pixelated'
     this.el.style.imageRendering = 'crisp-edges'
+    this.el.style.imageRendering = '-moz-crisp-edges'
+
     this.costume = costume
 
     const s = props.scale || 1
