@@ -38,6 +38,7 @@ const moo = (req, res) => {
 const app = (req, res) => {
   return serveStatic(req, res, fail => {
     serveBuiltin(req, res, fail => {
+      // TODO randomize version param in index.html
       if (req.url === '/app.js' || /^\/app\.js\?/.test(req.url)) {
         res.writeHead(200, {
           'Content-Type': 'text/html',

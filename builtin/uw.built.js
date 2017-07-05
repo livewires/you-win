@@ -87,6 +87,7 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     root.UW = factory(root.emitter, root.emojiList)
   }
 }(this, function(emitter, emojiList) {
+  'use strict'
 
   let num = x => +x
   let round = x => (x + 0.5)|0
@@ -196,13 +197,6 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
       //alert('not a phone')
     })
   }
-
-  Object.defineProperty(Phone.prototype, 'hasMotion', {
-    get: function() {
-      return this.motion !== null && this.motion.x != null && this.motion.y != null && this.motion.z != null
-    },
-    enumerable: true,
-  })
 
 
   /* World */
@@ -667,9 +661,11 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
   }
 
   Sprite.prototype.isTouching = function(s) {
-    if (!s.isTouchingFast(s)) {
+    if (!this.isTouchingFast(s)) {
       return false
     }
+    const mb = this.bbox
+    const ob = s.bbox
 
     const left = Math.max(mb.left, ob.left)
     const top = Math.min(mb.top, ob.top)
