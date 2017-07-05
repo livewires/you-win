@@ -334,12 +334,24 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     finger.deltaY = pos.y - finger.fingerY
     finger.fingerX = pos.x
     finger.fingerY = pos.y
-    finger.wasDragged = true
 
+    // already dragging?
     if (finger.sprite) {
       finger.sprite.emit('drag', finger)
       return
     }
+
+    // start drag if moved
+    const threshold = e.pointerType === 'mouse' ? 4 : 10
+    if (maths.dist(pos.x - finger.startX, pos.y - finger.startY) < threshold) {
+      return
+    }
+
+    // include delta from the events we skipped
+    finger.wasDragged = true
+    finger.deltaX = pos.x - finger.startX
+    finger.deltaY = pos.y - finger.startY
+
     const sprites = this.sprites
     for (var i=sprites.length; i--; ) {
       const s = sprites[i]
