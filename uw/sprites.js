@@ -262,8 +262,7 @@
     for (var i=sprites.length; i--; ) {
       const s = sprites[i]
       if (s.opacity != 0 && s.touchesPoint(pos.x, pos.y)) {
-        const result = s.emit('drag', finger)
-        if (result === false) {
+        if (s.emit('drag', finger) === false) {
           finger.sprite = s
           return
         }
@@ -283,12 +282,12 @@
       for (var i=sprites.length; i--; ) {
         const s = sprites[i]
         if (s.opacity != 0 && s.touchesPoint(pos.x, pos.y)) {
-          const result = s.emit('tap', finger)
-          if (result) {
-            break
+          if (s.emit('tap', finger) === false) {
+            return
           }
         }
       }
+      this.emit('tap', finger)
     }
   }
 
