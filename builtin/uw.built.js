@@ -90,7 +90,7 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
   'use strict'
 
   let num = x => +x
-  let round = x => (x + 0.5)|0
+  let round = x => x < 0 ? (x - 0.5)|0 : (x + 0.5)|0
   let bool = x => !!x
   let str = x => {
     if (typeof x !== 'string') throw new Error("not a string: " + x)
