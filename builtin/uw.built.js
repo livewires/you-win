@@ -47,8 +47,12 @@
     if (!m) return
     const l = m.get(e)
     if (!l) return
-    for (let i = l.length; i--;) l[i](arg)
-    return this
+    var result
+    for (let i = l.length; i--;) {
+      const v = l[i](arg)
+      if (v !== undefined) result = v
+    }
+    return result
   }
 
   const PROPERTIES = {
@@ -274,12 +278,11 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     const didScroll = this._needsScroll
     if (this._needsScroll) this._scroll()
 
-    var sprites = this.sprites
+    const sprites = this.sprites
     for (var i=sprites.length; i--; ) {
       const sprite = sprites[i]
       if (sprite._needsPaint) sprite._paint()
       if (sprite._needsTransform) sprite._transform()
-      sprite._touching = null
 
       // don't render offscreen sprites
       const show = sprite.isOnScreen()
@@ -338,36 +341,70 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     finger.fingerX = pos.x
     finger.fingerY = pos.y
     finger.wasDragged = true
-    // TODO: sprite
+
+    if (finger.sprite) {
+      finger.sprite.emit('drag', finger)
+      return
+    }
+    const sprites = this.sprites
+    for (var i=sprites.length; i--; ) {
+      const s = sprites[i]
+      if (s.opacity != 0 && s.touchesPoint(pos.x, pos.y)) {
+        const result = s.emit('drag', finger)
+        if (result === false) {
+          finger.sprite = s
+          return
+        }
+      }
+    }
     this.emit('drag', finger)
+    finger.sprite = this
   }
 
   World.prototype.pointerUp = function(e) {
     const finger = this._fingers[e.pointerId]
     if (!finger) return
     delete this._fingers[e.pointerId]
+    const pos = this._toWorld(e.clientX, e.clientY)
     if (!finger.wasDragged) {
-      // TODO: sprite
-      this.emit('tap', finger)
+      const sprites = this.sprites
+      for (var i=sprites.length; i--; ) {
+        const s = sprites[i]
+        if (s.opacity != 0 && s.touchesPoint(pos.x, pos.y)) {
+          const result = s.emit('tap', finger)
+          if (result) {
+            break
+          }
+        }
+      }
     }
   }
 
 
   /* Costume */
 
-  const Costume = function(img) {
+  const Costume = function(img, canvas) {
     this.img = img
     this.width = img.naturalWidth
     this.height = img.naturalHeight
+    if (!canvas) {
+      var canvas = document.createElement('canvas')
+      canvas.width = this.width
+      canvas.height = this.height
+      const ctx = canvas.getContext('2d')
+      ctx.drawImage(this.img, 0, 0)
+    }
+    this.canvas = canvas
+    this.context = canvas.getContext('2d')
   }
 
-  Costume.load = function(url) {
+  Costume.load = function(url, canvas) {
     const img = new Image
     img.crossOrigin = 'anonymous'
     img.src = url ///^http/.test(url) ? 'http://crossorigin.me/' + url : url
     return new Promise(resolve => {
       img.addEventListener('load', () => {
-        resolve(new Costume(img))
+        resolve(new Costume(img, canvas))
       })
     })
   }
@@ -422,7 +459,7 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     canvas.height = props.ySize
     const ctx = canvas.getContext('2d')
     ctx.drawImage(this.img, -x|0, -y|0)
-    return canvasToURL(canvas).then(Costume.load)
+    return canvasToURL(canvas).then(url => Costume.load(url, canvas))
   }
 
 
@@ -464,7 +501,6 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     this.dead = false
     world.sprites.push(this)
     this.raise()
-    this._touching = null
   }
   emitter(Sprite.prototype)
 
@@ -582,6 +618,28 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     }
   }
 
+  Sprite.prototype.touchesPoint = function(x, y) {
+    var bounds = this.rotatedBounds()
+    if (x < bounds.left || y < bounds.bottom || x > bounds.right || y > bounds.top) {
+      return false
+    }
+    const costume = this.costume
+    var cx = (x - this.x) / this.scale
+    var cy = (this.y - y) / this.scale // TODO
+    if (this.angle !== 0) {
+      const d = -this.angle * Math.PI / 180 // (dir = angle + 90)
+      const ox = cx
+      const s = Math.sin(d), c = Math.cos(d)
+      cx = c * ox - s * cy
+      cy = s * ox + c * cy
+    }
+    if (this.flipped) {
+      cx = -cx //this.costume.width - cx
+    }
+    const d = costume.context.getImageData(cx - this.xOffset, cy - this.yOffset, 1, 1).data
+    return d[3] !== 0
+  }
+
   Sprite.prototype._draw = function(ctx) {
     const costume = this.costume
     ctx.save()
@@ -596,13 +654,20 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     ctx.restore()
   }
 
-  Sprite.prototype.isTouching = function(s) {
+  Sprite.prototype.isTouchingFast = function(s) {
     if (s.constructor !== Sprite) { throw new Error('not a sprite: ' + s) }
     if (s === this) return false
     if (s.opacity === 0) return false
     const mb = this.bbox
     const ob = s.bbox
     if (mb.left >= ob.right || mb.right <= ob.left || mb.top <= ob.bottom || mb.bottom >= ob.top) {
+      return false
+    }
+    return true
+  }
+
+  Sprite.prototype.isTouching = function(s) {
+    if (!s.isTouchingFast(s)) {
       return false
     }
 
@@ -641,18 +706,16 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     return false
   }
 
-  Sprite.prototype.touching = function() {
-    if (this._touching) return this._touching
+  Sprite.prototype.getTouching = function() {
     const sprites = this.world.sprites
-    const bbox = this.bbox
-    this._touching = []
+    const result = []
     for (var i=sprites.length; i--; ) {
       const s = sprites[i]
       if (this.isTouching(s)) {
-        this._touching.push(s)
+        result.push(s)
       }
     }
-    return this._touching
+    return result
   }
 
 

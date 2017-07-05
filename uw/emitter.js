@@ -47,8 +47,12 @@
     if (!m) return
     const l = m.get(e)
     if (!l) return
-    for (let i = l.length; i--;) l[i](arg)
-    return this
+    var result
+    for (let i = l.length; i--;) {
+      const v = l[i](arg)
+      if (v !== undefined) result = v
+    }
+    return result
   }
 
   const PROPERTIES = {
