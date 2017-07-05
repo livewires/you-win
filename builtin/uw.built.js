@@ -306,6 +306,9 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     this._wrap.addEventListener('pointerup', this.pointerUp.bind(this))
     this._wrap.addEventListener('pointercancel', this.pointerUp.bind(this))
     this._fingers = {}
+
+    // disable double-tap zoom
+    document.addEventListener('touchstart', e => e.preventDefault())
   }
 
   World.prototype._toWorld = function(sx, sy) {
