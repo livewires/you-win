@@ -154,6 +154,10 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
 
   const Phone = function() {
     if (this === undefined) { throw new Error('requires `new` keyword') }
+    
+    this.hasTouch = navigator.maxTouchPoints > 0
+    this.hasMultiTouch = navigator.maxTouchPoints > 1
+
     this.hasMotion = undefined
     this.motion = {x: 0, y: 0, z: 0}
     this.zAngle = 0
@@ -227,6 +231,7 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     this.sprites = []
 
     window.addEventListener('resize', function() { this._needsResize = true })
+    this._bindPointer()
   }
   emitter(World.prototype)
 
@@ -295,6 +300,57 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
   prop(World, 'background', str, function(background) {
     this._wrap.style.background = background
   })
+
+  World.prototype._bindPointer = function(e) {
+    this._wrap.setAttribute('touch-action', 'none')
+    this._wrap.style.touchAction = 'none'
+    this._wrap.addEventListener('pointerdown', this.pointerDown.bind(this))
+    this._wrap.addEventListener('pointermove', this.pointerMove.bind(this))
+    this._wrap.addEventListener('pointerup', this.pointerUp.bind(this))
+    this._wrap.addEventListener('pointercancel', this.pointerUp.bind(this))
+    this._fingers = {}
+  }
+
+  World.prototype._toWorld = function(sx, sy) {
+    return {
+      x: (sx - this.translateX) / this.scale + this.scrollX,
+      y: this.height - ((sy - this.translateY) / this.scale + this.scrollY),
+    }
+  }
+
+  World.prototype.pointerDown = function(e) {
+    const pos = this._toWorld(e.clientX, e.clientY)
+    this._fingers[e.pointerId] = {
+      finger: e.pointerId,
+      startX: pos.x,
+      startY: pos.y,
+      fingerX: pos.x,
+      fingerY: pos.y,
+    }
+  }
+
+  World.prototype.pointerMove = function(e) {
+    const finger = this._fingers[e.pointerId]
+    if (!finger) return
+    const pos = this._toWorld(e.clientX, e.clientY)
+    finger.deltaX = pos.x - finger.fingerX
+    finger.deltaY = pos.y - finger.fingerY
+    finger.fingerX = pos.x
+    finger.fingerY = pos.y
+    finger.wasDragged = true
+    // TODO: sprite
+    this.emit('drag', finger)
+  }
+
+  World.prototype.pointerUp = function(e) {
+    const finger = this._fingers[e.pointerId]
+    if (!finger) return
+    delete this._fingers[e.pointerId]
+    if (!finger.wasDragged) {
+      // TODO: sprite
+      this.emit('tap', finger)
+    }
+  }
 
 
   /* Costume */
@@ -386,6 +442,8 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
 
     this.el = document.createElement('img')
     this.el.style.position = 'absolute'
+    this.el.style.WebkitUserDrag = 'none'
+    this.el.style.userDrag = 'none' // ??
     this.el.style.imageRendering = 'pixelated'
     this.el.style.imageRendering = 'crisp-edges'
     this.el.style.imageRendering = '-moz-crisp-edges'
