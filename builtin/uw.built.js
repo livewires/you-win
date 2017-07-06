@@ -112,18 +112,6 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     })
   }
 
-  function canvasToURL(canvas) {
-    return new Promise((resolve, reject) => {
-      if (canvas.toBlob) {
-        canvas.toBlob(blob => {
-          resolve(URL.createObjectURL(blob))
-        })
-      } else {
-        resolve(canvas.toDataURL('image/png'))
-      }
-    })
-  }
-
 
   /* init */
 
@@ -391,19 +379,20 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
 
   /* Costume */
 
-  const Costume = function(img, canvas) {
-    this.img = img
-    this.width = img.naturalWidth
-    this.height = img.naturalHeight
-    if (!canvas) {
-      var canvas = document.createElement('canvas')
-      canvas.width = this.width
-      canvas.height = this.height
-      const ctx = canvas.getContext('2d')
-      ctx.drawImage(this.img, 0, 0)
-    }
+  const Costume = function(canvas) {
     this.canvas = canvas
+    this.width = canvas.width
+    this.height = canvas.height
     this.context = canvas.getContext('2d')
+  }
+
+  Costume.fromImage = function(img) {
+    var canvas = document.createElement('canvas')
+    canvas.width = img.naturalWidth
+    canvas.height = img.naturalHeight
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(img, 0, 0)
+    return new Costume(canvas)
   }
 
   Costume.load = function(url, canvas) {
@@ -412,7 +401,7 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     img.src = url ///^http/.test(url) ? 'http://crossorigin.me/' + url : url
     return new Promise(resolve => {
       img.addEventListener('load', () => {
-        resolve(new Costume(img, canvas))
+        resolve(Costume.fromImage(img))
       })
     })
   }
@@ -466,8 +455,8 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     canvas.width = props.xSize
     canvas.height = props.ySize
     const ctx = canvas.getContext('2d')
-    ctx.drawImage(this.img, -x|0, -y|0)
-    return canvasToURL(canvas).then(url => Costume.load(url, canvas))
+    ctx.drawImage(this.canvas, -x|0, -y|0)
+    return new Costume(canvas)
   }
 
 
@@ -485,7 +474,8 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     this.world = world
     var props = props || {}
 
-    this.el = document.createElement('img')
+    this.el = document.createElement('canvas')
+    this.ctx = this.el.getContext('2d')
     this.el.style.position = 'absolute'
     this.el.style.WebkitUserDrag = 'none'
     this.el.style.userDrag = 'none' // ??
@@ -521,11 +511,11 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
   prop(Sprite, 'flipped', bool, function() { this._needsTransform = true })
   prop(Sprite, 'opacity', num, function() { this._needsPaint = true })
   prop(Sprite, 'costume', Costume.get, function(costume) {
-    this.el.src = costume.img.src
+    this.el.width = this._width = costume.width
+    this.el.height = this._height = costume.height
+    this.ctx.drawImage(costume.canvas, 0, 0)
     this.xOffset = -costume.width / 2
     this.yOffset = -costume.height / 2
-    this._width = costume.width
-    this._height = costume.height
     this._updateBBox()
     return costume
   })
@@ -658,7 +648,7 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     }
     ctx.scale(this.scale, this.scale)
     ctx.translate(this.xOffset, this.yOffset)
-    ctx.drawImage(costume.img, 0, 0)
+    ctx.drawImage(costume.canvas, 0, 0)
     ctx.restore()
   }
 
