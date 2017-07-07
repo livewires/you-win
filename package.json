@@ -13,7 +13,7 @@
   "browser": "uw.js",
   "scripts": {
     "start": "node server.js app.js",
-    "cat": "cat uw/emitter.js uw/emojis.js uw/sprites.js > builtin/uw.built.js"
+    "cat": "cat uw/emitter.js uw/metrics.js uw/emojis.js uw/sprites.js > builtin/uw.built.js"
   },
   "author": "Tim Radvan <tim@tjvr.org>",
   "license": "BSD-3-Clause"

@@ -73,6 +73,123 @@
   if (typeof module === 'object' && module.exports) {
     module.exports = factory()
   } else {
+    root.textMetrics = factory()
+  }
+}(this, function() {
+
+  function metrics(arr) {
+    const map = {}
+    arr.forEach(([chr, width, dx], index) => {
+      map[chr] = {index, width, dx}
+    })
+    return map
+  }
+
+  const Munro = metrics([
+    ['A', 5],
+    ['B', 5],
+    ['C', 4],
+    ['D', 5],
+    ['E', 4],
+    ['F', 4],
+    ['G', 5],
+    ['H', 5],
+    ['I', 2],
+    ['J', 3],
+    ['K', 5],
+    ['L', 4],
+    ['M', 6],
+    ['N', 5],
+    ['O', 5],
+    ['P', 5],
+    ['Q', 5],
+    ['R', 5],
+    ['S', 4],
+    ['T', 4],
+    ['U', 5],
+    ['V', 6],
+    ['W', 6],
+    ['X', 6],
+    ['Y', 6],
+    ['Z', 4],
+    ['a', 5],
+    ['b', 5],
+    ['c', 4],
+    ['d', 5],
+    ['e', 5],
+    ['f', 3],
+    ['g', 5],
+    ['h', 5],
+    ['i', 2],
+    ['j', 2, 1],
+    ['k', 5],
+    ['l', 2],
+    ['m', 8],
+    ['n', 5],
+    ['o', 5],
+    ['p', 5],
+    ['q', 5],
+    ['r', 4],
+    ['s', 4],
+    ['t', 4],
+    ['u', 5],
+    ['v', 6],
+    ['w', 8],
+    ['x', 6],
+    ['y', 5],
+    ['z', 4],
+    ['0', 5],
+    ['1', 3],
+    ['2', 4],
+    ['3', 4],
+    ['4', 5],
+    ['5', 4],
+    ['6', 5],
+    ['7', 4],
+    ['8', 5],
+    ['9', 5],
+    [',', 2],
+    ['.', 2],
+    [':', 2],
+    [';', 2],
+    ['"', 4],
+    ["'", 2],
+    ['!', 2],
+    ['?', 4],
+    ['&', 7],
+    ['@', 8],
+    ['£', 5],
+    ['$', 4],
+    ['|', 4],
+    ['/', 4],
+    ['\\', 4],
+    ['<', 5],
+    ['>', 5],
+    ['(', 3],
+    [')', 3],
+    ['{', 4],
+    ['}', 4],
+    ['+', 6],
+    ['-', 4],
+    ['=', 5],
+    ['%', 8],
+    ['*', 4],
+    ['=', 5],
+    ['[', 3],
+    [']', 3],
+    ['^', 4],
+    ['_', 6],
+    ['~', 6],
+    [' ', 5],
+  ])
+
+  return {Munro}
+
+}));
+(function(root, factory) {
+  if (typeof module === 'object' && module.exports) {
+    module.exports = factory()
+  } else {
     root.emojiList = factory()
   }
 }(this, function() {
@@ -82,11 +199,11 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
 }));
 (function(root, factory) {
   if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./emitter'), require('./emojis'))
+    module.exports = factory(require('./emitter'), require('./metrics'), require('./emojis'))
   } else {
-    root.UW = factory(root.emitter, root.emojiList)
+    root.UW = factory(root.emitter, root.textMetrics, root.emojiList)
   }
-}(this, function(emitter, emojiList) {
+}(this, function(emitter, textMetrics, emojiList) {
   'use strict'
 
   let num = x => +x
@@ -120,6 +237,8 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     if (typeof cb !== 'function') {
       throw new Error('usage: init({ ... }, () => { ... })')
     }
+
+    promiseMap['_text'] = Costume.load('munro.png')
 
     const promises = []
     for (let key of Object.keys(promiseMap)) {
@@ -438,19 +557,35 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     var text = ''+text
     var props = Object.assign({
       color: '#000',
-      font: 'Silkscreen',
     }, props || {})
+
+    const fontMetrics = textMetrics.Munro
+    const tw = 9
+    const th = 11
+    var x = 0
+    const chars = []
+    for (var i=0; i<text.length; i++) {
+      const c = text[i]
+      const metrics = fontMetrics[c] || fontMetrics[' ']
+      // TODO drawImage directly from one canvas to the other
+      const canvas = assets._text.slice(metrics.index, {
+        xSize: tw,
+        ySize: th,
+        xCount: 26,
+      }).canvas
+      chars.push({canvas: canvas, x: x - (metrics.dx || 0)})
+      x += metrics.width
+    }
+
     const canvas = document.createElement('canvas')
+    canvas.width = x
+    canvas.height = th
     const ctx = canvas.getContext('2d')
     ctx.imageSmoothingEnabled = false
-    canvas.height = 40
-    ctx.font = '32px ' + props.font
-    const metrics = ctx.measureText(text)
-    canvas.width = metrics.width
-    ctx.font = '32px ' + props.font
-    ctx.fillStyle = props.color
-    ctx.textBaseline = 'top'
-    ctx.fillText(text, 0, 0)
+    for (var i=chars.length; i--; ) {
+      const c = chars[i]
+      ctx.drawImage(c.canvas, c.x, 0)
+    }
     return new Costume(canvas)
   }
 
@@ -469,7 +604,7 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     props.ySize = props.ySize || this.height / props.yCount - props.yMargin
     props.xCount = props.xCount || this.width / (props.xSize + props.xMargin)
     const result = {}
-    const x = 1 + (props.xSize + props.xMargin) * (index % props.xCount)
+    const x = (props.xSize + props.xMargin) * (index % props.xCount)
     const y = (props.ySize + props.yMargin) * Math.floor(index / props.xCount)
 
     const canvas = document.createElement('canvas')

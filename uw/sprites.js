@@ -1,10 +1,10 @@
 (function(root, factory) {
   if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./emitter'), require('./emojis'))
+    module.exports = factory(require('./emitter'), require('./metrics'), require('./emojis'))
   } else {
-    root.UW = factory(root.emitter, root.emojiList)
+    root.UW = factory(root.emitter, root.textMetrics, root.emojiList)
   }
-}(this, function(emitter, emojiList) {
+}(this, function(emitter, textMetrics, emojiList) {
   'use strict'
 
   let num = x => +x
@@ -38,6 +38,8 @@
     if (typeof cb !== 'function') {
       throw new Error('usage: init({ ... }, () => { ... })')
     }
+
+    promiseMap['_text'] = Costume.load('munro.png')
 
     const promises = []
     for (let key of Object.keys(promiseMap)) {
@@ -356,19 +358,35 @@
     var text = ''+text
     var props = Object.assign({
       color: '#000',
-      font: 'Silkscreen',
     }, props || {})
+
+    const fontMetrics = textMetrics.Munro
+    const tw = 9
+    const th = 11
+    var x = 0
+    const chars = []
+    for (var i=0; i<text.length; i++) {
+      const c = text[i]
+      const metrics = fontMetrics[c] || fontMetrics[' ']
+      // TODO drawImage directly from one canvas to the other
+      const canvas = assets._text.slice(metrics.index, {
+        xSize: tw,
+        ySize: th,
+        xCount: 26,
+      }).canvas
+      chars.push({canvas: canvas, x: x - (metrics.dx || 0)})
+      x += metrics.width
+    }
+
     const canvas = document.createElement('canvas')
+    canvas.width = x
+    canvas.height = th
     const ctx = canvas.getContext('2d')
     ctx.imageSmoothingEnabled = false
-    canvas.height = 40
-    ctx.font = '32px ' + props.font
-    const metrics = ctx.measureText(text)
-    canvas.width = metrics.width
-    ctx.font = '32px ' + props.font
-    ctx.fillStyle = props.color
-    ctx.textBaseline = 'top'
-    ctx.fillText(text, 0, 0)
+    for (var i=chars.length; i--; ) {
+      const c = chars[i]
+      ctx.drawImage(c.canvas, c.x, 0)
+    }
     return new Costume(canvas)
   }
 
@@ -387,7 +405,7 @@
     props.ySize = props.ySize || this.height / props.yCount - props.yMargin
     props.xCount = props.xCount || this.width / (props.xSize + props.xMargin)
     const result = {}
-    const x = 1 + (props.xSize + props.xMargin) * (index % props.xCount)
+    const x = (props.xSize + props.xMargin) * (index % props.xCount)
     const y = (props.ySize + props.yMargin) * Math.floor(index / props.xCount)
 
     const canvas = document.createElement('canvas')
