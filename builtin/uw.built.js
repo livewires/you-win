@@ -380,6 +380,7 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
   /* Costume */
 
   const Costume = function(canvas) {
+    if (!canvas) throw new Error('no canvas')
     this.canvas = canvas
     this.width = canvas.width
     this.height = canvas.height
@@ -408,7 +409,7 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
 
   Costume.get = function(name) {
     if (name.constructor === Costume) {
-      return Costume
+      return name
     } else {
       const costume = assets[name]
       if (!costume) {
@@ -431,6 +432,26 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
         xCount: 30,
       })
     })
+  }
+
+  Costume.text = function(text, props) {
+    var text = ''+text
+    var props = Object.assign({
+      color: '#000',
+      font: 'Silkscreen',
+    }, props || {})
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    ctx.imageSmoothingEnabled = false
+    canvas.height = 40
+    ctx.font = '32px ' + props.font
+    const metrics = ctx.measureText(text)
+    canvas.width = metrics.width
+    ctx.font = '32px ' + props.font
+    ctx.fillStyle = props.color
+    ctx.textBaseline = 'top'
+    ctx.fillText(text, 0, 0)
+    return new Costume(canvas)
   }
 
   Costume.prototype.slice = function(index, props) {
