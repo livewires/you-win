@@ -503,6 +503,8 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     this.canvas = canvas
     this.width = canvas.width
     this.height = canvas.height
+    this.xOffset = -this.width / 2
+    this.yOffset = -this.height / 2
     this.context = canvas.getContext('2d')
   }
 
@@ -645,8 +647,6 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     Object.assign(this, {
       x: (world.width / 2 - world.scrollX)|0,
       y: (world.height / 2 - world.scrollY)|0,
-      xOffset: this.xOffset,
-      yOffset: this.yOffset,
       scale: 1,
       opacity: 1,
       angle: 0,
@@ -660,8 +660,6 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
 
   prop(Sprite, 'x', round, function() { this._needsTransform = true; this._updateBBox() })
   prop(Sprite, 'y', round, function() { this._needsTransform = true; this._updateBBox() })
-  prop(Sprite, 'xOffset', round, function() { this._needsTransform = true; this._updateBBox() })
-  prop(Sprite, 'yOffset', round, function() { this._needsTransform = true; this._updateBBox() })
   prop(Sprite, 'scale', num, function() { this._needsTransform = true; this._updateBBox() })
   prop(Sprite, 'angle', num, function() { this._needsTransform = true; this._updateBBox() })
   prop(Sprite, 'flipped', bool, function() { this._needsTransform = true })
@@ -670,17 +668,16 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     this.el.width = this._width = costume.width
     this.el.height = this._height = costume.height
     this.ctx.drawImage(costume.canvas, 0, 0)
-    this.xOffset = -costume.width / 2
-    this.yOffset = -costume.height / 2
     this._updateBBox()
     return costume
   })
 
   Sprite.prototype._updateBBox = function() {
     if (this.angle === 0) {
+      const costume = this.costume
       const s = this.scale
-      const x = this.x + this.xOffset * s
-      const y = this.y + this.yOffset * s
+      const x = this.x + costume.xOffset * s
+      const y = this.y + costume.yOffset * s
       this.bbox = {
         left: x,
         bottom: y,
@@ -714,16 +711,17 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
   }
 
   Sprite.prototype._transform = function() {
+    const costume = this.costume
     const s = this.scale
     var transform = ''
-    const x = this.x + this.xOffset
-    const y = this.world.height - this.y - this._height - this.yOffset
+    const x = this.x + costume.xOffset
+    const y = this.world.height - this.y - this._height - costume.yOffset
     transform += 'translate(' + x + 'px, ' + y + 'px) '
     if (this.angle !== 0) { transform += 'rotate(' + this.angle + 'deg) ' }
     if (this.scale !== 1) { transform += 'scale(' + s + ') ' }
     if (this.flipped) { transform += 'scaleX(-1) ' }
     this.el.style.transform = transform
-    this.el.style.transformOrigin = -this.xOffset + 'px ' + -this.yOffset + 'px'
+    this.el.style.transformOrigin = -costume.xOffset + 'px ' + -costume.yOffset + 'px'
     this._needsTransform = false
   }
 
@@ -743,8 +741,8 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
   Sprite.prototype.rotatedBounds = function() {
     const costume = this.costume
     const s = this.scale
-    const left = this.xOffset * s
-    const top = -this.yOffset * s
+    const left = costume.xOffset * s
+    const top = -costume.yOffset * s
     const right = left + costume.width * s
     const bottom = top - costume.height * s
 
@@ -790,7 +788,7 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     if (this.flipped) {
       cx = -cx //this.costume.width - cx
     }
-    const d = costume.context.getImageData(cx - this.xOffset, cy - this.yOffset, 1, 1).data
+    const d = costume.context.getImageData(cx - costume.xOffset, cy - costume.yOffset, 1, 1).data
     return d[3] !== 0
   }
 
@@ -803,7 +801,7 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
       ctx.scale(-1, 1)
     }
     ctx.scale(this.scale, this.scale)
-    ctx.translate(this.xOffset, this.yOffset)
+    ctx.translate(costume.xOffset, costume.yOffset)
     ctx.drawImage(costume.canvas, 0, 0)
     ctx.restore()
   }
