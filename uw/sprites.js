@@ -135,7 +135,7 @@
     }, props)
     this.sprites = []
 
-    window.addEventListener('resize', function() { this._needsResize = true })
+    window.addEventListener('resize', () => { this._needsResize = true })
     this._bindPointer()
   }
   emitter(World.prototype)
