@@ -346,7 +346,8 @@
     const index = emojiList.indexOf(emoji)
     if (index === -1) { throw new Error('unknown emoji: ' + emoji) }
     return Costume.load('emoji.png').then(sheet => {
-      return sheet.slice(index, {
+      return sheet.slice({
+        index: index,
         xSize: 32,
         ySize: 32,
         xMargin: 2,
@@ -356,11 +357,13 @@
     })
   }
 
-  Costume.text = function(text, props) {
-    var text = ''+text
+  Costume.text = function(props) {
     var props = Object.assign({
+      text: '',
       fill: '#000',
-    }, props || {})
+    }, props)
+    if (!props.text) { throw new Error('Need text') }
+    const text = '' + props.text
 
     const fontMetrics = textMetrics.Munro
     const tw = 9
@@ -371,7 +374,8 @@
       const c = text[i]
       const metrics = fontMetrics[c] || fontMetrics[' ']
       // TODO drawImage directly from one canvas to the other
-      const canvas = assets._text.slice(metrics.index, {
+      const canvas = assets._text.slice({
+        index: metrics.index,
         xSize: tw,
         ySize: th,
         xCount: 26,
@@ -410,8 +414,6 @@
   }
 
   Costume.polygon = function(props) {
-    var text = ''+text
-    var props = props || {}
     var props = Object.assign({
       points: [[0, 0], [0, 32], [32, 32], [32, 0]],
       fill: null,
@@ -478,17 +480,19 @@
     return c
   }
 
-  Costume.prototype.slice = function(index, props) {
+  Costume.prototype.slice = function(props) {
     // (xSize + xMargin) * xCount = width
     // xSize = width / xCount - xMargin
     // (xSize + xMargin) * xCount = width
     var props = Object.assign({
+      index: 0,
       xSize: null,
       ySize: null,
       xCount: null,
       xMargin: 0,
       yMargin: 0,
     }, props)
+    const index = props.index
     props.xSize = props.xSize || this.width / props.xCount - props.xMargin
     props.ySize = props.ySize || this.height / props.yCount - props.yMargin
     props.xCount = props.xCount || this.width / (props.xSize + props.xMargin)
@@ -512,9 +516,8 @@
   collisionContext.imageSmoothingEnabled = false
   //collisionCanvas.style.border = '1px solid blue'
 
-  const Sprite = function(costume, props) {
+  const Sprite = function(props) {
     if (this === undefined) { throw new Error('requires `new` keyword') }
-    if (!costume) { throw new Error('Sprite needs costume name') }
     if (!world) { throw new Error('make World first') }
     this.world = world
     var props = props || {}
@@ -528,7 +531,9 @@
     this.el.style.imageRendering = 'crisp-edges'
     this.el.style.imageRendering = '-moz-crisp-edges'
 
-    this.costume = costume
+    // gotta set this first
+    if (!props.costume) { throw new Error('Sprite needs costume') }
+    this.costume = props.costume
 
     const s = props.scale || 1
     Object.assign(this, {
