@@ -34,14 +34,10 @@
   /* init */
 
   var assets = Object.create(null)
-  function init(promiseMap, cb) {
+  function init(promiseMap) {
     // destroy old world!
     if (world) {
       world.destroy()
-    }
-
-    if (typeof cb !== 'function') {
-      throw new Error('usage: init({ ... }, () => { ... })')
     }
 
     promiseMap['_text'] = Costume.load('munro.png')
@@ -60,9 +56,7 @@
       })
       promises.push(promise)
     }
-    Promise.all(promises).then(() => {
-      cb()
-    })
+    return Promise.all(promises)
   }
 
   // TODO progress bar
