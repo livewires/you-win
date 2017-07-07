@@ -42,9 +42,9 @@ const app = (req, res) => {
       if (req.url === '/app.js' || /^\/app\.js\?/.test(req.url)) {
         res.writeHead(200, {
           'Content-Type': 'text/html',
-          'Cache-Control': 'max-age=30',
+          'Cache-Control': 'max-age=0',
         })
-        res.end(gameContent)
+        fs.createReadStream(gamePath).pipe(res)
       } else {
         res.end('not found: ' + req.url)
       }

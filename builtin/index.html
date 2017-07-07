@@ -55,38 +55,24 @@ function onMessage(e) {
   }
 }
 
+var script
 var isRefreshing = false
 function refresh() {
   if (isRefreshing) return
   isRefreshing = true
-  const error = () => { isRefreshing = false; setTimeout(refresh, 100) }
-  const xhr = new XMLHttpRequest
   const url = 'app.js?' + (new Date|0)
-  xhr.open('GET', url, true)
-  xhr.onload = function() {
-    if (xhr.status === 200) {
-      UW.destroy()
-      stackTrace.style.display = 'none'
-      seenError = false
-      document.body.removeChild(document.querySelector('#game'))
 
-      // now it's in cache!
-      isRefreshing = false
-      const script = document.createElement('script')
-      script.setAttribute('id', 'game')
-      script.setAttribute('src', url)
-      document.body.appendChild(script)
-    } else {
-      error()
-    }
-  }
-  xhr.onerror = error
-  xhr.responseType = 'text'
-  xhr.send()
+  stackTrace.style.display = 'none'
+  seenError = false
+  if (script) document.body.removeChild(script)
+
+  isRefreshing = false
+  script = document.createElement('script')
+  script.setAttribute('id', 'game')
+  script.setAttribute('src', url)
+  document.body.appendChild(script)
 }
-
-var seenError = false
-window.addEventListener('error', showError)
+refresh()
 
 function showError(msg, source, line, col, err) {
   if (seenError) return
@@ -99,6 +85,4 @@ function showError(msg, source, line, col, err) {
   }
 }
 </script>
-
-<script id=game src="app.js"></script>
 

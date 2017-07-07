@@ -234,6 +234,11 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
 
   var assets = Object.create(null)
   function init(promiseMap, cb) {
+    // destroy old world!
+    if (world) {
+      world.destroy()
+    }
+
     if (typeof cb !== 'function') {
       throw new Error('usage: init({ ... }, () => { ... })')
     }
@@ -1005,6 +1010,5 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     Sprite,
     Costume,
     forever,
-    destroy: () => { if (world) world.destroy() },
   }, maths)
 }));
