@@ -392,6 +392,75 @@
     return new Costume(canvas)
   }
 
+  Costume.polygon = function(props) {
+    var text = ''+text
+    var props = props || {}
+    var props = Object.assign({
+      points: [[0, 0], [0, 32], [32, 32], [32, 0]],
+      fill: null,
+      outline: null,
+      thickness: 2,
+      closed: undefined,
+    }, props)
+    if (props.closed === undefined) props.closed = !!props.fill
+    if (!props.fill && !props.outline) {
+      throw new Error('need either fill or outline colour')
+    }
+
+    const points = props.points
+    const start = points[0]
+    var minX = start.x || start[0]
+    var minY = start.y || start[1]
+    var maxX = minX
+    var maxY = minY
+    for (var i=1; i<points.length; i++) {
+      const p = points[i], x = p.x || p[0], y = p.y || p[1]
+      if (x < minX) minX = x
+      if (x > maxX) maxX = x
+      if (-y < minY) minY = -y
+      if (-y > maxY) maxY = -y
+    }
+
+    var margin = props.outline ? props.thickness : 0
+    minX -= round(margin)
+    minY -= round(margin)
+    maxX += round(margin)
+    maxY += round(margin)
+
+    const canvas = document.createElement('canvas')
+    canvas.width = maxX - minX
+    canvas.height = maxY - minY
+    const ctx = canvas.getContext('2d')
+    ctx.imageSmoothingEnabled = false
+
+    ctx.translate(-minX, -minY)
+    ctx.beginPath()
+    ctx.moveTo(start.x || start[0], -(start.y || start[1]))
+    for (var i=1; i<points.length; i++) {
+      const p = points[i]
+      ctx.lineTo(p.x || p[0], -(p.y || p[1]))
+    }
+
+    if (props.closed) {
+      ctx.closePath()
+    }
+    if (props.fill) {
+      ctx.fillStyle = props.fill
+      ctx.fill()
+    }
+    if (props.outline) {
+      ctx.lineCap = 'round'
+      ctx.lineJoin = 'round'
+      ctx.strokeStyle = props.outline
+      ctx.lineWidth = props.thickness
+      ctx.stroke()
+    }
+    const c = new Costume(canvas)
+    c.xOffset = -minX - 2 * margin // 2*? weird.
+    c.yOffset = -minY - 2 * margin
+    return c
+  }
+
   Costume.prototype.slice = function(index, props) {
     // (xSize + xMargin) * xCount = width
     // xSize = width / xCount - xMargin
