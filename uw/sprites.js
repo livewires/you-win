@@ -22,7 +22,7 @@
         var oldValue = this['_' + name]
         var value = this['_' + name] = normalise(value)
         if (value !== oldValue) {
-          changed.call(this, value)
+          changed.call(this, value, oldValue)
         }
       },
       enumerable: true,
@@ -307,6 +307,7 @@
     this.yOffset = -this.height / 2
     this.context = canvas.getContext('2d')
   }
+  emitter(Costume.prototype)
 
   Costume.fromImage = function(img) {
     var canvas = document.createElement('canvas')
@@ -341,7 +342,7 @@
   }
 
   Costume.emoji = function(emoji) {
-    if (!emojiList) { throw new Error('emoji list not available') }
+    if (!emojiList) { throw new Error('emoji not available') }
     const index = emojiList.indexOf(emoji)
     if (index === -1) { throw new Error('unknown emoji: ' + emoji) }
     return Costume.load('emoji.png').then(sheet => {
@@ -543,13 +544,19 @@
   prop(Sprite, 'angle', num, function() { this._needsTransform = true; this._updateBBox() })
   prop(Sprite, 'flipped', bool, function() { this._needsTransform = true })
   prop(Sprite, 'opacity', num, function() { this._needsPaint = true })
-  prop(Sprite, 'costume', Costume.get, function(costume) {
-    this.el.width = this._width = costume.width
-    this.el.height = this._height = costume.height
+  prop(Sprite, 'costume', Costume.get, function(costume, oldCostume) {
+    if (oldCostume) oldCostume.unlisten('change', this._costumeChanged)
+    this._costumeChanged()
+    costume.on('change', this._costumeChanged)
+  })
+
+  Sprite.prototype._costumeChanged = function() {
+    const costume = this.costume
+    this.el.width = costume.width
+    this.el.height = costume.height
     this.ctx.drawImage(costume.canvas, 0, 0)
     this._updateBBox()
-    return costume
-  })
+  }
 
   Sprite.prototype._updateBBox = function() {
     if (this.angle === 0) {
@@ -560,8 +567,8 @@
       this.bbox = {
         left: x,
         bottom: y,
-        right: x + this._width * s,
-        top: y + this._height * s,
+        right: x + costume.width * s,
+        top: y + costume.height * s,
       }
     } else {
       this.bbox = this.rotatedBounds()
@@ -594,7 +601,7 @@
     const s = this.scale
     var transform = ''
     const x = this.x + costume.xOffset
-    const y = this.world.height - this.y - this._height - costume.yOffset
+    const y = this.world.height - this.y - costume.height - costume.yOffset
     transform += 'translate(' + x + 'px, ' + y + 'px) '
     if (this.angle !== 0) { transform += 'rotate(' + this.angle + 'deg) ' }
     if (this.scale !== 1) { transform += 'scale(' + s + ') ' }
