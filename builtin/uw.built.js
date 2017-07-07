@@ -591,6 +591,16 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     return new Costume(canvas)
   }
 
+  Costume.rect = function(props) {
+    var props = props || {}
+    const w = props.width
+    const h = props.height
+    return Costume.polygon(Object.assign({
+      //points: [{x: 0, y: 0}, {x: w, y: 0}, {x: w, y: h}, {x: 0, y: h}],
+      points: [[0, 0], [w, 0], [w, h], [0, h]],
+    }, props))
+  }
+
   Costume.polygon = function(props) {
     var text = ''+text
     var props = props || {}
