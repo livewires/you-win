@@ -194,8 +194,8 @@ Sprites have quite a few attributes which you can change. You can also set their
 
     The rotation of the sprite, going clockwise.
 
-    <img src="fig/sprite-xy.tiff" width=240>
-    <img src="fig/sprite-angle.tiff" width=180>
+    <img src="figs/sprite-xy.png" width=240>
+    <img src="figs/sprite-angle.png" width=180>
 
   * **`sprite.scale = 1.0`**
 
