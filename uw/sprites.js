@@ -359,7 +359,7 @@
   Costume.text = function(text, props) {
     var text = ''+text
     var props = Object.assign({
-      color: '#000',
+      fill: '#000',
     }, props || {})
 
     const fontMetrics = textMetrics.Munro
@@ -389,6 +389,13 @@
       const c = chars[i]
       ctx.drawImage(c.canvas, c.x, 0)
     }
+
+    if (props.fill !== '#000') { // not default
+      ctx.globalCompositeOperation = 'source-in'
+      ctx.fillStyle = props.fill
+      ctx.fillRect(0, 0, x, th)
+    }
+
     return new Costume(canvas)
   }
 
