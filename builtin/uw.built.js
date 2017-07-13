@@ -336,6 +336,8 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
 
     window.addEventListener('resize', () => { this._needsResize = true })
     this._bindPointer()
+
+    this.start()
   }
   emitter(World.prototype)
 
