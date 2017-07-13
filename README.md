@@ -1,6 +1,12 @@
 
 For making mobile apps.
 
+## Docs
+
+The plan is to make a tutorial-style course for teaching JS/this lib.
+
+For now, there's an [API Reference](sheets/Reference.md).
+
 
 ### Why "you-win"? ###
 
