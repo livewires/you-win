@@ -297,25 +297,52 @@ Sprites have some useful functions attached to them.
 
   * **`sprite.text`**
 
+    The text to display. Note that the Text's `x` / `y` position is measured to its bottom-left corner.
+
   * **`sprite.fill`**
+
+    The color of the text, e.g. `text.fill = '#007de0'`
 
 
 ## Polygon
 
-A Polygon has all the same attributes as a [Sprite](#sprite)--but instead of a `costume`, it has the following:
+**TODO** refactor Costume.polygon -> Polygon 'class'
 
-**TODO**
+```js
+new Polygon({
+    points: [[0, 0], [0, 32], [32, 32], [32, 0]],
+    fill: '#007de0',
+    outline: 'black',
+    thickness: 2,
+})
+```
+
+A Polygon has all the same attributes as a [Sprite](#sprite)--but instead of a `costume`, it has the following:
 
   * **`sprite.points`**
 
+    A list of points. Each point is a 2-element list, like so:
+
   * **`sprite.fill`**
+
+    The color of the text, e.g. `text.fill = '#007de0'`.
+
+    Leave out this setting, or set it to `null`, for no fill (just an outline).
 
   * **`sprite.outline`**
 
+    The outline color, e.g. `shape.outline = 'black'`.
+    
+    Leave out this setting, or set it to `null`, for no outline. You must specify _either_ a fill or an outline (or both).
+
   * **`sprite.thickness`**
+
+    How thick to draw the outline (in pixels). Defaults to 2.
 
   * **`sprite.closed`**
 
+    Whether the last point should be joined to the first one, to make a closed shape.
+    
     Defaults to `true` for filled polygons.
 
 
