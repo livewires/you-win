@@ -56,9 +56,7 @@ UW.load({
 
     Get a costume from a URL (web address).
     
-    > ⚠ Because of security restrictions, you can't use just any image URL from any website. 
-
-    Assets stored in your [Glitch](https://glitch.com) project will work fine; copy their URL here.
+    > ⚠ Because of security restrictions, you can't use just any image URL from any website. Assets stored in your [Glitch](https://glitch.com) project will work fine; copy their URL here.
 
     If you make a `static` folder in the same place as your game's `.js` file, you can put images inside it, and then load them here using the URL `'/my-image.jpg'`.
 
