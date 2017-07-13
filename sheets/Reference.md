@@ -117,9 +117,15 @@ It has the following attributes:
     The background colour of the world. Uses HTML/CSS colours, such as `red` or `#007de0`.
 
 
-### World#start()
+Your World has an important method:
 
-Shows the world on the screen and starts all your `forever` loops running.
+  * **`world.start()`**
+
+    This shows the world on the screen and starts all your `forever` loops running.
+
+    Call this once you've set up your game.
+
+    **TODO**: remove this. The World constructor can do this itself!
 
 
 ### forever
