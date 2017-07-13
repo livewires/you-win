@@ -188,7 +188,15 @@ Sprites have quite a few attributes which you can change. You can also set their
 
   * **`sprite.x`** / **`sprite.y`**
 
-    The co-ordinates of the sprite, starting from the bottom-left corner.
+    The co-ordinates of the center of the sprite, starting from the bottom-left corner of the World.
+
+  * **`sprite.left`** / **`sprite.right`** / **`sprite.top`** / **`sprite.bottom`**
+
+    The co-ordinates of the edges of the _bounding box_ of the sprite. The bounding box is an _axis-aligned_ box enclosing the whole sprite.
+
+    **TODO**: diagram
+
+    These can be useful for getting or changing the position of the edge of a sprite. They tend to be more useful for non-rotated sprites.
 
   * **`sprite.angle = 0`**
 
@@ -234,7 +242,7 @@ Sprites have some useful functions attached to them.
 
   * **`sprite.lower()`**
 
-    Send the sprite to the back, below all the other sprites.
+    Send the sprite to the back, below all the other sprites. **TODO**
   
   * **`sprite.getTouching()`**
 
@@ -275,6 +283,34 @@ Sprites have some useful functions attached to them.
     Remove the sprite from the screen. Afterwards, the sprite is "dead" and you can't use it anymore.
 
     If you just want to hide the sprite for a moment, set its `opacity` to zero.
+
+
+## Text
+
+**TODO**
+
+  * **`sprite.text`**
+
+  * **`sprite.fill`**
+
+
+## Polygon
+
+A Polygon has all the same attributes as a [Sprite](#sprite)--but instead of a `costume`, it has the following:
+
+**TODO**
+
+  * **`sprite.points`**
+
+  * **`sprite.fill`**
+
+  * **`sprite.outline`**
+
+  * **`sprite.thickness`**
+
+  * **`sprite.closed`**
+
+    Defaults to `true` for filled polygons.
 
 
 ## Events
@@ -344,6 +380,13 @@ ball.on('drag', e => {
 ```
 
 
+## Detecting fingers held down
+
+  * **`world.getFingers()`**
+
+    **TODO**: document
+
+
 ## Phone
 
 `Phone` provides access to sensors on a smartphone, such as the accelerometer. You can use this to control your game depending on how the phone is held; for example tilting to steer in a racing game. 
@@ -359,4 +402,9 @@ It has the following attributes which you can get:
   * **``phone.zAngle``**: the angle of the phone's screen in relation to the ground.
 
     An angle of `0` means the phone is held upright. Tilt the phone to see it change.
+
+
+## Sound
+
+**TODO**
 
