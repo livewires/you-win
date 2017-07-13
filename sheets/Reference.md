@@ -188,14 +188,6 @@ Sprites have quite a few attributes which you can change. You can also set their
 
     The co-ordinates of the center of the sprite, starting from the bottom-left corner of the World.
 
-  * **`sprite.left`** / **`sprite.right`** / **`sprite.top`** / **`sprite.bottom`**
-
-    The co-ordinates of the edges of the _bounding box_ of the sprite. The bounding box is an _axis-aligned_ box enclosing the whole sprite.
-
-    **TODO**: diagram
-
-    These can be useful for getting or changing the position of the edge of a sprite. They tend to be more useful for non-rotated sprites.
-
   * **`sprite.angle = 0`**
 
     The rotation of the sprite, going clockwise.
@@ -224,6 +216,16 @@ Sprites have quite a few attributes which you can change. You can also set their
   * **`sprite.costume = 'poop'`**
 
     The image to use for the sprite, in case you want to change it later. For example, if you want to cycle between several images in order to "animate" the sprite".
+
+  * **`sprite.left`** / **`sprite.right`** / **`sprite.top`** / **`sprite.bottom`**
+
+    **TODO**: implement getters/setters for these.
+
+    The co-ordinates of the edges of the _bounding box_ of the sprite. The bounding box is an _axis-aligned_ box enclosing the whole sprite.
+
+    **TODO**: diagram
+
+    These can be useful for getting or changing the position of the edge of a sprite. They tend to be more useful for non-rotated sprites.
 
   * **`sprite.xOffset`** / **`sprite.yOffset`**
 
