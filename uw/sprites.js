@@ -225,6 +225,15 @@
     }
   }
 
+  World.prototype.getFingers = function() {
+    const fingers = this._fingers
+    const out = []
+    for (const key in fingers) {
+      out.push(fingers[key])
+    }
+    return out
+  }
+
   World.prototype.pointerDown = function(e) {
     const pos = this._toWorld(e.clientX, e.clientY)
     this._fingers[e.pointerId] = {
