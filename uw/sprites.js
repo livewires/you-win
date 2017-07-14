@@ -138,7 +138,7 @@
     window.addEventListener('resize', () => { this._needsResize = true })
     this._bindPointer()
 
-    this.start()
+    setTimeout(this.start.bind(this))
   }
   emitter(World.prototype)
 
