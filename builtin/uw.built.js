@@ -229,6 +229,16 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     })
   }
 
+  function lazyProp(O, name, compute) {
+    Object.defineProperty(O.prototype, name, {
+      get: function() {
+        return this['_' + name] || (this['_' + name] = compute.call(this))
+      },
+      enumerable: true,
+      configurable: true,
+    })
+  }
+
 
   /* init */
 
@@ -743,34 +753,67 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
   }
   emitter(Base.prototype)
 
-  prop(Base, 'x', round, function() { this._needsTransform = true; this._updateBBox() })
-  prop(Base, 'y', round, function() { this._needsTransform = true; this._updateBBox() })
-  prop(Base, 'scale', num, function() { this._needsTransform = true; this._updateBBox() })
-  prop(Base, 'angle', num, function() { this._needsTransform = true; this._updateBBox() })
-  prop(Base, 'flipped', bool, function() { this._needsTransform = true })
-  prop(Base, 'opacity', num, function() { this._needsPaint = true })
-
   Base.prototype._setCostume = function(costume) {
     this.el.width = costume.width
     this.el.height = costume.height
     this.ctx.drawImage(costume.canvas, 0, 0)
-    this._updateBBox()
+    this._bbox = null
   }
 
-  Base.prototype._updateBBox = function() {
+  prop(Base, 'x', round, function() { this._needsTransform = true; this._bbox = null })
+  prop(Base, 'y', round, function() { this._needsTransform = true; this._bbox = null })
+  prop(Base, 'scale', num, function() { this._needsTransform = true; this._bbox = null })
+  prop(Base, 'angle', num, function() { this._needsTransform = true; this._bbox = null })
+  prop(Base, 'flipped', bool, function() { this._needsTransform = true })
+  prop(Base, 'opacity', num, function() { this._needsPaint = true })
+
+  Base.prototype._computeBBox = function() {
     if (this.angle === 0) {
       const costume = this._costume
       const s = this.scale
       const x = this.x + costume.xOffset * s
       const y = this.y + costume.yOffset * s
-      this.bbox = {
+      return {
         left: x,
         bottom: y,
         right: x + costume.width * s,
         top: y + costume.height * s,
       }
     } else {
-      this.bbox = this.rotatedBounds()
+      return this._rotatedBounds()
+    }
+  }
+  lazyProp(Base, 'bbox', Base.prototype._computeBBox)
+
+  Base.prototype._rotatedBounds = function() {
+    const costume = this._costume
+    const s = this.scale
+    const left = costume.xOffset * s
+    const top = -costume.yOffset * s
+    const right = left + costume.width * s
+    const bottom = top - costume.height * s
+
+    const dir = this.angle + 90
+    const mSin = Math.sin(dir * Math.PI / 180)
+    const mCos = Math.cos(dir * Math.PI / 180)
+
+    const tlX = mSin * left - mCos * top
+    const tlY = mCos * left + mSin * top
+
+    const trX = mSin * right - mCos * top
+    const trY = mCos * right + mSin * top
+
+    const blX = mSin * left - mCos * bottom
+    const blY = mCos * left + mSin * bottom
+
+    const brX = mSin * right - mCos * bottom
+    const brY = mCos * right + mSin * bottom
+
+    return {
+      left: this.x + Math.min(tlX, trX, blX, brX),
+      right: this.x + Math.max(tlX, trX, blX, brX),
+      top: this.y + Math.max(tlY, trY, blY, brY),
+      bottom: this.y + Math.min(tlY, trY, blY, brY)
     }
   }
 
@@ -823,40 +866,8 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     return true //!(b.right > 0 && b.left < w && b.bottom > 0 && b.top < h)
   }
 
-  Base.prototype.rotatedBounds = function() {
-    const costume = this._costume
-    const s = this.scale
-    const left = costume.xOffset * s
-    const top = -costume.yOffset * s
-    const right = left + costume.width * s
-    const bottom = top - costume.height * s
-
-    const dir = this.angle + 90
-    const mSin = Math.sin(dir * Math.PI / 180)
-    const mCos = Math.cos(dir * Math.PI / 180)
-
-    const tlX = mSin * left - mCos * top
-    const tlY = mCos * left + mSin * top
-
-    const trX = mSin * right - mCos * top
-    const trY = mCos * right + mSin * top
-
-    const blX = mSin * left - mCos * bottom
-    const blY = mCos * left + mSin * bottom
-
-    const brX = mSin * right - mCos * bottom
-    const brY = mCos * right + mSin * bottom
-
-    return {
-      left: this.x + Math.min(tlX, trX, blX, brX),
-      right: this.x + Math.max(tlX, trX, blX, brX),
-      top: this.y + Math.max(tlY, trY, blY, brY),
-      bottom: this.y + Math.min(tlY, trY, blY, brY)
-    }
-  }
-
   Base.prototype.touchesPoint = function(x, y) {
-    var bounds = this.rotatedBounds()
+    var bounds = this.bbox
     if (x < bounds.left || y < bounds.bottom || x > bounds.right || y > bounds.top) {
       return false
     }
@@ -981,14 +992,14 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
       fill: '#000',
       scale: 4,
     }, props || {})
-    if (!props.text) { throw new Error('Text needs text') }
+    if (props.text === undefined) { throw new Error('Text needs text') }
     Base.call(this, props, function(props) {
       this.text = props.text
     })
   }
   Text.prototype = Object.create(Base.prototype)
 
-  prop(Text, 'text', str, function(text) {
+  prop(Text, 'text', x => ''+x, function(text) {
     this._setCostume(this._costume = Costume._text({
       text: text,
       props: this.props,
@@ -1004,6 +1015,7 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     })
   }
   Polygon.prototype = Object.create(Base.prototype)
+
 
   // TODO
   /*
