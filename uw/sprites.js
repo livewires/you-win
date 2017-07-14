@@ -318,7 +318,6 @@
     this.yOffset = -this.height / 2
     this.context = canvas.getContext('2d')
   }
-  emitter(Costume.prototype)
 
   Costume.fromImage = function(img) {
     var canvas = document.createElement('canvas')
@@ -368,12 +367,7 @@
     })
   }
 
-  Costume.text = function(props) {
-    var props = Object.assign({
-      text: '',
-      fill: '#000',
-    }, props)
-    if (!props.text) { throw new Error('Need text') }
+  Costume._text = function(props) {
     const text = '' + props.text
 
     const fontMetrics = textMetrics.Munro
@@ -412,16 +406,6 @@
     }
 
     return new Costume(canvas)
-  }
-
-  Costume.rect = function(props) {
-    var props = props || {}
-    const w = props.width
-    const h = props.height
-    return Costume.polygon(Object.assign({
-      //points: [{x: 0, y: 0}, {x: w, y: 0}, {x: w, y: h}, {x: 0, y: h}],
-      points: [[0, 0], [w, 0], [w, h], [0, h]],
-    }, props))
   }
 
   Costume.polygon = function(props) {
@@ -520,14 +504,14 @@
   }
 
 
-  /* Sprite */
+  /* Base */
 
   const collisionCanvas = document.createElement('canvas')
   const collisionContext = collisionCanvas.getContext('2d')
   collisionContext.imageSmoothingEnabled = false
   //collisionCanvas.style.border = '1px solid blue'
 
-  const Sprite = function(props) {
+  const Base = function(props, init) {
     if (this === undefined) { throw new Error('requires `new` keyword') }
     if (!world) { throw new Error('make World first') }
     this.world = world
@@ -542,9 +526,8 @@
     this.el.style.imageRendering = 'crisp-edges'
     this.el.style.imageRendering = '-moz-crisp-edges'
 
-    // gotta set this first
-    if (!props.costume) { throw new Error('Sprite needs costume') }
-    this.costume = props.costume
+    this._angle = 0
+    if (init) init.call(this, props)
 
     const s = props.scale || 1
     Object.assign(this, {
@@ -559,31 +542,25 @@
     world.sprites.push(this)
     this.raise()
   }
-  emitter(Sprite.prototype)
+  emitter(Base.prototype)
 
-  prop(Sprite, 'x', round, function() { this._needsTransform = true; this._updateBBox() })
-  prop(Sprite, 'y', round, function() { this._needsTransform = true; this._updateBBox() })
-  prop(Sprite, 'scale', num, function() { this._needsTransform = true; this._updateBBox() })
-  prop(Sprite, 'angle', num, function() { this._needsTransform = true; this._updateBBox() })
-  prop(Sprite, 'flipped', bool, function() { this._needsTransform = true })
-  prop(Sprite, 'opacity', num, function() { this._needsPaint = true })
-  prop(Sprite, 'costume', Costume.get, function(costume, oldCostume) {
-    if (oldCostume) oldCostume.unlisten('change', this._costumeChanged)
-    this._costumeChanged()
-    costume.on('change', this._costumeChanged)
-  })
+  prop(Base, 'x', round, function() { this._needsTransform = true; this._updateBBox() })
+  prop(Base, 'y', round, function() { this._needsTransform = true; this._updateBBox() })
+  prop(Base, 'scale', num, function() { this._needsTransform = true; this._updateBBox() })
+  prop(Base, 'angle', num, function() { this._needsTransform = true; this._updateBBox() })
+  prop(Base, 'flipped', bool, function() { this._needsTransform = true })
+  prop(Base, 'opacity', num, function() { this._needsPaint = true })
 
-  Sprite.prototype._costumeChanged = function() {
-    const costume = this.costume
+  Base.prototype._setCostume = function(costume) {
     this.el.width = costume.width
     this.el.height = costume.height
     this.ctx.drawImage(costume.canvas, 0, 0)
     this._updateBBox()
   }
 
-  Sprite.prototype._updateBBox = function() {
+  Base.prototype._updateBBox = function() {
     if (this.angle === 0) {
-      const costume = this.costume
+      const costume = this._costume
       const s = this.scale
       const x = this.x + costume.xOffset * s
       const y = this.y + costume.yOffset * s
@@ -598,12 +575,12 @@
     }
   }
 
-  Sprite.prototype.raise = function() {
+  Base.prototype.raise = function() {
     if (this.dead) return
     this.world._root.appendChild(this.el)
   }
 
-  Sprite.prototype.destroy = function() {
+  Base.prototype.destroy = function() {
     if (this.dead) return
     this.world._root.removeChild(this.el)
     this.dead = true
@@ -614,13 +591,13 @@
     }
   }
 
-  Sprite.prototype._paint = function() {
+  Base.prototype._paint = function() {
     this.el.style.opacity = this.opacity
     this._needsPaint = false
   }
 
-  Sprite.prototype._transform = function() {
-    const costume = this.costume
+  Base.prototype._transform = function() {
+    const costume = this._costume
     const s = this.scale
     var transform = ''
     const x = this.x + costume.xOffset
@@ -634,21 +611,21 @@
     this._needsTransform = false
   }
 
-  Sprite.prototype.isTouchingEdge = function() {
+  Base.prototype.isTouchingEdge = function() {
     const b = this.bbox
     const w = this.world.width, h = this.world.height
     return b.left <= 0 || b.right >= w || b.bottom <= 0 || b.top >= h
   }
 
-  Sprite.prototype.isOnScreen = function() {
+  Base.prototype.isOnScreen = function() {
     const b = this.bbox
     const w = this.world.width, h = this.world.height
     // TODO
     return true //!(b.right > 0 && b.left < w && b.bottom > 0 && b.top < h)
   }
 
-  Sprite.prototype.rotatedBounds = function() {
-    const costume = this.costume
+  Base.prototype.rotatedBounds = function() {
+    const costume = this._costume
     const s = this.scale
     const left = costume.xOffset * s
     const top = -costume.yOffset * s
@@ -679,12 +656,12 @@
     }
   }
 
-  Sprite.prototype.touchesPoint = function(x, y) {
+  Base.prototype.touchesPoint = function(x, y) {
     var bounds = this.rotatedBounds()
     if (x < bounds.left || y < bounds.bottom || x > bounds.right || y > bounds.top) {
       return false
     }
-    const costume = this.costume
+    const costume = this._costume
     var cx = (x - this.x) / this.scale
     var cy = (this.y - y) / this.scale // TODO
     if (this.angle !== 0) {
@@ -695,14 +672,14 @@
       cy = s * ox + c * cy
     }
     if (this.flipped) {
-      cx = -cx //this.costume.width - cx
+      cx = -cx //this._costume.width - cx
     }
     const d = costume.context.getImageData(cx - costume.xOffset, cy - costume.yOffset, 1, 1).data
     return d[3] !== 0
   }
 
-  Sprite.prototype._draw = function(ctx) {
-    const costume = this.costume
+  Base.prototype._draw = function(ctx) {
+    const costume = this._costume
     ctx.save()
     ctx.translate(this.x|0, -this.y|0) //(this.x * z | 0) / z, (-this.y * z | 0) / z)
     ctx.rotate(this.angle * Math.PI / 180)
@@ -715,8 +692,8 @@
     ctx.restore()
   }
 
-  Sprite.prototype.isTouchingFast = function(s) {
-    if (s.constructor !== Sprite) { throw new Error('not a sprite: ' + s) }
+  Base.prototype.isTouchingFast = function(s) {
+    if (!(s instanceof Base)) { throw new Error('not a sprite: ' + s) }
     if (s === this) return false
     if (s.opacity === 0) return false
     const mb = this.bbox
@@ -727,7 +704,7 @@
     return true
   }
 
-  Sprite.prototype.isTouching = function(s) {
+  Base.prototype.isTouching = function(s) {
     if (!this.isTouchingFast(s)) {
       return false
     }
@@ -769,7 +746,7 @@
     return false
   }
 
-  Sprite.prototype.getTouching = function() {
+  Base.prototype.getTouching = function() {
     const sprites = this.world.sprites
     const result = []
     for (var i=sprites.length; i--; ) {
@@ -780,6 +757,67 @@
     }
     return result
   }
+
+
+  /* Sprite */
+
+  const Sprite = function(props) {
+    if (!props.costume) { throw new Error('Sprite needs costume') }
+    Base.call(this, props, function(props) {
+      this.costume = props.costume
+    })
+  }
+  Sprite.prototype = Object.create(Base.prototype)
+
+  prop(Sprite, 'costume', Costume.get, function(costume) {
+    this._setCostume(costume)
+  })
+
+
+  /* Text */
+
+  const Text = function(props) {
+    var props = Object.assign({
+      text: '',
+      fill: '#000',
+      scale: 4,
+    }, props || {})
+    if (!props.text) { throw new Error('Text needs text') }
+    Base.call(this, props, function(props) {
+      this.text = props.text
+    })
+  }
+  Text.prototype = Object.create(Base.prototype)
+
+  prop(Text, 'text', str, function(text) {
+    this._setCostume(this._costume = Costume._text({
+      text: text,
+      props: this.props,
+    }))
+  })
+
+
+
+  /* Polygon */
+
+  const Polygon = function(props) {
+    Base.call(this, props, function(props) {
+    })
+  }
+  Polygon.prototype = Object.create(Base.prototype)
+
+  // TODO
+  /*
+  Polygon.rect = function(props) {
+    var props = props || {}
+    const w = props.width
+    const h = props.height
+    return Costume.polygon(Object.assign({
+      //points: [{x: 0, y: 0}, {x: w, y: 0}, {x: w, y: h}, {x: 0, y: h}],
+      points: [[0, 0], [w, 0], [w, h], [0, h]],
+    }, props))
+  }
+  */
 
 
   // forever
@@ -832,8 +870,10 @@
     assets,
     Phone,
     World,
-    Sprite,
     Costume,
+    Sprite,
+    Text,
+    Polygon,
     forever,
   }, maths)
 }));
