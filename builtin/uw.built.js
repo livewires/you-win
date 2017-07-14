@@ -239,6 +239,15 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     })
   }
 
+  function bboxProp(O, name, set) {
+    Object.defineProperty(O.prototype, name, {
+      get: function() { return this.bbox[name] },
+      set: function(value) { set.call(this, +value) },
+      enumerable: true,
+      configurable: true,
+    })
+  }
+
 
   /* init */
 
@@ -581,7 +590,7 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
 
     const fontMetrics = textMetrics.Munro
     const tw = 9
-    const th = 11
+    const th = 10
     var x = 0
     const chars = []
     for (var i=0; i<text.length; i++) {
@@ -600,7 +609,7 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
 
     const canvas = document.createElement('canvas')
     canvas.width = x
-    canvas.height = th
+    canvas.height = 10
     const ctx = canvas.getContext('2d')
     ctx.imageSmoothingEnabled = false
     for (var i=chars.length; i--; ) {
@@ -766,6 +775,19 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
   prop(Base, 'angle', num, function() { this._needsTransform = true; this._bbox = null })
   prop(Base, 'flipped', bool, function() { this._needsTransform = true })
   prop(Base, 'opacity', num, function() { this._needsPaint = true })
+
+  bboxProp(Base, 'left', function(left) {
+    this.x = left - this.scale * this._costume.xOffset
+  })
+  bboxProp(Base, 'bottom', function(bottom) {
+    this.y = bottom - this.scale * this._costume.yOffset
+  })
+  bboxProp(Base, 'right', function(right) {
+    this.x = right - this.scale * (this._costume.width + this._costume.xOffset)
+  })
+  bboxProp(Base, 'top', function(top) {
+    this.y = top - this.scale * (this._costume.height + this._costume.yOffset)
+  })
 
   Base.prototype._computeBBox = function() {
     if (this.angle === 0) {
@@ -994,7 +1016,8 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
     }, props || {})
     if (props.text === undefined) { throw new Error('Text needs text') }
     Base.call(this, props, function(props) {
-      this.text = props.text
+      this._fill = props.fill
+      this.text = props.text // draw shape
     })
   }
   Text.prototype = Object.create(Base.prototype)
@@ -1002,7 +1025,7 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
   prop(Text, 'text', x => ''+x, function(text) {
     this._setCostume(this._costume = Costume._text({
       text: text,
-      props: this.props,
+      fill: this._fill,
     }))
   })
 
@@ -1012,6 +1035,11 @@ return ["😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","�
 
   const Polygon = function(props) {
     Base.call(this, props, function(props) {
+      this._fill = props.fill
+      this._outline = props.fill
+      this._thickness = props.thickness
+      this._closed = props.closed
+      this.points = props.points // draw shape
     })
   }
   Polygon.prototype = Object.create(Base.prototype)
