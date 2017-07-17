@@ -9,31 +9,32 @@ const WebSocket = require('ws')
 const browserify = require('browserify')
 const watchify = require('watchify')
 
+const uw = browserify({
+  //detectGlobals: false, // faster
+  debug: true, // source maps
+})
+uw.require('./uw/index.js', {expose: 'you-win'})
+
 if (process.argv.length !== 3) {
   console.error('usage: you-win app.js')
   process.exit(1)
 }
 const gamePath = path.join(process.cwd(), process.argv[2])
 require('fs').readFileSync(gamePath)
-const b = browserify({
+const game = browserify({
   entries: [gamePath],
   cache: {},
   packageCache: {},
-})
-// TODO transform
-b.plugin(watchify, {
-  ignoreWatch: ['**/node_modules/**'],
-  poll: true, // because NFS
-  detectGlobals: false, // faster
+  //detectGlobals: false, // faster
   debug: true, // source maps
 })
-b.require('./uw', {expose: 'you-win'})
-
-const uw = browserify({
-  entries: ['./uw/index.js'],
-  standalone: 'you-win',
+// TODO transform
+game.external(uw)
+game.plugin(watchify, {
+  ignoreWatch: ['**/node_modules/**'],
+  poll: true, // because NFS
 })
-b.external('you-win')
+
 
 // static files & app.js are relative to the cwd
 const serveStatic = ecstatic({
@@ -66,7 +67,7 @@ const app = (req, res) => {
           'Content-Type': 'text/javascript',
           'Cache-Control': 'max-age=0',
         })
-        const stream = b.bundle()
+        const stream = game.bundle()
         stream.pipe(res)
         stream.on('error', err => {
           console.error('error:', err.message)
@@ -103,7 +104,7 @@ const socket = (ws, req) => {
   ws.on('close', () => sockets.delete(ws))
 }
 
-b.on('update', () => {
+game.on('update', () => {
   console.log('refreshed')
   sockets.forEach(ws => {
     try {
