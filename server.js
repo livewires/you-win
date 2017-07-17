@@ -2,16 +2,32 @@
 
 const os = require('os')
 const path = require('path')
-const fs = require('fs')
 const http = require('http')
+
 const ecstatic = require('ecstatic')
 const WebSocket = require('ws')
+const browserify = require('browserify')
+const watchify = require('watchify')
 
 if (process.argv.length !== 3) {
   console.error('usage: you-win app.js')
   process.exit(1)
 }
 const gamePath = path.join(process.cwd(), process.argv[2])
+require('fs').readFileSync(gamePath)
+const b = browserify({
+  entries: [gamePath],
+  cache: {},
+  packageCache: {},
+})
+// TODO transform
+b.plugin(watchify, {
+  ignoreWatch: ['**/node_modules/**'],
+  standalone: 'app',
+  poll: true, // because NFS
+  detectGlobals: false, // faster
+  debug: true, // source maps
+})
 
 // static files & app.js are relative to the cwd
 const serveStatic = ecstatic({
@@ -41,10 +57,20 @@ const app = (req, res) => {
       // TODO randomize version param in index.html
       if (req.url === '/app.js' || /^\/app\.js\?/.test(req.url)) {
         res.writeHead(200, {
-          'Content-Type': 'text/html',
+          'Content-Type': 'text/javascript',
           'Cache-Control': 'max-age=0',
         })
-        fs.createReadStream(gamePath).pipe(res)
+        const stream = b.bundle()
+        stream.pipe(res)
+        stream.on('error', err => {
+          console.error('error:', err.message)
+          res.write('console.error(' + JSON.stringify(err.message) + ')\n')
+          res.end()
+        })
+        // const fs = require('fs')
+        // b.bundle().pipe(fs.createWriteStream('moo.js'))
+        // res.end()
+
       } else {
         res.end('not found: ' + req.url)
       }
@@ -58,24 +84,7 @@ const socket = (ws, req) => {
   ws.on('close', () => sockets.delete(ws))
 }
 
-var gameContent = fs.readFileSync(gamePath, 'utf-8')
-var watcher = fs.watch(gamePath, throttle)
-var timeout
-function throttle() {
-  clearTimeout(timeout)
-  timeout = setTimeout(refresh, 10)
-}
-function refresh() {
-  // fs.watch often gives extra notifications :-(
-  let newContent
-  try {
-    newContent = fs.readFileSync(gamePath, 'utf-8')
-  } catch (e) {
-    return
-  }
-  if (gameContent === newContent) return
-  gameContent = newContent
-
+b.on('update', () => {
   console.log('refreshed')
   sockets.forEach(ws => {
     try {
@@ -84,9 +93,7 @@ function refresh() {
       sockets.delete(ws)
     }
   })
-  watcher.close()
-  watcher = fs.watch(gamePath, throttle)
-}
+})
 
 
 const interfaces = os.networkInterfaces()

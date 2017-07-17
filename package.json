@@ -6,14 +6,16 @@
     "you-win": "server.js"
   },
   "dependencies": {
+    "babelify": "^7.3.0",
+    "browserify": "^14.4.0",
     "ecstatic": "^2.2.1",
+    "watchify": "^3.9.0",
     "ws": "^3.0.0"
   },
   "main": "uw.js",
   "browser": "uw.js",
   "scripts": {
-    "start": "node server.js app.js",
-    "cat": "cat uw/emitter.js uw/metrics.js uw/emojis.js uw/sprites.js > builtin/uw.built.js"
+    "start": "node server.js app.js"
   },
   "author": "Tim Radvan <tim@tjvr.org>",
   "license": "BSD-3-Clause"
