@@ -13,8 +13,8 @@
     "watchify": "^3.9.0",
     "ws": "^3.0.0"
   },
-  "main": "uw.js",
-  "browser": "uw.js",
+  "main": "uw/index.js",
+  "browser": "uw/index.js",
   "scripts": {
     "start": "node server.js app.js"
   },
