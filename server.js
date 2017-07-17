@@ -25,8 +25,7 @@ const uw = browserify({
   //detectGlobals: false, // faster
   debug: true, // source maps
 })
-.require('./uw', {expose: 'you-win'})
-// TODO check this is relative to __dirname ?
+.require(path.join(__dirname, './uw'), {expose: 'you-win'})
 
 const game = browserify({
   entries: [gamePath],
