@@ -210,6 +210,7 @@
       const show = sprite.isOnScreen()
       if (sprite._show !== show) {
         sprite._show = show
+        // TODO change this to visibility
         sprite.el.style.display = show ? 'block' : 'none'
       }
     }
@@ -531,6 +532,7 @@
   //collisionCanvas.style.border = '1px solid blue'
 
   const Base = function(props, init) {
+    // TODO transform on initial frame.
     if (this === undefined) { throw new Error('requires `new` keyword') }
     if (!world) { throw new Error('make World first') }
     this.world = world
