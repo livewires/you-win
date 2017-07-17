@@ -23,11 +23,17 @@ const b = browserify({
 // TODO transform
 b.plugin(watchify, {
   ignoreWatch: ['**/node_modules/**'],
-  standalone: 'app',
   poll: true, // because NFS
   detectGlobals: false, // faster
   debug: true, // source maps
 })
+b.require('./uw', {expose: 'you-win'})
+
+const uw = browserify({
+  entries: ['./uw/index.js'],
+  standalone: 'you-win',
+})
+b.external('you-win')
 
 // static files & app.js are relative to the cwd
 const serveStatic = ecstatic({
@@ -70,6 +76,19 @@ const app = (req, res) => {
         // const fs = require('fs')
         // b.bundle().pipe(fs.createWriteStream('moo.js'))
         // res.end()
+
+      } else if (req.url === '/uw.js') {
+        res.writeHead(200, {
+          'Content-Type': 'text/javascript',
+          'Cache-Control': 'max-age=0',
+        })
+        const stream = uw.bundle()
+        stream.pipe(res)
+        stream.on('error', err => {
+          console.error('error:', err.message)
+          res.write('console.error(' + JSON.stringify(err.message) + ')\n')
+          res.end()
+        })
 
       } else {
         res.end('not found: ' + req.url)
