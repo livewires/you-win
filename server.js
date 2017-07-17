@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const fs = require('fs')
 const os = require('os')
 const path = require('path')
 const http = require('http')
@@ -8,19 +9,24 @@ const ecstatic = require('ecstatic')
 const WebSocket = require('ws')
 const browserify = require('browserify')
 const watchify = require('watchify')
-
-const uw = browserify({
-  //detectGlobals: false, // faster
-  debug: true, // source maps
-})
-uw.require('./uw/index.js', {expose: 'you-win'})
+const babelify = require('babelify')
 
 if (process.argv.length !== 3) {
   console.error('usage: you-win app.js')
   process.exit(1)
 }
 const gamePath = path.join(process.cwd(), process.argv[2])
-require('fs').readFileSync(gamePath)
+if (!fs.existsSync(gamePath)) {
+  console.error('not found: ' + process.argv[2])
+  process.exit(1)
+}
+
+const uw = browserify({
+  //detectGlobals: false, // faster
+  debug: true, // source maps
+})
+.require('./uw/index.js', {expose: 'you-win'})
+
 const game = browserify({
   entries: [gamePath],
   cache: {},
@@ -28,9 +34,12 @@ const game = browserify({
   //detectGlobals: false, // faster
   debug: true, // source maps
 })
-// TODO transform
-game.external(uw)
-game.plugin(watchify, {
+.transform(babelify, {
+  plugins: ['transform-es2015-modules-commonjs'],
+  sourceType: 'module',
+})
+.external(uw)
+.plugin(watchify, {
   ignoreWatch: ['**/node_modules/**'],
   poll: true, // because NFS
 })
@@ -84,6 +93,7 @@ const app = (req, res) => {
           'Cache-Control': 'max-age=0',
         })
         const stream = uw.bundle()
+        // TODO: cache this.
         stream.pipe(res)
         stream.on('error', err => {
           console.error('error:', err.message)
