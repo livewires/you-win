@@ -76,6 +76,8 @@ refresh()
 
 function showError(msg, source, line, col, err) {
   if (seenError) return
+  if (!err) err = msg
+  console.error(err)
   seenError = true
   var err = err || msg
   var line = line || err.lineno || 'unknown'
@@ -84,5 +86,6 @@ function showError(msg, source, line, col, err) {
     stackTrace.style.display = 'block'
   }
 }
+//window.onerror = showError
 </script>
 

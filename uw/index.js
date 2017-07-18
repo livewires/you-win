@@ -75,7 +75,17 @@ function init(promiseMap) {
     })
     promises.push(promise)
   }
-  return Promise.all(promises)
+
+  // TODO consider switching to plain ol' callbacks
+  const loaded = Promise.all(promises)
+  return {
+    then: cb => {
+      loaded.then(cb)
+      .catch(err => {
+        console.error(err)
+      })
+    },
+  }
 }
 
 // TODO progress bar
