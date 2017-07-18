@@ -118,6 +118,12 @@ It has the following attributes:
     The background colour of the world. Uses HTML/CSS colours, such as `red` or `#007de0`.
 
 
+World has the following methods:
+
+  * **`world.stop()`**
+
+    **TODO** implement
+
 ### forever
 
 `forever` is really useful function: it lets you do something on every "frame" or "tick" of your game. Usually ticks happen 60 times a second (60 FPS).

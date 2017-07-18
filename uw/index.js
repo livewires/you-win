@@ -2,7 +2,7 @@
 
 const emitter = require('./emitter')
 const textMetrics = require('./metrics')
-const emojiList = require('./emojis')
+const {emojiList, splitEmoji, testEmoji} = require('./emojis')
 
 let num = x => +x
 let round = x => x < 0 ? (x - 0.5)|0 : (x + 0.5)|0
@@ -51,6 +51,7 @@ function bboxProp(O, name, set) {
 
 var world
 var assets = Object.create(null)
+var emojiSheet
 function init(promiseMap) {
   // destroy old world!
   if (world) {
@@ -58,6 +59,7 @@ function init(promiseMap) {
   }
 
   promiseMap['_text'] = Costume.load('munro.png')
+  promiseMap['_emoji'] = emojiSheet
 
   const promises = []
   for (let key of Object.keys(promiseMap)) {
@@ -381,7 +383,7 @@ Costume.emoji = function(emoji) {
   if (!emojiList) { throw new Error('emoji not available') }
   const index = emojiList.indexOf(emoji)
   if (index === -1) { throw new Error('unknown emoji: ' + emoji) }
-  return Costume.load('emoji.png').then(sheet => {
+  return emojiSheet.then(sheet => {
     return sheet.slice({
       index: index,
       xSize: 32,
@@ -392,47 +394,7 @@ Costume.emoji = function(emoji) {
     })
   })
 }
-
-Costume._text = function(props) {
-  const text = '' + props.text
-
-  const fontMetrics = textMetrics.Munro
-  const tw = 9
-  const th = 11
-  var x = 0
-  const chars = []
-  for (var i=0; i<text.length; i++) {
-    const c = text[i]
-    const metrics = fontMetrics[c] || fontMetrics[' ']
-    // TODO drawImage directly from one canvas to the other
-    const canvas = assets._text.slice({
-      index: metrics.index,
-      xSize: tw,
-      ySize: th,
-      xCount: 26,
-    }).canvas
-    chars.push({canvas: canvas, x: x - (metrics.dx || 0)})
-    x += metrics.width
-  }
-
-  const canvas = document.createElement('canvas')
-  canvas.width = x
-  canvas.height = 12
-  const ctx = canvas.getContext('2d')
-  ctx.imageSmoothingEnabled = false
-  for (var i=chars.length; i--; ) {
-    const c = chars[i]
-    ctx.drawImage(c.canvas, c.x, 0)
-  }
-
-  if (props.fill !== '#000') { // not default
-    ctx.globalCompositeOperation = 'source-in'
-    ctx.fillStyle = props.fill
-    ctx.fillRect(0, 0, x, th)
-  }
-
-  return new Costume(canvas)
-}
+emojiSheet = emojiList && Costume.load('emoji.png')
 
 Costume.polygon = function(props) {
   var props = Object.assign({
@@ -789,11 +751,99 @@ prop(Sprite, 'costume', Costume.get, function(costume) {
 
 /* Text */
 
+function characters(text, emit) {
+  var index = 0
+  while (true) {
+    var c = text.codePointAt(index++)
+    if (c === undefined) break
+    if (c === 13) {
+      emit('\n') // TODO render newlines
+    } else if (c < 256) { // '£' --> 163
+      emit(String.fromCodePoint(c))
+    } else {
+      var emoji = String.fromCodePoint(c)
+      index++ // utf-16
+      while (text.codePointAt(index) >= 256) {
+        emoji += String.fromCodePoint(text.codePointAt(index++))
+        index++ // utf-16
+      }
+      console.log(emoji)
+      emit(emoji)
+    }
+  }
+}
+
+Costume._emoji = function(emoji) {
+  if (!emojiSheet) { throw new Error('emoji not available') }
+  const index = emojiList.indexOf(emoji)
+  if (index === -1) { throw new Error('unknown emoji: ' + emoji) }
+  return assets._emoji.slice({
+    index: index,
+    xSize: 32,
+    ySize: 32,
+    xMargin: 2,
+    yMargin: 2,
+    xCount: 30,
+  })
+}
+
+Costume._text = function(props) {
+  const text = '' + props.text
+
+  const fontMetrics = textMetrics.Munro
+  const tw = 9
+  const th = 11
+  var x = 0
+  const chars = []
+  text.split(splitEmoji).forEach(c => {
+    if (!c) return
+    const metrics = fontMetrics[c] || fontMetrics[' ']
+    if (testEmoji.test(c)) {
+      console.log(c)
+      chars.push({canvas: Costume._emoji(c).canvas, x: x, scale: 1})
+      x += 36
+      return
+    } else if (!fontMetrics[c]) {
+      console.error('unknown characters:', c)
+    }
+    // TODO drawImage directly from one canvas to the other
+    const canvas = assets._text.slice({
+      index: metrics.index,
+      xSize: tw,
+      ySize: th,
+      xCount: 26,
+    }).canvas
+    chars.push({canvas: canvas, x: x - 3 * (metrics.dx || 0), scale: 3})
+    x += metrics.width * 3
+  })
+
+  const canvas = document.createElement('canvas')
+  canvas.width = x
+  canvas.height = 36
+  const ctx = canvas.getContext('2d')
+  ctx.imageSmoothingEnabled = false
+  for (var i=chars.length; i--; ) {
+    const c = chars[i]
+    ctx.save()
+    ctx.scale(c.scale, c.scale)
+    ctx.drawImage(c.canvas, c.x / c.scale, 0)
+    ctx.restore()
+  }
+
+  if (props.fill !== '#000') { // not default
+    ctx.globalCompositeOperation = 'source-in'
+    ctx.fillStyle = props.fill
+    ctx.fillRect(0, 0, x, th)
+  }
+
+  return new Costume(canvas)
+}
+
 const Text = function(props) {
   var props = Object.assign({
     text: '',
     fill: '#000',
-    scale: 3,
+    scale: 1,
   }, props || {})
   if (props.text === undefined) { throw new Error('Text needs text') }
   Base.call(this, props, function(props) {

@@ -102,7 +102,7 @@ const Munro = metrics([
   ['^', 4],
   ['_', 6],
   ['~', 6],
-  [' ', 5],
+  [' ', 3],
 ])
 
 module.exports = {Munro}
