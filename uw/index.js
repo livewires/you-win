@@ -347,6 +347,15 @@ const Costume = function(canvas) {
   this.context = canvas.getContext('2d')
 }
 
+Costume.prototype.draw = function(context, x=0, y=0, w=undefined, h=undefined) {
+  context.drawImage(this.canvas, x, y, w || this.width, h || this.height)
+}
+
+Costume.prototype.isOpaqueAt = function(x, y) {
+  const d = this.context.getImageData(x, y, 1, 1).data
+  return d[3] !== 0
+}
+
 Costume.fromImage = function(img) {
   var canvas = document.createElement('canvas')
   canvas.width = img.naturalWidth
@@ -649,8 +658,7 @@ Base.prototype.touchesPoint = function(x, y) {
   if (this.flipped) {
     cx = -cx //this._costume.width - cx
   }
-  const d = costume.context.getImageData(cx - costume.xOffset, cy - costume.yOffset, 1, 1).data
-  return d[3] !== 0
+  return costume.isOpaqueAt(cx - costume.xOffset, cy - costume.yOffset)
 }
 
 Base.prototype._draw = function(ctx) {
@@ -663,7 +671,7 @@ Base.prototype._draw = function(ctx) {
   }
   ctx.scale(this.scale, this.scale)
   ctx.translate(costume.xOffset, costume.yOffset)
-  ctx.drawImage(costume.canvas, 0, 0)
+  costume.draw(ctx)
   // TODO opacity
   ctx.restore()
 }
