@@ -164,6 +164,7 @@ World.prototype.destroy = function() {
     s.destroy()
   }
   document.body.removeChild(this._wrap)
+  this._dead = true
   world = null
 }
 
