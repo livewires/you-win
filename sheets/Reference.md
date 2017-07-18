@@ -10,21 +10,24 @@
 * [Costume](#costume)
 * [World](#world)
 * [Sprite](#sprite)
+* [Text](#text)
+* [Polygon](#polygon)
 * [Phone](#phone)
 
 To import all these names so you can use them in your code, use the following line:
 
 ```js
-var {init, Phone, World, Sprite, Costume, forever} = UW
+import * as UW from 'you-win'
+import {forever, Phone, Costume, Sprite, World, Text, Polygon} from 'you-win'
 ```
 
 
 ## Assets
 
-Before you can do anything, you need initialise `you-win`. You do this by calling `UW.load`.
+Before you can do anything, you need initialise `you-win`. You do this by calling `UW.init`.
 
 ```js
-UW.load({
+UW.init({
     // the images you need
 })
 .then(() => {
@@ -32,7 +35,7 @@ UW.load({
 })
 ```
 
-  * **`UW.load(images)`**
+  * **`UW.init(images)`**
 
     Pulls in the media files you need for your game. The code **after `then`** will run once they're all ready.
     
@@ -43,10 +46,10 @@ UW.load({
 
 A **`Costume`** is an image that controls how a `Sprite` looks.
 
-You must create costumes inside `UW.load`, using either `Costume.load` or `Costume.emoji`.
+You must create costumes inside `UW.init`, using either `Costume.load` or `Costume.emoji`.
 
 ```js
-UW.load({
+UW.init({
     asteroid: Costume.load('/asteroid.jpg'),
     poop: Costume.emoji('💩'),
 })
@@ -67,7 +70,7 @@ UW.load({
 If you just pass a string, it will be treated as if you called `Costume.load`.
 
 ```js
-UW.load({
+UW.init({
     // get asteroid.jpg from my `static` folder
     asteroid: '/asteroid.jpg',
     face: 'https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png',
@@ -81,7 +84,7 @@ UW.load({
 Set up the world after [loading your assets](#assets).
 
 ```js
-UW.load({
+UW.init({
     // ...
 })
 .then(() => {
@@ -161,7 +164,7 @@ A **`Sprite`** is an image in the world that can be moved and rotated and so on.
 To create a Sprite, you must give the name of one of your `Costumes`. You may also include a list of attributes. 
 
 ```js
-UW.load({
+UW.init({
     poop: Costume.emoji('💩'),
 })
 .then(() => {
@@ -280,7 +283,7 @@ Sprites have some useful functions attached to them.
 
 ## Text
 
-**TODO**
+**TODO**: document
 
   * **`sprite.text`**
 
@@ -433,16 +436,16 @@ It has the following attributes which you can get:
 
 **TODO**: document
 
-  * **`range`**
-  * **`sin`**
-  * **`cos`**
-  * **`atan2`**
-  * **`dist`**
+  * **`UW.range([start], end, [step])`**
+  * **`UW.sin(deg)`**
+  * **`UW.cos(deg)`**
+  * **`UW.atan2(x, y)`**
+  * **`UW.dist(dx, dy)`**
 
 ### Random
 
 **TODO**: document
 
-  * **`randomInt`**
-  * **`randomChoice`**
+  * **`UW.randomInt(from, to)`**
+  * **`UW.randomChoice(array)`**
 
