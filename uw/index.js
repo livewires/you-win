@@ -894,17 +894,28 @@ for (var i=65; i<=90; i++) { keyCodes[String.fromCharCode(i + 32)] = i; }
 
 const degrees = x => x * (180 / Math.PI)
 const radians = x => x * (Math.PI / 180)
+
 const maths = {
-  degrees,
-  radians,
   sin: a => Math.sin(radians(a)),
   cos: a => Math.cos(radians(a)),
   atan2: (x, y) => degrees(Math.atan2(x, -y)),
   dist: (dx, dy) => Math.sqrt(dx * dx + dy * dy),
+
+  range: (start, end, step=1) => {
+    if (end === undefined) [start, end] = [0, start]
+    const out = []
+    if (step > 0) for (var i = start; i < end; i += step) out.push(i)
+    else for (var i = start; i > end; i += step) out.push(i)
+    return out
+  },
+
+  /* random */
+  randomInt: (from, to) => from + Math.floor(((to - from + 1) * Math.random())),
+  randomChoice: array => array[Math.floor(Math.random() * array.length)],
 }
 
 
-module.exports = Object.assign({
+module.exports = {
   init,
   assets,
   Phone,
@@ -914,5 +925,6 @@ module.exports = Object.assign({
   Text,
   Polygon,
   forever,
-}, maths)
+}
+Object.assign(module.exports, maths)
 

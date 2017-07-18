@@ -428,3 +428,21 @@ It has the following attributes which you can get:
 
 **TODO**
 
+
+### Maths
+
+**TODO**: document
+
+  * **`range`**
+  * **`sin`**
+  * **`cos`**
+  * **`atan2`**
+  * **`dist`**
+
+### Random
+
+**TODO**: document
+
+  * **`randomInt`**
+  * **`randomChoice`**
+
