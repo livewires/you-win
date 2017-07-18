@@ -377,8 +377,10 @@ Costume.load = function(url, canvas) {
 }
 
 Costume.get = function(name) {
-  if (name.constructor === Costume) {
+  if (name.constructor === Costume || name.constructor === SliceCostume) {
     return name
+  } else if (testEmoji.test(name)) {
+    return Costume._emoji(name)
   } else {
     const costume = assets[name]
     if (!costume) {
@@ -388,21 +390,6 @@ Costume.get = function(name) {
   }
 }
 
-Costume.emoji = function(emoji) {
-  if (!emojiList) { throw new Error('emoji not available') }
-  const index = emojiList.indexOf(emoji)
-  if (index === -1) { throw new Error('unknown emoji: ' + emoji) }
-  return emojiSheet.then(sheet => {
-    return sheet.slice({
-      index: index,
-      xSize: 32,
-      ySize: 32,
-      xMargin: 2,
-      yMargin: 2,
-      xCount: 30,
-    })
-  })
-}
 emojiSheet = emojiList && Costume.load('emoji.png')
 
 Costume.polygon = function(props) {
@@ -505,6 +492,7 @@ const SliceCostume = function(source, x, y, w, h) {
 }
 
 SliceCostume.prototype.draw = function(context, x, y) {
+  // TODO drawing emoji sprites doesn't work.
   const w = this.width, h = this.height
   context.drawImage(this._source._canvas, this._x, this._y, w, h, x, y, w, h)
 }
@@ -820,23 +808,24 @@ Costume._text = function(props) {
   text.split(splitEmoji).forEach(c => {
     if (!c) return
     const metrics = fontMetrics[c] || fontMetrics[' ']
+    let tile
     if (testEmoji.test(c)) {
-      console.log(c)
+      tile = Costume._emoji(c)
       chars.push({tile: Costume._emoji(c), x: x, scale: 1})
       x += 36
-      return
-    } else if (!fontMetrics[c]) {
-      console.error('unknown characters:', c)
+    } else {
+      if (!fontMetrics[c]) {
+        console.error('unknown characters:', c)
+      }
+      const tile = assets._text.slice({
+        index: metrics.index,
+        xSize: tw,
+        ySize: th,
+        xCount: 26,
+      })
+      chars.push({tile: tile, x: x - 3 * (metrics.dx || 0), scale: 3})
+      x += metrics.width * 3
     }
-    // TODO drawImage directly from one canvas to the other
-    const tile = assets._text.slice({
-      index: metrics.index,
-      xSize: tw,
-      ySize: th,
-      xCount: 26,
-    })
-    chars.push({tile: tile, x: x - 3 * (metrics.dx || 0), scale: 3})
-    x += metrics.width * 3
   })
 
   const canvas = document.createElement('canvas')
@@ -853,9 +842,10 @@ Costume._text = function(props) {
   }
 
   if (props.fill !== '#000') { // not default
+    // TODO don't recolor emoji!
     ctx.globalCompositeOperation = 'source-in'
     ctx.fillStyle = props.fill
-    ctx.fillRect(0, 0, x, th)
+    ctx.fillRect(0, 0, x, canvas.height)
   }
 
   return new Costume(canvas)

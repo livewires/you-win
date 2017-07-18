@@ -18,7 +18,7 @@ To import all these names so you can use them in your code, use the following li
 
 ```js
 import * as UW from 'you-win'
-import {forever, Phone, Costume, Sprite, World, Text, Polygon} from 'you-win'
+import {forever, Phone, Sprite, World, Text, Polygon} from 'you-win'
 ```
 
 
@@ -46,12 +46,11 @@ UW.init({
 
 A **`Costume`** is an image that controls how a `Sprite` looks.
 
-You must create costumes inside `UW.init`, using either `Costume.load` or `Costume.emoji`.
+You must create costumes inside `UW.init`, by giving their URL.
 
 ```js
 UW.init({
     asteroid: Costume.load('/asteroid.jpg'),
-    poop: Costume.emoji('💩'),
 })
 ```
 
@@ -63,12 +62,6 @@ UW.init({
 
     If you make a `static` folder in the same place as your game's `.js` file, you can put images inside it, and then load them here using the URL `'/my-image.jpg'`.
 
-  * **`Costume.emoji(emoji)`**
-    
-    Return a costume based on the given emoji, sized 32x32 pixels. Not all the emoji are included. Emoji make great placeholder graphics for your game, or even final graphics if you like the retro pixel-art theme.
-
-If you just pass a string, it will be treated as if you called `Costume.load`.
-
 ```js
 UW.init({
     // get asteroid.jpg from my `static` folder
@@ -76,6 +69,8 @@ UW.init({
     face: 'https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png',
 })
 ```
+
+
 
 ## World
 
