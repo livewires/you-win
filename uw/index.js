@@ -56,6 +56,7 @@ function init(promiseMap) {
   // destroy old world!
   if (world) {
     world.destroy()
+    console.clear()
   }
 
   promiseMap['_text'] = Costume.load('munro.png')
@@ -805,6 +806,7 @@ Costume._emoji = function(emoji) {
 
 Costume._text = function(props) {
   const text = '' + props.text
+  const fill = props.fill !== '#000' && props.fill // ie. not default
 
   const fontMetrics = textMetrics.Munro
   const tw = 9
@@ -817,7 +819,7 @@ Costume._text = function(props) {
     let tile
     if (testEmoji.test(c)) {
       tile = Costume._emoji(c)
-      chars.push({tile: Costume._emoji(c), x: x, scale: 1})
+      chars.push({tile: Costume._emoji(c), x: x, scale: 1, isEmoji: true})
       x += 36
     } else {
       if (!fontMetrics[c]) {
@@ -829,7 +831,7 @@ Costume._text = function(props) {
         ySize: th,
         xCount: 26,
       })
-      chars.push({tile: tile, x: x - 3 * (metrics.dx || 0), scale: 3})
+      chars.push({width: metrics.width, tile: tile, x: x - 3 * (metrics.dx || 0), scale: 3})
       x += metrics.width * 3
     }
   })
@@ -839,19 +841,22 @@ Costume._text = function(props) {
   canvas.height = 36
   const ctx = canvas.getContext('2d')
   ctx.imageSmoothingEnabled = false
+  if (fill) ctx.fillStyle = fill
   for (var i=chars.length; i--; ) {
-    const c = chars[i]
+    const glyph = chars[i]
+    const costume = glyph.tile
+    const s = glyph.scale
     ctx.save()
-    ctx.scale(c.scale, c.scale)
-    c.tile.draw(ctx, c.x / c.scale, 0)
+    ctx.translate(glyph.x, 0)
+    ctx.scale(s, s)
+    costume.draw(ctx)
     ctx.restore()
-  }
 
-  if (props.fill !== '#000') { // not default
-    // TODO don't recolor emoji!
-    ctx.globalCompositeOperation = 'source-in'
-    ctx.fillStyle = props.fill
-    ctx.fillRect(0, 0, x, canvas.height)
+    if (fill && glyph.width) {
+      ctx.globalCompositeOperation = 'source-atop'
+      ctx.fillRect(glyph.x, 0, 3 * glyph.width, 36)
+      ctx.globalCompositeOperation = 'source-over' // default
+    }
   }
 
   return new Costume(canvas)
