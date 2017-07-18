@@ -212,13 +212,13 @@ Sprites have quite a few attributes which you can change. You can also set their
 
   * **`sprite.left`** / **`sprite.right`** / **`sprite.top`** / **`sprite.bottom`**
 
-    **TODO**: implement getters/setters for these.
-
     The co-ordinates of the edges of the _bounding box_ of the sprite. The bounding box is an _axis-aligned_ box enclosing the whole sprite.
 
     **TODO**: diagram
 
     These can be useful for getting or changing the position of the edge of a sprite. They tend to be more useful for non-rotated sprites.
+
+    > **Important:** you usually need to assign these last. If you set the the position of an edge, and then for example change the `scale`, the edge won't line up anymore! So make sure you set edge positions after setting the other attributes.
 
   * **`sprite.xOffset`** / **`sprite.yOffset`**
 
