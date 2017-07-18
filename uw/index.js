@@ -398,7 +398,7 @@ Costume._text = function(props) {
 
   const fontMetrics = textMetrics.Munro
   const tw = 9
-  const th = 10
+  const th = 11
   var x = 0
   const chars = []
   for (var i=0; i<text.length; i++) {
@@ -417,7 +417,7 @@ Costume._text = function(props) {
 
   const canvas = document.createElement('canvas')
   canvas.width = x
-  canvas.height = 10
+  canvas.height = 12
   const ctx = canvas.getContext('2d')
   ctx.imageSmoothingEnabled = false
   for (var i=chars.length; i--; ) {
@@ -793,7 +793,7 @@ const Text = function(props) {
   var props = Object.assign({
     text: '',
     fill: '#000',
-    scale: 4,
+    scale: 3,
   }, props || {})
   if (props.text === undefined) { throw new Error('Text needs text') }
   Base.call(this, props, function(props) {
