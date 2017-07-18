@@ -166,6 +166,8 @@ var World = function(props) {
 }
 emitter(World.prototype)
 
+// TODO World.prototype.stop
+
 World.prototype.destroy = function() {
   for (let s of this.sprites) {
     s.destroy()
@@ -192,11 +194,6 @@ World.prototype._resize = function() {
   this._needsResize = false
   this._canvas.width = this.width
   this._canvas.height = this.height
-}
-
-World.prototype._scroll = function() {
-  this._root.style.transform = 'translate(' + -this.scrollX + 'px, ' + -this.scrollY + 'px)'
-  this._needsScroll = false
 }
 
 World.prototype.frame = function() {
@@ -381,12 +378,10 @@ Costume.get = function(name) {
     return name
   } else if (testEmoji.test(name)) {
     return Costume._emoji(name)
+  } else if (assets[name]) {
+    return assets[name]
   } else {
-    const costume = assets[name]
-    if (!costume) {
-      throw new Error('unknown costume: ' + name)
-    }
-    return costume
+    throw new Error('unknown costume: ' + name)
   }
 }
 
@@ -489,10 +484,11 @@ const SliceCostume = function(source, x, y, w, h) {
   this._y = y
   this.width = w
   this.height = h
+  this.xOffset = -this.width / 2
+  this.yOffset = -this.height / 2
 }
 
-SliceCostume.prototype.draw = function(context, x, y) {
-  // TODO drawing emoji sprites doesn't work.
+SliceCostume.prototype.draw = function(context, x=0, y=0) {
   const w = this.width, h = this.height
   context.drawImage(this._source._canvas, this._x, this._y, w, h, x, y, w, h)
 }

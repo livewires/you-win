@@ -70,6 +70,21 @@ UW.init({
 })
 ```
 
+### Emoji costumes
+
+Emoji costumes are loaded by default. To use them, just pass an emoji string to `Sprite`:
+
+```js
+new Sprite({
+  costume: '🙂',
+})
+```
+
+The emoji costumes are sized 32x32 pixels. Most but not all emoji are included.
+
+Emoji make great placeholder graphics for your game, or even final graphics if you like the retro pixel-art theme.
+
+You can also use emoji inside [Text](#text).
 
 
 ## World
