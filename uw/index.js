@@ -339,20 +339,20 @@ World.prototype.pointerUp = function(e) {
 
 const Costume = function(canvas) {
   if (!canvas) throw new Error('no canvas')
-  this.canvas = canvas
+  this._canvas = canvas
   this.width = canvas.width
   this.height = canvas.height
   this.xOffset = -this.width / 2
   this.yOffset = -this.height / 2
-  this.context = canvas.getContext('2d')
+  this._context = canvas.getContext('2d')
 }
 
-Costume.prototype.draw = function(context, x=0, y=0, w=undefined, h=undefined) {
-  context.drawImage(this.canvas, x, y, w || this.width, h || this.height)
+Costume.prototype.draw = function(context, x=0, y=0) {
+  context.drawImage(this._canvas, x, y)
 }
 
 Costume.prototype.isOpaqueAt = function(x, y) {
-  const d = this.context.getImageData(x, y, 1, 1).data
+  const d = this._context.getImageData(x, y, 1, 1).data
   return d[3] !== 0
 }
 
@@ -492,12 +492,26 @@ Costume.prototype.slice = function(props) {
   const x = (props.xSize + props.xMargin) * (index % props.xCount)
   const y = (props.ySize + props.yMargin) * Math.floor(index / props.xCount)
 
-  const canvas = document.createElement('canvas')
-  canvas.width = props.xSize
-  canvas.height = props.ySize
-  const ctx = canvas.getContext('2d')
-  ctx.drawImage(this.canvas, -x|0, -y|0)
-  return new Costume(canvas)
+  return new SliceCostume(this, x, y, props.xSize, props.ySize)
+}
+
+
+const SliceCostume = function(source, x, y, w, h) {
+  this._source = source
+  this._x = x
+  this._y = y
+  this.width = w
+  this.height = h
+}
+
+SliceCostume.prototype.draw = function(context, x, y) {
+  const w = this.width, h = this.height
+  context.drawImage(this._source._canvas, this._x, this._y, w, h, x, y, w, h)
+}
+
+SliceCostume.prototype.isOpaqueAt = function(x, y) {
+  if (x < 0 || x > this.width || y < 0 || y > this.height) return false
+  return this._source.isOpaqueAt(x + this._x, y + this._y)
 }
 
 
@@ -808,20 +822,20 @@ Costume._text = function(props) {
     const metrics = fontMetrics[c] || fontMetrics[' ']
     if (testEmoji.test(c)) {
       console.log(c)
-      chars.push({canvas: Costume._emoji(c).canvas, x: x, scale: 1})
+      chars.push({tile: Costume._emoji(c), x: x, scale: 1})
       x += 36
       return
     } else if (!fontMetrics[c]) {
       console.error('unknown characters:', c)
     }
     // TODO drawImage directly from one canvas to the other
-    const canvas = assets._text.slice({
+    const tile = assets._text.slice({
       index: metrics.index,
       xSize: tw,
       ySize: th,
       xCount: 26,
-    }).canvas
-    chars.push({canvas: canvas, x: x - 3 * (metrics.dx || 0), scale: 3})
+    })
+    chars.push({tile: tile, x: x - 3 * (metrics.dx || 0), scale: 3})
     x += metrics.width * 3
   })
 
@@ -834,7 +848,7 @@ Costume._text = function(props) {
     const c = chars[i]
     ctx.save()
     ctx.scale(c.scale, c.scale)
-    ctx.drawImage(c.canvas, c.x / c.scale, 0)
+    c.tile.draw(ctx, c.x / c.scale, 0)
     ctx.restore()
   }
 
