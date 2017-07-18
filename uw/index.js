@@ -216,7 +216,6 @@ World.prototype.frame = function() {
 
   requestAnimationFrame(this.frame.bind(this))
 }
-World.prototype.start = World.prototype.frame
 
 prop(World, 'width', round, function() { this._needsResize = true })
 prop(World, 'height', round, function() { this._needsResize = true })
