@@ -12,14 +12,14 @@ let str = x => {
   return x
 }
 
-function prop(O, name, normalise, changed) {
+function prop(O, name, normalise, onChange) {
   Object.defineProperty(O.prototype, name, {
     get: function() { return this['_' + name] },
     set: function(value) {
       var oldValue = this['_' + name]
       var value = this['_' + name] = normalise(value)
       if (value !== oldValue) {
-        changed.call(this, value, oldValue)
+        if (onChange) onChange.call(this, value, oldValue)
       }
     },
     enumerable: true,
@@ -135,6 +135,11 @@ var World = function(props) {
   this._wrap.style.boxShadow = '0 0 0 1px rgba(0, 0, 0, .4)'
   this._wrap.appendChild(this._root = document.createElement('div'))
   this._root.style.position = 'absolute'
+  this._root.appendChild(this._canvas = document.createElement('canvas'))
+  this._canvas.style.imageRendering = 'pixelated'
+  this._canvas.style.imageRendering = 'crisp-edges'
+  this._canvas.style.imageRendering = '-moz-crisp-edges'
+  this._context = this._canvas.getContext('2d')
   document.body.style.padding = '0px'
   document.body.style.margin = '0px'
   document.body.appendChild(this._wrap)
@@ -155,7 +160,7 @@ var World = function(props) {
   window.addEventListener('resize', () => { this._needsResize = true })
   this._bindPointer()
 
-  setTimeout(this.start.bind(this))
+  setTimeout(this.frame.bind(this)) // start
 }
 emitter(World.prototype)
 
@@ -183,6 +188,8 @@ World.prototype._resize = function() {
   this.translateX = x
   this.translateY = y
   this._needsResize = false
+  this._canvas.width = this.width
+  this._canvas.height = this.height
 }
 
 World.prototype._scroll = function() {
@@ -196,31 +203,32 @@ World.prototype.frame = function() {
 
   if (this._needsResize) this._resize()
 
-  const didScroll = this._needsScroll
-  if (this._needsScroll) this._scroll()
+  this._context.clearRect(0, 0, this.width, this.height)
+  this._context.imageSmoothingEnabled = false
+  this._context.save()
+  this._context.translate(-this.scrollX, -this.scrollY)
+  this._context.translate(0, this.height)
 
   const sprites = this.sprites
   for (var i=sprites.length; i--; ) {
     const sprite = sprites[i]
+
     if (sprite._needsPaint) sprite._paint()
     if (sprite._needsTransform) sprite._transform()
 
-    // don't render offscreen sprites
-    const show = sprite.isOnScreen()
-    if (sprite._show !== show) {
-      sprite._show = show
-      // TODO change this to visibility
-      sprite.el.style.display = show ? 'block' : 'none'
-    }
+    //if (sprite.isOnScreen()) { // TODO cache this
+      sprite._draw(this._context)
+    //}
   }
+  this._context.restore()
 
   requestAnimationFrame(this.frame.bind(this))
 }
 
 prop(World, 'width', round, function() { this._needsResize = true })
 prop(World, 'height', round, function() { this._needsResize = true })
-prop(World, 'scrollX', round, function() { this._needsScroll = true })
-prop(World, 'scrollY', round, function() { this._needsScroll = true })
+prop(World, 'scrollX', round)
+prop(World, 'scrollY', round)
 prop(World, 'background', str, function(background) {
   this._wrap.style.background = background
 })
@@ -536,15 +544,6 @@ const Base = function(props, init) {
   this.world = world
   var props = props || {}
 
-  this.el = document.createElement('canvas')
-  this.ctx = this.el.getContext('2d')
-  this.el.style.position = 'absolute'
-  this.el.style.WebkitUserDrag = 'none'
-  this.el.style.userDrag = 'none' // ??
-  this.el.style.imageRendering = 'pixelated'
-  this.el.style.imageRendering = 'crisp-edges'
-  this.el.style.imageRendering = '-moz-crisp-edges'
-
   this._angle = 0
   if (init) init.call(this, props)
 
@@ -559,14 +558,10 @@ const Base = function(props, init) {
   }, props)
   this.dead = false
   world.sprites.push(this)
-  this.raise()
 }
 emitter(Base.prototype)
 
 Base.prototype._setCostume = function(costume) {
-  this.el.width = costume.width
-  this.el.height = costume.height
-  this.ctx.drawImage(costume.canvas, 0, 0)
   this._bbox = null
 }
 
@@ -640,14 +635,11 @@ Base.prototype._rotatedBounds = function() {
   }
 }
 
-Base.prototype.raise = function() {
-  if (this.dead) return
-  this.world._root.appendChild(this.el)
-}
+// TODO Base.prototype.raise
+// TODO Base.prototype.lower
 
 Base.prototype.destroy = function() {
   if (this.dead) return
-  this.world._root.removeChild(this.el)
   this.dead = true
   var index = this.world.sprites.indexOf(this)
   if (index !== -1) {
@@ -657,23 +649,11 @@ Base.prototype.destroy = function() {
 }
 
 Base.prototype._paint = function() {
-  this.el.style.opacity = this.opacity
   this._needsPaint = false
 }
 
 Base.prototype._transform = function() {
-  const costume = this._costume
-  const s = this.scale
-  var transform = ''
-  const x = this.x + costume.xOffset
-  const y = this.world.height - this.y - costume.height - costume.yOffset
-  transform += 'translate(' + x + 'px, ' + y + 'px) '
-  if (this.angle !== 0) { transform += 'rotate(' + this.angle + 'deg) ' }
-  if (this.scale !== 1) { transform += 'scale(' + s + ') ' }
-  if (this.flipped) { transform += 'scaleX(-1) ' }
-  this.el.style.transform = transform
-  this.el.style.transformOrigin = -costume.xOffset + 'px ' + -costume.yOffset + 'px'
-  this._needsTransform = false
+  // TODO remove
 }
 
 Base.prototype.isTouchingEdge = function() {
@@ -722,6 +702,7 @@ Base.prototype._draw = function(ctx) {
   ctx.scale(this.scale, this.scale)
   ctx.translate(costume.xOffset, costume.yOffset)
   ctx.drawImage(costume.canvas, 0, 0)
+  // TODO opacity
   ctx.restore()
 }
 
@@ -764,7 +745,6 @@ Base.prototype.isTouching = function(s) {
   this._draw(collisionContext)
   collisionContext.globalCompositeOperation = 'source-in'
   s._draw(collisionContext)
-  //world._wrap.appendChild(collisionCanvas)
 
   collisionContext.restore()
 
