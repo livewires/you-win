@@ -197,7 +197,7 @@ Sprites have quite a few attributes which you can change. You can also set their
 
   * **`sprite.x`** / **`sprite.y`**
 
-    The co-ordinates of the center of the sprite, starting from the bottom-left corner of the World.
+    The co-ordinates of the center of the sprite, starting from the bottom-left corner of the screen.
 
   * **`sprite.angle = 0`**
 
@@ -213,7 +213,7 @@ Sprites have quite a few attributes which you can change. You can also set their
   * **`sprite.flipped = false`**
 
     Either `true` or `false`.
-    
+
     Whether to flip the sprite's costume, so that it faces the other way. Defaults to `false.
 
   * **`sprite.opacity = 1.0`**
@@ -222,7 +222,7 @@ Sprites have quite a few attributes which you can change. You can also set their
 
     A value of `1.0` means the sprite is fully **opaque**; `0.0` means the sprite is fully see-through.
 
-    If you want to remove the sprite entirely and forever, use `destroy()`.
+    If you want to remove the sprite entirely and permanently, use `destroy()`.
 
   * **`sprite.costume = 'poop'`**
 
@@ -239,11 +239,12 @@ Sprites have quite a few attributes which you can change. You can also set their
     These can be useful for getting or changing the position of the edge of a sprite. They tend to be more useful for non-rotated sprites.
 
     > **Important:** you usually need to assign these last. If you set the the position of an edge, and then for example change the `scale`, the edge won't line up anymore! So make sure you set edge positions after setting the other attributes.
+    
 
   * **`sprite.xOffset`** / **`sprite.yOffset`**
 
     The offset between the sprite's position, and the bottom-left corner of the sprite. The default is minus half the width and height of the costume, respectively, so that the sprite's costume is centered on the sprite's position.
-    
+
     Usually you don't need to change this.
 
 
@@ -256,7 +257,7 @@ Sprites have some useful functions attached to them.
   * **`sprite.lower()`**
 
     Send the sprite to the back, below all the other sprites. **TODO**
-  
+
   * **`sprite.getTouching()`**
 
     Returns a list of sprites which are overlapping this one.
@@ -264,7 +265,7 @@ Sprites have some useful functions attached to them.
     Useful for detecting collisions!
 
     ```js
-    for (var other in player.getTouching()) {
+    for (var other of player.getTouching()) {
         if (other.isBullet) {
             // lose some health
         }
@@ -363,7 +364,7 @@ If a sprite wants to handle an event, it should `return false`. From then on, no
 
 There are two types of event:
 
-  * **`world.on('tap', e => { ... })`** / * **`sprite.on('tap', e => { ... })`**
+  * **`world.on('tap', e => { ... })`** / **`sprite.on('tap', e => { ... })`**
 
     A `tap` event happens when a finger is pressed against the screen and let go without moving.
 
@@ -371,7 +372,7 @@ There are two types of event:
 
       * **`e.fingerX`** / **`e.fingerY`**: the coordinates of the tap.
 
-  * **`world.on('drag', e => { ... })`** / * **`sprite.on('drag', e => { ... })`**
+  * **`world.on('drag', e => { ... })`** / **`sprite.on('drag', e => { ... })`**
 
     A `tap` event happens when a finger is pressed against the screen and let go without moving.
 
@@ -382,10 +383,10 @@ There are two types of event:
       * **`e.fingerX`** / **`e.fingerY`**: the current coordinates of the drag.
 
 
-If you're testing your game on a computer, mouse clicks and drags will work to simulate touches -- but unlike fingers, a mouse pointer can only be in one place at a time!
+If you're testing your game on a computer, mouse clicks and drags will work to simulate touches -- but remember that unlike fingers, a mouse pointer can only be in one place at a time!
 
 
-### Detecting taps 
+### Detecting taps
 
 ```js
 world.on('tap', e => {
@@ -429,7 +430,7 @@ ball.on('drag', e => {
 
 ## Phone
 
-`Phone` provides access to sensors on a smartphone, such as the accelerometer. You can use this to control your game depending on how the phone is held; for example tilting to steer in a racing game. 
+`Phone` provides access to sensors on a smartphone, such as the accelerometer. You can use this to control your game depending on how the phone is held; for example tilting to steer in a racing game.
 
 You need to make a `Phone` object before you can access the readings:
 
