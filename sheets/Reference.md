@@ -7,7 +7,6 @@
 `you-win` exports the following names:
 
 * [init](#assets)
-* [Costume](#costume)
 * [World](#world)
 * [Sprite](#sprite)
 * [Text](#text)
@@ -42,25 +41,21 @@ UW.init({
     Displays a progress bar while the media files are downloading.
 
 
-### Costume
+### Costumes
 
-A **`Costume`** is an image that controls how a `Sprite` looks.
+A **costume** is an image that controls how a `Sprite` looks.
 
-You must create costumes inside `UW.init`, by giving their URL.
+You create costumes inside `UW.init`, by giving their URL (web address).
 
 ```js
 UW.init({
-    asteroid: Costume.load('/asteroid.jpg'),
+    asteroid: '/asteroid.jpg',
 })
 ```
+  
+> ⚠ Because of security restrictions, you can't use just any image URL from any website. Assets stored in your [Glitch](https://glitch.com) project will work fine; copy their URL here.
 
-  * **`Costume.load(url)`**
-
-    Get a costume from a URL (web address).
-    
-    > ⚠ Because of security restrictions, you can't use just any image URL from any website. Assets stored in your [Glitch](https://glitch.com) project will work fine; copy their URL here.
-
-    If you make a `static` folder in the same place as your game's `.js` file, you can put images inside it, and then load them here using the URL `'/my-image.jpg'`.
+If you make a `static` folder in the same place as your game's `.js` file, you can put images inside it, and then load them here using the URL `'/my-image.jpg'`.
 
 ```js
 UW.init({
@@ -69,6 +64,7 @@ UW.init({
     face: 'https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png',
 })
 ```
+
 
 ### Emoji costumes
 
@@ -177,18 +173,21 @@ forever(() => {
 
 A **`Sprite`** is an image in the world that can be moved and rotated and so on.
 
-To create a Sprite, you must give the name of one of your `Costumes`. You may also include a list of attributes. 
+To create a Sprite, you must give the name of one of your costumes. You may also include additional attributes. 
 
 ```js
 UW.init({
-    poop: Costume.emoji('💩'),
+  'cat': 'https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png?1499126150626',
 })
 .then(() => {
 
-    var poop = new Sprite('poop')
+    var cat = new Sprite({
+      costume: 'cat',
+    })
 
-    var bigPoop = new Sprite('poop', {
-        scale: 2, // twice as big
+    var bigCat = new Sprite({
+      costume: 'cat',
+      scale: 2, // twice as big
     })
 
 })
@@ -228,6 +227,8 @@ Sprites have quite a few attributes which you can change. You can also set their
   * **`sprite.costume = 'poop'`**
 
     The image to use for the sprite, in case you want to change it later. For example, if you want to cycle between several images in order to "animate" the sprite".
+
+    You can also give an emoji here, to get one of the built-in emoji costumes (assuming `you-win` supports that emoji).
 
   * **`sprite.left`** / **`sprite.right`** / **`sprite.top`** / **`sprite.bottom`**
 
