@@ -951,7 +951,7 @@ const radians = x => x * (Math.PI / 180)
 const maths = {
   sin: a => Math.sin(radians(a)),
   cos: a => Math.cos(radians(a)),
-  atan2: (x, y) => degrees(Math.atan2(x, -y)),
+  atan2: (x, y) => degrees(Math.atan2(x, y)),
   dist: (dx, dy) => Math.sqrt(dx * dx + dy * dy),
 
   range: (start, end, step=1) => {
