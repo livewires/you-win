@@ -703,7 +703,7 @@ Base.prototype.touchesPoint = function(x, y) {
 Base.prototype._draw = function(ctx) {
   const costume = this._costume
   ctx.save()
-  ctx.translate(this.x|0, -this.y|0) //(this.x * z | 0) / z, (-this.y * z | 0) / z)
+  ctx.translate(this.x, -this.y)
   ctx.rotate(this.angle * Math.PI / 180)
   if (this.flipped) {
     ctx.scale(-1, 1)
