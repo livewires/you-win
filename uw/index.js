@@ -158,7 +158,7 @@ var World = function(props) {
   document.body.appendChild(this._wrap)
   this._resize()
   this._needsScroll = true
-  this._dead = false
+  this.isRunning = false
 
   //const de = document.documentElement
   Object.assign(this, {
@@ -173,18 +173,35 @@ var World = function(props) {
   window.addEventListener('resize', () => { this._needsResize = true })
   this._bindPointer()
 
-  setTimeout(this.frame.bind(this)) // start
+  window.addEventListener('blur', this.pause.bind(this))
+  window.addEventListener('focus', this.start.bind(this))
+
+  this.start()
 }
 emitter(World.prototype)
 
-// TODO World.prototype.stop
+// TODO argh
+World.prototype.start = function() {
+  if (this.isRunning) return
+  this.isRunning = true
+  setTimeout(this.frame.bind(this))
+}
+
+World.prototype.pause = function() {
+  this.isRunning = false
+}
+
+World.prototype.stop = function() {
+  this.isRunning = false
+  this.listeners('frame').forEach(f => this.unlisten('frame', f))
+}
 
 World.prototype.destroy = function() {
+  this.stop()
   for (let s of this.sprites) {
     s.destroy()
   }
   document.body.removeChild(this._wrap)
-  this._dead = true
   world = null
 }
 
@@ -208,7 +225,7 @@ World.prototype._resize = function() {
 }
 
 World.prototype.frame = function() {
-  if (this._dead) return
+  if (!this.isRunning) return
   this.emit('frame')
 
   if (this._needsResize) this._resize()
