@@ -329,7 +329,7 @@ World.prototype.pointerMove = function(e) {
   const sprites = this.sprites
   for (var i=sprites.length; i--; ) {
     const s = sprites[i]
-    if (s.opacity != 0 && s.touchesPoint(pos.x, pos.y)) {
+    if (s.opacity !== 0 && s.touchesPoint(pos.x, pos.y)) {
       if (s.emit('drag', finger) === false) {
         finger.sprite = s
         return
@@ -349,7 +349,7 @@ World.prototype.pointerUp = function(e) {
     const sprites = this.sprites
     for (var i=sprites.length; i--; ) {
       const s = sprites[i]
-      if (s.opacity != 0 && s.touchesPoint(pos.x, pos.y)) {
+      if (s.opacity !== 0 && s.touchesPoint(pos.x, pos.y)) {
         if (s.emit('tap', finger) === false) {
           return
         }
@@ -697,6 +697,7 @@ Base.prototype._draw = function(ctx) {
   }
   ctx.scale(this.scale, this.scale)
   ctx.translate(costume.xOffset, costume.yOffset)
+  ctx.globalAlpha = this.opacity
   costume.draw(ctx)
   // TODO opacity
   ctx.restore()

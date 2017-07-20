@@ -44,7 +44,6 @@ const game = browserify({
   poll: true, // because NFS
 })
 
-
 // static files & app.js are relative to the cwd
 const serveStatic = ecstatic({
   root: path.join(process.cwd(), 'static/'),
