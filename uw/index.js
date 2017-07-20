@@ -157,8 +157,12 @@ var World = function(props) {
   document.body.style.margin = '0px'
   document.body.appendChild(this._wrap)
   this._resize()
-  this._needsScroll = true
-  this.isRunning = false
+
+  window.addEventListener('resize', () => { this._needsResize = true })
+  this._bindPointer()
+
+  window.addEventListener('blur', this.pause.bind(this))
+  window.addEventListener('focus', this.start.bind(this))
 
   //const de = document.documentElement
   Object.assign(this, {
@@ -169,12 +173,6 @@ var World = function(props) {
     scrollY: 0,
   }, props)
   this.sprites = []
-
-  window.addEventListener('resize', () => { this._needsResize = true })
-  this._bindPointer()
-
-  window.addEventListener('blur', this.pause.bind(this))
-  window.addEventListener('focus', this.start.bind(this))
 
   this.start()
 }
@@ -254,8 +252,8 @@ World.prototype.frame = function() {
 
 prop(World, 'width', round, function() { this._needsResize = true })
 prop(World, 'height', round, function() { this._needsResize = true })
-prop(World, 'scrollX', round)
-prop(World, 'scrollY', round)
+prop(World, 'scrollX', round, function() { this._fixFingers() })
+prop(World, 'scrollY', round, function() { this._fixFingers() })
 prop(World, 'background', str, function(background) {
   this._wrap.style.background = background
 })
@@ -280,6 +278,15 @@ World.prototype._toWorld = function(sx, sy) {
   }
 }
 
+World.prototype._fixFingers = function() {
+  for (const key in this._fingers) {
+    const finger = this._fingers[key]
+    const pos = this._toWorld(finger._clientX, finger._clientY)
+    finger.fingerX = pos.x
+    finger.fingerY = pos.y
+  }
+}
+
 World.prototype.getFingers = function() {
   const fingers = this._fingers
   const out = []
@@ -297,12 +304,16 @@ World.prototype.pointerDown = function(e) {
     startY: pos.y,
     fingerX: pos.x,
     fingerY: pos.y,
+    _clientX: e.clientX,
+    _clientY: e.clientY,
   }
 }
 
 World.prototype.pointerMove = function(e) {
   const finger = this._fingers[e.pointerId]
   if (!finger) return
+  finger._clientX = e.clientX
+  finger._clientY = e.clientY
   const pos = this._toWorld(e.clientX, e.clientY)
   finger.deltaX = pos.x - finger.fingerX
   finger.deltaY = pos.y - finger.fingerY
