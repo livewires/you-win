@@ -345,7 +345,9 @@ World.prototype.pointerUp = function(e) {
   if (!finger) return
   delete this._fingers[e.pointerId]
   const pos = this._toWorld(e.clientX, e.clientY)
-  if (!finger.wasDragged) {
+  if (finger.wasDragged) {
+    finger.sprite.emit('drop', finger)
+  } else {
     const sprites = this.sprites
     for (var i=sprites.length; i--; ) {
       const s = sprites[i]
