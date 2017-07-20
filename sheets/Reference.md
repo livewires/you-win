@@ -17,7 +17,7 @@ To import all these names so you can use them in your code, use the following li
 
 ```js
 import * as UW from 'you-win'
-import {forever, Phone, Sprite, World, Text, Polygon} from 'you-win'
+import {forever, Phone, World, Sprite, Text, Polygon} from 'you-win'
 ```
 
 

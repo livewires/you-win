@@ -17,8 +17,8 @@ if (process.argv.length !== 3) {
 }
 const gamePath = path.join(process.cwd(), process.argv[2])
 if (!fs.existsSync(gamePath)) {
-  console.error('not found: ' + process.argv[2])
-  process.exit(1)
+  fs.writeFileSync(gamePath, fs.readFileSync(path.join(__dirname, 'template.js')))
+  console.log('CREATED `' + process.argv[2] + '` from template!')
 }
 
 const uw = browserify({
