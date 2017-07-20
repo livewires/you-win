@@ -40,7 +40,7 @@ function lazyProp(O, name, compute) {
 function bboxProp(O, name, set) {
   Object.defineProperty(O.prototype, name, {
     get: function() { return this.bbox[name] },
-    set: function(value) { set.call(this, +value) },
+    set: function(value) { set.call(this, num(value)) },
     enumerable: true,
     configurable: true,
   })
@@ -545,8 +545,8 @@ Base.prototype._setCostume = function(costume) {
   this._bbox = null
 }
 
-prop(Base, 'x', round, function() { this._needsTransform = true; this._bbox = null })
-prop(Base, 'y', round, function() { this._needsTransform = true; this._bbox = null })
+prop(Base, 'x', num, function() { this._needsTransform = true; this._bbox = null })
+prop(Base, 'y', num, function() { this._needsTransform = true; this._bbox = null })
 prop(Base, 'scale', num, function() { this._needsTransform = true; this._bbox = null })
 prop(Base, 'angle', num, function() { this._needsTransform = true; this._bbox = null })
 prop(Base, 'flipped', bool, function() { this._needsTransform = true })
