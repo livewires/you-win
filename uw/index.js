@@ -233,7 +233,7 @@ World.prototype.frame = function() {
   this._context.clearRect(0, 0, this.width, this.height)
   this._context.imageSmoothingEnabled = false
   this._context.save()
-  this._context.translate(-this.scrollX, -this.scrollY)
+  this._context.translate(-this.scrollX, this.scrollY)
   this._context.translate(0, this.height)
 
   const sprites = this.sprites
@@ -276,7 +276,7 @@ World.prototype._bindPointer = function(e) {
 World.prototype._toWorld = function(sx, sy) {
   return {
     x: (sx - this.translateX) / this.scale + this.scrollX,
-    y: this.height - ((sy - this.translateY) / this.scale + this.scrollY),
+    y: this.height - (sy - this.translateY) / this.scale + this.scrollY,
   }
 }
 
