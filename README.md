@@ -1,7 +1,7 @@
 
 For making mobile apps.
 
-## Docs
+## Docs ##
 
 The plan is to make a tutorial-style course for teaching JS/this lib.
 
@@ -11,6 +11,22 @@ For now, there's an [API Reference](sheets/Reference.md).
 ### Why "you-win"? ###
 
 Because `game-over` was taken.
+
+
+## Installing ##
+
+  * Install [Node and NPM](https://nodejs.org/en/download/).
+  * Make sure you have the latest version of NPM.
+
+    ```sh
+    $ sudo npm install -g npm@5
+    ```
+
+  * Install `you-win` globally.
+
+    ```sh
+    $ sudo npm install -g https://github.com/livewires/you-win.git
+    ```
 
 
 ## Credits ##
