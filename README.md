@@ -19,13 +19,13 @@ Because `game-over` was taken.
   * Make sure you have the latest version of NPM.
 
     ```sh
-    $ sudo npm install -g npm@5
+    $ npm install -g npm@5
     ```
 
   * Install `you-win` globally.
 
     ```sh
-    $ sudo npm install -g https://github.com/livewires/you-win.git
+    $ npm install -g https://github.com/livewires/you-win.git
     ```
 
 
