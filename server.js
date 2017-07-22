@@ -35,7 +35,7 @@ const game = browserify({
   debug: true, // source maps
 })
 .transform(babelify, {
-  plugins: ['transform-es2015-modules-commonjs'],
+  plugins: [require('babel-plugin-transform-es2015-modules-commonjs')],
   sourceType: 'module',
 })
 .external(uw)
