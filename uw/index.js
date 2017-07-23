@@ -559,8 +559,8 @@ const Base = function(props, init) {
 
   const s = props.scale || 1
   Object.assign(this, {
-    x: (world.width / 2 - world.scrollX)|0,
-    y: (world.height / 2 - world.scrollY)|0,
+    x: (world.width / 2 + world.scrollX)|0,
+    y: (world.height / 2 + world.scrollY)|0,
     scale: 1,
     opacity: 1,
     angle: 0,
