@@ -163,6 +163,10 @@ var World = function(props) {
   document.body.appendChild(this._wrap)
   this._resize()
 
+  if (props.title) {
+    document.title = props.title
+  }
+
   window.addEventListener('resize', () => { this._needsResize = true })
   this._bindPointer()
 
