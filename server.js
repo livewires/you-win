@@ -62,10 +62,6 @@ const serveBuiltin = ecstatic({
   cache: 3600,
 })
 
-const moo = (req, res) => {
-  const stat = fileSystem.statSync(filePath)
-}
-
 const app = (req, res) => {
   return serveStatic(req, res, fail => {
     serveBuiltin(req, res, fail => {
