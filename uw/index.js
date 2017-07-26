@@ -236,8 +236,8 @@ World.prototype.frame = function() {
   this._context.clearRect(0, 0, this.width, this.height)
   this._context.imageSmoothingEnabled = false
   this._context.save()
-  this._context.translate(-this.scrollX, this.scrollY)
-  this._context.translate(0, this.height)
+  // add height because the Y-origin should start at the bottom, not the top
+  this._context.translate(-this.scrollX, this.scrollY + this.height)
 
   const sprites = this.sprites
   for (var i=sprites.length; i--; ) {
@@ -390,8 +390,8 @@ const Costume = function(canvas) {
   this._canvas = canvas
   this.width = canvas.width
   this.height = canvas.height
-  this.xOffset = -this.width / 2
-  this.yOffset = -this.height / 2
+  this.xOffset = -this.width / 2 // left - center
+  this.yOffset = -this.height / 2 // top - center
   this._context = canvas.getContext('2d')
 }
 
@@ -528,14 +528,14 @@ prop(Base, 'opacity', num, function() { this._needsPaint = true })
 bboxProp(Base, 'left', function(left) {
   this.x = left - this.scale * this._surface.xOffset
 })
-bboxProp(Base, 'bottom', function(bottom) {
-  this.y = bottom - this.scale * this._surface.yOffset
-})
 bboxProp(Base, 'right', function(right) {
   this.x = right - this.scale * (this._surface.width + this._surface.xOffset)
 })
+bboxProp(Base, 'bottom', function(bottom) {
+  this.y = bottom + this.scale * (this._surface.height + this._surface.yOffset)
+})
 bboxProp(Base, 'top', function(top) {
-  this.y = top - this.scale * (this._surface.height + this._surface.yOffset)
+  this.y = top + this.scale * this._surface.yOffset
 })
 
 Base.prototype._computeBBox = function() {
