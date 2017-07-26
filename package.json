@@ -19,5 +19,6 @@
     "start": "node server.js app.js"
   },
   "author": "Tim Radvan <tim@tjvr.org>",
-  "license": "BSD-3-Clause"
+  "license": "BSD-3-Clause",
+  "repository": "https://github.com/livewires/you-win.git"
 }
