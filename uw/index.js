@@ -240,7 +240,7 @@ World.prototype.frame = function() {
   this._context.translate(-this.scrollX, this.scrollY + this.height)
 
   const sprites = this.sprites
-  for (var i=sprites.length; i--; ) {
+  for (var i=0; i<sprites.length; i++) {
     const sprite = sprites[i]
 
     if (sprite._needsPaint) sprite._paint()
