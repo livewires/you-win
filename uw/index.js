@@ -322,7 +322,12 @@ World.prototype.pointerMove = function(e) {
 
   // already dragging?
   if (finger.sprite) {
-    finger.sprite.emit('drag', finger)
+    if (finger.canceled) {
+      return
+    }
+    if (finger.sprite.emit('drag', finger) === false) {
+      finger.canceled = true
+    }
     return
   }
 
