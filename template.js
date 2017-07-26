@@ -8,7 +8,7 @@ UW.init({
 })
 .then(() => {
 
-  world = new World({
+  var world = new World({
   })
 
   // ...
