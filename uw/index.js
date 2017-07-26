@@ -786,6 +786,19 @@ Base.prototype.getTouching = function() {
   return result
 }
 
+Base.prototype.getTouchingFast = function() {
+  const sprites = this.world.sprites
+  const result = []
+  for (var i=sprites.length; i--; ) {
+    const s = sprites[i]
+    if (this.isTouchingFast(s)) {
+      result.push(s)
+    }
+  }
+  return result
+}
+
+
 
 /* Sprite */
 
