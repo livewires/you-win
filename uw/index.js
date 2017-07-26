@@ -8,7 +8,12 @@ let num = x => +x
 let round = x => x < 0 ? (x - 0.5)|0 : (x + 0.5)|0
 let bool = x => !!x
 let str = x => {
+  if (x === null) return ''
   if (typeof x !== 'string') throw new Error("not a string: " + x)
+  return x
+}
+let array = x => {
+  if (!Array.isArray(x)) throw new Error('oh dear')
   return x
 }
 
@@ -432,73 +437,6 @@ Costume.get = function(name) {
 }
 
 emojiSheet = emojiList && Costume.load('emoji.png')
-
-Costume.polygon = function(props) {
-  var props = Object.assign({
-    points: [[0, 0], [0, 32], [32, 32], [32, 0]],
-    fill: null,
-    outline: null,
-    thickness: 2,
-    closed: undefined,
-  }, props)
-  if (props.closed === undefined) props.closed = !!props.fill
-  if (!props.fill && !props.outline) {
-    throw new Error('need either fill or outline colour')
-  }
-
-  const points = props.points
-  const start = points[0]
-  var minX = start.x || start[0]
-  var minY = start.y || start[1]
-  var maxX = minX
-  var maxY = minY
-  for (var i=1; i<points.length; i++) {
-    const p = points[i], x = p.x || p[0], y = p.y || p[1]
-    if (x < minX) minX = x
-    if (x > maxX) maxX = x
-    if (-y < minY) minY = -y
-    if (-y > maxY) maxY = -y
-  }
-
-  var margin = props.outline ? props.thickness : 0
-  minX -= round(margin)
-  minY -= round(margin)
-  maxX += round(margin)
-  maxY += round(margin)
-
-  const canvas = document.createElement('canvas')
-  canvas.width = maxX - minX
-  canvas.height = maxY - minY
-  const ctx = canvas.getContext('2d')
-  ctx.imageSmoothingEnabled = false
-
-  ctx.translate(-minX, -minY)
-  ctx.beginPath()
-  ctx.moveTo(start.x || start[0], -(start.y || start[1]))
-  for (var i=1; i<points.length; i++) {
-    const p = points[i]
-    ctx.lineTo(p.x || p[0], -(p.y || p[1]))
-  }
-
-  if (props.closed) {
-    ctx.closePath()
-  }
-  if (props.fill) {
-    ctx.fillStyle = props.fill
-    ctx.fill()
-  }
-  if (props.outline) {
-    ctx.lineCap = 'round'
-    ctx.lineJoin = 'round'
-    ctx.strokeStyle = props.outline
-    ctx.lineWidth = props.thickness
-    ctx.stroke()
-  }
-  const c = new Costume(canvas)
-  c.xOffset = -minX - 2 * margin // 2*? weird.
-  c.yOffset = -minY - 2 * margin
-  return c
-}
 
 Costume.prototype.slice = function(props) {
   // (xSize + xMargin) * xCount = width
@@ -925,21 +863,93 @@ const Text = function(props) {
 }
 Text.prototype = Object.create(Base.prototype)
 
-prop(Text, 'text', x => ''+x, function(text) {
+Text.prototype._render = function() {
   this._setCostume(this._surface = Costume._text({
-    text: text,
+    text: this._text,
     fill: this._fill,
   }))
-})
-
+}
+prop(Text, 'text', x => ''+x, Text.prototype._render)
+prop(Text, 'fill', str, Text.prototype._render)
 
 
 /* Polygon */
 
+Costume._polygon = function(props) {
+  const points = props.points
+  const start = points[0]
+  var minX = start.x || start[0]
+  var minY = start.y || start[1]
+  var maxX = minX
+  var maxY = minY
+  for (var i=1; i<points.length; i++) {
+    const p = points[i], x = p.x || p[0], y = p.y || p[1]
+    if (x < minX) minX = x
+    if (x > maxX) maxX = x
+    if (-y < minY) minY = -y
+    if (-y > maxY) maxY = -y
+  }
+
+  var margin = props.outline ? props.thickness : 0
+  minX -= round(margin)
+  minY -= round(margin)
+  maxX += round(margin)
+  maxY += round(margin)
+
+  const canvas = document.createElement('canvas')
+  canvas.width = maxX - minX
+  canvas.height = maxY - minY
+  const ctx = canvas.getContext('2d')
+  ctx.imageSmoothingEnabled = false
+
+  if (!props.outline) {
+    if (minX === maxX) console.warn("Polygon points have no width")
+    if (minY === maxY) console.warn("Polygon points have no height")
+  }
+
+  ctx.translate(-minX, -minY)
+  ctx.beginPath()
+  ctx.moveTo(start.x || start[0], -(start.y || start[1]))
+  for (var i=1; i<points.length; i++) {
+    const p = points[i]
+    ctx.lineTo(p.x || p[0], -(p.y || p[1]))
+  }
+
+  if (props.closed) {
+    ctx.closePath()
+  }
+  if (props.fill) {
+    ctx.fillStyle = props.fill
+    ctx.fill()
+  }
+  if (props.outline) {
+    ctx.lineCap = 'round'
+    ctx.lineJoin = 'round'
+    ctx.strokeStyle = props.outline
+    ctx.lineWidth = props.thickness
+    ctx.stroke()
+  }
+  const c = new Costume(canvas)
+  c.xOffset = -minX - 2 * margin // 2*? weird.
+  c.yOffset = minY + 2 * margin
+  return c
+}
+
 const Polygon = function(props) {
+  var props = Object.assign({
+    points: [[0, 0], [0, 32], [32, 32], [32, 0]],
+    fill: null,
+    outline: null,
+    thickness: 2,
+    closed: undefined,
+  }, props || {})
+  if (props.closed === undefined) props.closed = !!props.fill
+  if (!props.fill && !props.outline) {
+    throw new Error('Polygon needs either fill or outline')
+  }
   Base.call(this, props, function(props) {
     this._fill = props.fill
-    this._outline = props.fill
+    this._outline = props.outline
     this._thickness = props.thickness
     this._closed = props.closed
     this.points = props.points // draw shape
@@ -947,6 +957,57 @@ const Polygon = function(props) {
 }
 Polygon.prototype = Object.create(Base.prototype)
 
+Polygon.prototype._render = function() {
+  this._setCostume(this._surface = Costume._polygon({
+    fill: this._fill,
+    outline: this._outline,
+    thickness: this._thickness,
+    closed: this._closed,
+    points: this._points,
+  }))
+}
+prop(Polygon, 'fill', str, Polygon.prototype._render)
+prop(Polygon, 'outline', str, Polygon.prototype._render)
+prop(Polygon, 'thickness', num, Polygon.prototype._render)
+prop(Polygon, 'closed', bool, Polygon.prototype._render)
+prop(Polygon, 'points', array, Polygon.prototype._render)
+
+
+const Rect = function(props) {
+  var props = Object.assign({
+    width: 1,
+    height: 1,
+  }, props || {})
+  if (props.closed === undefined) props.closed = !!props.fill
+  if (!props.fill && !props.outline) {
+    throw new Error('Rect needs either fill or outline')
+  }
+  this._closed = true
+  Base.call(this, props, function(props) {
+    this._fill = props.fill
+    this._outline = props.outline
+    this._thickness = props.thickness
+    this._width = props.width
+    this.height = props.height // draw shape
+  })
+  console.log(this._surface)
+}
+Rect.prototype = Object.create(Base.prototype)
+
+Rect.prototype._render = function() {
+  this._points = [
+    [0, 0],
+    [this._width, 0],
+    [this._width, this._height],
+    [0, this._height],
+  ]
+  Polygon.prototype._render.call(this)
+}
+prop(Rect, 'fill', str, Rect.prototype._render)
+prop(Rect, 'outline', str, Rect.prototype._render)
+prop(Rect, 'thickness', num, Rect.prototype._render)
+prop(Rect, 'width', num, Rect.prototype._render)
+prop(Rect, 'height', num, Rect.prototype._render)
 
 // TODO
 /*
@@ -1026,6 +1087,7 @@ module.exports = {
   Sprite,
   Text,
   Polygon,
+  Rect,
   forever,
 }
 Object.assign(module.exports, maths)
