@@ -241,9 +241,9 @@ World.prototype.frame = function() {
     if (sprite._needsPaint) sprite._paint()
     if (sprite._needsTransform) sprite._transform()
 
-    //if (sprite.isOnScreen()) { // TODO cache this
+    if (sprite.isOnScreen()) { // TODO cache this
       sprite._draw(this._context)
-    //}
+    }
   }
   this._context.restore()
 
@@ -252,8 +252,8 @@ World.prototype.frame = function() {
 
 prop(World, 'width', round, function() { this._needsResize = true })
 prop(World, 'height', round, function() { this._needsResize = true })
-prop(World, 'scrollX', round, function() { this._fixFingers() })
-prop(World, 'scrollY', round, function() { this._fixFingers() })
+prop(World, 'scrollX', num, function() { this._fixFingers() })
+prop(World, 'scrollY', num, function() { this._fixFingers() })
 prop(World, 'background', str, function(background) {
   this._wrap.style.background = background
 })
@@ -588,21 +588,21 @@ prop(Base, 'flipped', bool, function() { this._needsTransform = true })
 prop(Base, 'opacity', num, function() { this._needsPaint = true })
 
 bboxProp(Base, 'left', function(left) {
-  this.x = left - this.scale * this._costume.xOffset
+  this.x = left - this.scale * this._surface.xOffset
 })
 bboxProp(Base, 'bottom', function(bottom) {
-  this.y = bottom - this.scale * this._costume.yOffset
+  this.y = bottom - this.scale * this._surface.yOffset
 })
 bboxProp(Base, 'right', function(right) {
-  this.x = right - this.scale * (this._costume.width + this._costume.xOffset)
+  this.x = right - this.scale * (this._surface.width + this._surface.xOffset)
 })
 bboxProp(Base, 'top', function(top) {
-  this.y = top - this.scale * (this._costume.height + this._costume.yOffset)
+  this.y = top - this.scale * (this._surface.height + this._surface.yOffset)
 })
 
 Base.prototype._computeBBox = function() {
   if (this.angle === 0) {
-    const costume = this._costume
+    const costume = this._surface
     const s = this.scale
     const x = this.x + costume.xOffset * s
     const y = this.y + costume.yOffset * s
@@ -619,7 +619,7 @@ Base.prototype._computeBBox = function() {
 lazyProp(Base, 'bbox', Base.prototype._computeBBox)
 
 Base.prototype._rotatedBounds = function() {
-  const costume = this._costume
+  const costume = this._surface
   const s = this.scale
   const left = costume.xOffset * s
   const top = -costume.yOffset * s
@@ -689,7 +689,7 @@ Base.prototype.touchesPoint = function(x, y) {
   if (x < bounds.left || y < bounds.bottom || x > bounds.right || y > bounds.top) {
     return false
   }
-  const costume = this._costume
+  const costume = this._surface
   var cx = (x - this.x) / this.scale
   var cy = (this.y - y) / this.scale // TODO
   if (this.angle !== 0) {
@@ -700,13 +700,13 @@ Base.prototype.touchesPoint = function(x, y) {
     cy = s * ox + c * cy
   }
   if (this.flipped) {
-    cx = -cx //this._costume.width - cx
+    cx = -cx //this._surface.width - cx
   }
   return costume.isOpaqueAt(cx - costume.xOffset, cy - costume.yOffset)
 }
 
 Base.prototype._draw = function(ctx) {
-  const costume = this._costume
+  const costume = this._surface
   ctx.save()
   ctx.translate(this.x, -this.y)
   ctx.rotate(this.angle * Math.PI / 180)
@@ -810,8 +810,8 @@ const Sprite = function(props) {
 }
 Sprite.prototype = Object.create(Base.prototype)
 
-prop(Sprite, 'costume', Costume.get, function(costume) {
-  this._setCostume(costume)
+prop(Sprite, 'costume', str, function(costume) {
+  this._setCostume(this._surface = Costume.get(costume))
 })
 
 
@@ -926,7 +926,7 @@ const Text = function(props) {
 Text.prototype = Object.create(Base.prototype)
 
 prop(Text, 'text', x => ''+x, function(text) {
-  this._setCostume(this._costume = Costume._text({
+  this._setCostume(this._surface = Costume._text({
     text: text,
     fill: this._fill,
   }))
