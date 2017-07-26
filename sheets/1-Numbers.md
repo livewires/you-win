@@ -8,7 +8,7 @@ numbers, coordinates, randomInt, Text
 - project template [TODO. also, dirname static]
 - objects
 - UW coordinates, edges
-- UW.random() for positions
+- UW.randomInt() for positions
 - text 
 
 ## JavaScript: Getting Started
