@@ -12,6 +12,7 @@
 * [Text](#text)
 * [Polygon](#polygon)
 * [Phone](#phone)
+* [Sound](#sound)
 
 To import all these names so you can use them in your code, use the following line:
 
