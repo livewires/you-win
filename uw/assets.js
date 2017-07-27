@@ -38,7 +38,7 @@ Request.getURL = function(path, type) {
     req.loaded = e.loaded
     req.total = e.total
     req.lengthComputable = e.lengthComputable
-    req.emit('progress')
+    req.emit('progress', req)
   })
   xhr.addEventListener('error', e => req.emit('error', err))
   xhr.send()
@@ -52,18 +52,21 @@ Asset.map = Object.create(null)
 
 Asset.load = Request.getURL
 
-Asset.init = function(promiseMap) {
+Asset.init = function(promiseMap, defaultFactory) {
   const promises = []
   for (let key of Object.keys(promiseMap)) {
     var promise = promiseMap[key]
     if (!promise.then) {
-      promise = Costume.load(promise)
+      promise = defaultFactory(promise)
       if (!promise.then) {
         throw new Error("oops")
       }
     }
     promise.then(result => {
       Asset.map[key] = result
+    })
+    promise.on('progress', p => {
+      console.log(p)
     })
     promises.push(promise)
   }

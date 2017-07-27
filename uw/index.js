@@ -64,10 +64,11 @@ function init(promiseMap) {
     console.clear()
   }
 
-  return Asset.init(Object.assign({}, promiseMap, {
+  const map = Object.assign({}, promiseMap, {
     _text: Costume.load('munro.png'),
     _emoji: emojiList && Costume.load('emoji.png'),
-  }))
+  })
+  return Asset.init(map, Costume.load)
 }
 
 // TODO progress bar
@@ -393,15 +394,23 @@ Costume.fromImage = function(img) {
   return new Costume(canvas)
 }
 
-Costume.load = function(url, canvas) {
+Costume.fromBlob = function(blob) {
+  const url = URL.createObjectURL(blob)
   const img = new Image
   img.crossOrigin = 'anonymous'
   img.src = url ///^http/.test(url) ? 'http://crossorigin.me/' + url : url
-  return new Promise(resolve => {
+  return new Request((load, error) => {
     img.addEventListener('load', () => {
-      resolve(Costume.fromImage(img))
+      URL.revokeObjectURL(url)
+      load(Costume.fromImage(img))
     })
+    img.addEventListener('error', e => error(e))
   })
+}
+
+Costume.load = function(url) {
+  return Asset.load(url, 'blob')
+    .then(Costume.fromBlob)
 }
 
 Costume.get = function(name) {
