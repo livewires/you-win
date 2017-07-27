@@ -360,7 +360,7 @@ An **event** tells you that something has happened. Both Worlds and Sprites will
 
 If a tap overlaps more than one sprite (because the sprites are overlapping), then the sprites are told about the events in order. The front-most one sees the event first.
 
-If a sprite wants to handle an event, it should `return false`. From then on, no other sprites (nor the `world`!) will see the event.
+If a sprite wants to handle an event, it should `return true`. From then on, no other sprites (nor the `world`!) will see the event.
 
 There are two types of event:
 
@@ -382,6 +382,7 @@ There are two types of event:
       * **`e.deltaX`** / **`e.deltaY`**: the amount the finger has moved since the last drag event.
       * **`e.fingerX`** / **`e.fingerY`**: the current coordinates of the drag.
 
+    If the Sprite doesn't want to hear about the event anymore, it can `return false`.
 
 If you're testing your game on a computer, mouse clicks and drags will work to simulate touches -- but remember that unlike fingers, a mouse pointer can only be in one place at a time!
 
@@ -402,7 +403,7 @@ world.on('tap', e => {
 
         // handle the event
         // - otherwise another ball will get spawned!
-        return false
+        return true
     })
 })
 ```
@@ -416,7 +417,7 @@ ball.on('drag', e => {
     // move when dragged
     ball.x += e.deltaX
     ball.y += e.deltaY
-    return false
+    return true
 })
 ```
 

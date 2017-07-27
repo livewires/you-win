@@ -355,7 +355,7 @@ World.prototype.pointerMove = function(e) {
   for (var i=sprites.length; i--; ) {
     const s = sprites[i]
     if (s.opacity !== 0 && s.touchesPoint(pos.x, pos.y)) {
-      if (s.emit('drag', finger) === false) {
+      if (s.emit('drag', finger) === true) {
         finger.sprite = s
         return
       }
