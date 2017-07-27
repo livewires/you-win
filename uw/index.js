@@ -1013,18 +1013,60 @@ prop(Rect, 'thickness', num, Rect.prototype._render)
 prop(Rect, 'width', num, Rect.prototype._render)
 prop(Rect, 'height', num, Rect.prototype._render)
 
-// TODO
-/*
-Polygon.rect = function(props) {
-  var props = props || {}
-  const w = props.width
-  const h = props.height
-  return Costume.polygon(Object.assign({
-    //points: [{x: 0, y: 0}, {x: w, y: 0}, {x: w, y: h}, {x: 0, y: h}],
-    points: [[0, 0], [w, 0], [w, h], [0, h]],
-  }, props))
+
+/* Sound */
+
+var AudioContext = window.AudioContext || window.webkitAudioContext
+var audioContext = AudioContext && new AudioContext
+
+var volumeNode = audioContext.createGain()
+volumeNode.gain.value = 1
+volumeNode.connect(audioContext.destination)
+
+const Sound = function(buffer) {
+  if (typeof buffer === 'string') var buffer = assets[buffer]
+  this.buffer = buffer
 }
-*/
+
+Sound.load = function(path) {
+  return new Promise((resolve, reject) => {
+    var xhr = new XMLHttpRequest
+    xhr.open('GET', path)
+    xhr.responseType = 'arraybuffer'
+    xhr.addEventListener('load', e => {
+      var ab = xhr.response
+      audioContext.decodeAudioData(ab, function(buffer) {
+        resolve(buffer)
+      }, function(err) {
+        console.warn('Failed to load audio')
+        reject(err)
+      })
+    })
+    xhr.addEventListener('error', e => {
+      reject(err)
+    })
+    xhr.send()
+  })
+}
+
+Sound.prototype.play = function() {
+  if (!this.buffer) return
+  if (!this.node) {
+    this.node = audioContext.createGain()
+    this.node.gain.value = 1
+    this.node.connect(volumeNode)
+  }
+
+  if (this.source) {
+    this.source.disconnect()
+  }
+  this.source = audioContext.createBufferSource()
+  this.source.buffer = this.buffer
+  this.source.connect(this.node)
+
+  this.source.start(audioContext.currentTime)
+}
+
 
 
 // forever
@@ -1092,6 +1134,7 @@ module.exports = {
   Text,
   Polygon,
   Rect,
+  Sound,
   forever,
 }
 Object.assign(module.exports, maths)
