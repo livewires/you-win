@@ -192,10 +192,11 @@ World.prototype.pause = function() {
 
 World.prototype.stop = function() {
   this.isRunning = false
-  this.listeners('frame').forEach(f => this.unlisten('frame', f))
+  setTimeout(() => this.listeners('frame').forEach(f => this.unlisten('frame', f)))
 }
 
 World.prototype.destroy = function() {
+  if (!this.isRunning) return
   this.stop()
   for (let s of this.sprites) {
     s.destroy()
@@ -1066,10 +1067,11 @@ Sound.prototype.play = function() {
 // forever
 
 function forever(cb) {
+  if (typeof cb !== 'function') throw new Error('oops')
   const w = world
   w.on('frame', function listener() {
     if (cb() === false) {
-      w.unlisten('frame', listener)
+      setTimeout(() => w.unlisten('frame', listener))
     }
   })
 }
