@@ -1019,9 +1019,13 @@ prop(Rect, 'height', num, Rect.prototype._render)
 var AudioContext = window.AudioContext || window.webkitAudioContext
 var audioContext = AudioContext && new AudioContext
 
-var volumeNode = audioContext.createGain()
-volumeNode.gain.value = 1
-volumeNode.connect(audioContext.destination)
+if (audioContext) {
+  var volumeNode = audioContext.createGain()
+  volumeNode.gain.value = 1
+  volumeNode.connect(audioContext.destination)
+} else {
+  console.warn('no audio support')
+}
 
 const Sound = function(buffer) {
   if (typeof buffer === 'string') var buffer = assets[buffer]
@@ -1050,6 +1054,7 @@ Sound.load = function(path) {
 }
 
 Sound.prototype.play = function() {
+  if (!audioContext) return
   if (!this.buffer) return
   if (!this.node) {
     this.node = audioContext.createGain()
