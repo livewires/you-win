@@ -3,6 +3,8 @@
 const emitter = require('./emitter')
 const textMetrics = require('./metrics')
 const {emojiList, splitEmoji, testEmoji} = require('./emojis')
+const {Asset, Request} = require('./assets')
+
 
 let num = x => +x
 let round = x => x < 0 ? (x - 0.5)|0 : (x + 0.5)|0
@@ -55,8 +57,6 @@ function bboxProp(O, name, set) {
 /* init */
 
 var world
-var assets = Object.create(null)
-var emojiSheet
 function init(promiseMap) {
   // destroy old world!
   if (world) {
@@ -64,34 +64,10 @@ function init(promiseMap) {
     console.clear()
   }
 
-  promiseMap['_text'] = Costume.load('munro.png')
-  promiseMap['_emoji'] = emojiSheet
-
-  const promises = []
-  for (let key of Object.keys(promiseMap)) {
-    var promise = promiseMap[key]
-    if (!promise.then) {
-      promise = Costume.load(promise)
-      if (!promise.then) {
-        throw new Error("oops")
-      }
-    }
-    promise.then(result => {
-      assets[key] = result
-    })
-    promises.push(promise)
-  }
-
-  // TODO consider switching to plain ol' callbacks
-  const loaded = Promise.all(promises)
-  return {
-    then: cb => {
-      loaded.then(cb)
-      .catch(err => {
-        console.error(err)
-      })
-    },
-  }
+  return Asset.init(Object.assign({}, promiseMap, {
+    _text: Costume.load('munro.png'),
+    _emoji: emojiList && Costume.load('emoji.png'),
+  }))
 }
 
 // TODO progress bar
@@ -433,14 +409,12 @@ Costume.get = function(name) {
     return name
   } else if (testEmoji.test(name)) {
     return Costume._emoji(name)
-  } else if (assets[name]) {
-    return assets[name]
+  } else if (Asset.map[name]) {
+    return Asset.map[name]
   } else {
     throw new Error('unknown costume: ' + name)
   }
 }
-
-emojiSheet = emojiList && Costume.load('emoji.png')
 
 Costume.prototype.slice = function(props) {
   // (xSize + xMargin) * xCount = width
@@ -782,10 +756,10 @@ function characters(text, emit) {
 }
 
 Costume._emoji = function(emoji) {
-  if (!emojiSheet) { throw new Error('emoji not available') }
+  if (!Asset.map._emoji) { throw new Error('emoji not available') }
   const index = emojiList.indexOf(emoji)
   if (index === -1) { throw new Error('unknown emoji: ' + emoji) }
-  return assets._emoji.slice({
+  return Asset.map._emoji.slice({
     index: index,
     xSize: 32,
     ySize: 32,
@@ -1028,29 +1002,20 @@ if (audioContext) {
 }
 
 const Sound = function(buffer) {
-  if (typeof buffer === 'string') var buffer = assets[buffer]
+  if (typeof buffer === 'string') var buffer = Asset.get(buffer)
   this.buffer = buffer
 }
 
 Sound.load = function(path) {
-  return new Promise((resolve, reject) => {
-    var xhr = new XMLHttpRequest
-    xhr.open('GET', path)
-    xhr.responseType = 'arraybuffer'
-    xhr.addEventListener('load', e => {
-      var ab = xhr.response
-      audioContext.decodeAudioData(ab, function(buffer) {
-        resolve(buffer)
+  return Asset.load(path, 'arraybuffer')
+    .then(ab => new Request((load, error) => {
+      audioContext.decodeAudioData(ab, buffer => {
+        load(buffer)
       }, function(err) {
         console.warn('Failed to load audio')
-        reject(err)
+        error(err)
       })
-    })
-    xhr.addEventListener('error', e => {
-      reject(err)
-    })
-    xhr.send()
-  })
+    }))
 }
 
 Sound.prototype.play = function() {
@@ -1131,7 +1096,6 @@ const maths = {
 
 module.exports = {
   init,
-  assets,
   Phone,
   World,
   Costume,
