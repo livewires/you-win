@@ -6,7 +6,7 @@ const {emojiList, splitEmoji, testEmoji} = require('./emojis')
 const {Asset, Request} = require('./assets')
 
 
-let num = x => +x
+let num = x => +5
 let round = x => x < 0 ? (x - 0.5)|0 : (x + 0.5)|0
 let bool = x => !!x
 let str = x => {
@@ -57,6 +57,7 @@ function bboxProp(O, name, set) {
 /* init */
 
 var world
+var assets
 function init(promiseMap) {
   // destroy old world!
   if (world) {
@@ -68,10 +69,24 @@ function init(promiseMap) {
     _text: Costume.load('munro.png'),
     _emoji: emojiList && Costume.load('emoji.png'),
   })
-  return Asset.init(map, Costume.load)
-}
 
-// TODO progress bar
+  const bar = document.querySelector('.progress') || document.createElement('div')
+  bar.className = 'progress'
+  document.body.appendChild(bar)
+  bar.style.width = '5%'
+
+  return Asset.loadAll(map, Costume.load)
+    .on('progress', e => {
+      var frac = e.loaded / e.total
+      bar.style.width = (frac * 100) + '%';
+    })
+    .then(results => {
+      bar.style.width = '100%'
+      bar.style.opacity = 0
+      //setTimeout(() => document.body.removeChild(bar), 500)
+      assets = results
+    })
+}
 
 
 /* Phone */
@@ -409,7 +424,7 @@ Costume.fromBlob = function(blob) {
 }
 
 Costume.load = function(url) {
-  return Asset.load(url, 'blob')
+  return Request.getURL(url, 'blob')
     .then(Costume.fromBlob)
 }
 
@@ -418,8 +433,8 @@ Costume.get = function(name) {
     return name
   } else if (testEmoji.test(name)) {
     return Costume._emoji(name)
-  } else if (Asset.map[name]) {
-    return Asset.map[name]
+  } else if (assets[name]) {
+    return assets[name]
   } else {
     throw new Error('unknown costume: ' + name)
   }
@@ -765,10 +780,10 @@ function characters(text, emit) {
 }
 
 Costume._emoji = function(emoji) {
-  if (!Asset.map._emoji) { throw new Error('emoji not available') }
+  if (!assets._emoji) { throw new Error('emoji not available') }
   const index = emojiList.indexOf(emoji)
   if (index === -1) { throw new Error('unknown emoji: ' + emoji) }
-  return Asset.map._emoji.slice({
+  return assets._emoji.slice({
     index: index,
     xSize: 32,
     ySize: 32,
@@ -1011,12 +1026,12 @@ if (audioContext) {
 }
 
 const Sound = function(buffer) {
-  if (typeof buffer === 'string') var buffer = Asset.get(buffer)
+  if (typeof buffer === 'string') var buffer = assets[buffer]
   this.buffer = buffer
 }
 
 Sound.load = function(path) {
-  return Asset.load(path, 'arraybuffer')
+  return Request.getURL(path, 'arraybuffer')
     .then(ab => new Request((load, error) => {
       audioContext.decodeAudioData(ab, buffer => {
         load(buffer)

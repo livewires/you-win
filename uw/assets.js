@@ -10,6 +10,11 @@ const Request = function(def) {
   this.loaded = 0
   this.total = null
   this.lengthComputable = false
+  this.on('progress', e => {
+    this.loaded = e.loaded
+    this.total = e.total
+    this.lengthComputable = e.lengthComputable
+  })
 }
 emitter(Request.prototype)
 
@@ -20,6 +25,7 @@ Request.prototype.then = function(cb) {
     if (next instanceof Request) {
       next.on('load', next => f.emit('load', next))
     } else {
+      // TODO catch ?
       f.emit('load', next)
     }
   })
@@ -35,10 +41,11 @@ Request.getURL = function(path, type) {
   xhr.responseType = type || 'arraybuffer'
   xhr.addEventListener('load', e => req.emit('load', xhr.response))
   xhr.addEventListener('progress', e => {
-    req.loaded = e.loaded
-    req.total = e.total
-    req.lengthComputable = e.lengthComputable
-    req.emit('progress', req)
+    req.emit('progress', {
+      loaded: e.loaded,
+      total: e.total,
+      lengthComputable: e.lengthComputable,
+    })
   })
   xhr.addEventListener('error', e => req.emit('error', err))
   xhr.send()
@@ -48,38 +55,46 @@ Request.getURL = function(path, type) {
 
 const Asset = function() {
 }
-Asset.map = Object.create(null)
 
-Asset.load = Request.getURL
-
-Asset.init = function(promiseMap, defaultFactory) {
+Asset.loadAll = function(promiseMap, defaultFactory) {
+  const comp = new Request
   const promises = []
+  const results = {}
   for (let key of Object.keys(promiseMap)) {
     var promise = promiseMap[key]
     if (!promise.then) {
       promise = defaultFactory(promise)
-      if (!promise.then) {
-        throw new Error("oops")
-      }
     }
-    promise.then(result => {
-      Asset.map[key] = result
+    promise.then(value => {
+      count -= 1
+      results[key] = value
+      if (count === 0) {
+        comp.emit('load', results)
+      }
     })
-    promise.on('progress', p => {
-      console.log(p)
-    })
+    promise.on('progress', updateProgress)
     promises.push(promise)
   }
+  var count = promises.length
 
-  const loaded = Promise.all(promises)
-  return {
-    then: cb => {
-      loaded.then(cb)
-      .catch(err => {
-        console.error(err)
-      })
-    },
+  function updateProgress() {
+    var computable = 0
+    var loaded = 0
+    var total = 0
+    for (let req of promises) {
+      if (req.lengthComputable) {
+        computable += 1
+        loaded += req.loaded
+        total += req.total
+      }
+    }
+    comp.emit('progress', {
+      loaded: loaded,
+      total: computable ? (total / computable * promises.length)|0 : promises.length,
+    })
   }
+
+  return comp
 }
 
 Asset.get = function(name) {

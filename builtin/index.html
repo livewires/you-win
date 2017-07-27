@@ -25,9 +25,26 @@ body {
   white-space: pre-wrap;
 }
 
+
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 24px;
+  background: #3786e3;
+  transition: .3s all, opacity .6s;
+  z-index: 1;
+}
+.progress.error {
+  background: #ecc;
+}
 </style>
 
 <body>
+
+<div class=progress style="width: 10%;"></div>
+
 <pre id=error></pre>
 
 <script src="gyronorm.js"></script>
