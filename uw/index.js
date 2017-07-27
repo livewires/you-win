@@ -6,7 +6,7 @@ const {emojiList, splitEmoji, testEmoji} = require('./emojis')
 const {Asset, Request} = require('./assets')
 
 
-let num = x => +5
+let num = x => +x
 let round = x => x < 0 ? (x - 0.5)|0 : (x + 0.5)|0
 let bool = x => !!x
 let str = x => {
