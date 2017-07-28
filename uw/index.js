@@ -175,6 +175,7 @@ var World = function(props) {
   }, props)
   this.sprites = []
 
+  this._frame = this._frame.bind(this)
   this.start()
 }
 emitter(World.prototype)
@@ -183,7 +184,9 @@ emitter(World.prototype)
 World.prototype.start = function() {
   if (this.isRunning) return
   this.isRunning = true
-  requestAnimationFrame(this.frame.bind(this))
+  this._ticks = 0
+  this._lastFrame = +new Date()
+  requestAnimationFrame(this._frame.bind(this))
 }
 
 World.prototype.pause = function() {
@@ -192,7 +195,7 @@ World.prototype.pause = function() {
 
 World.prototype.stop = function() {
   if (!this.isRunning) return
-  this.isRunning = false
+  this.pause()
   this._deadLoops = this._deadLoops.concat(this.listeners('frame'))
 }
 
@@ -225,25 +228,36 @@ World.prototype._resize = function() {
   this._canvas.height = this.height
 }
 
-World.prototype.frame = function() {
+World.prototype._frame = function() {
+  // abort when stop()'d
+  if (!this.isRunning) return
+
+  var now = +new Date()
+  const ms = (now - this._lastFrame)
+  this._lastFrame = now
+  this._ticks += ms * (60 / 1000)
+  var t = 0
+  for ( ; this._ticks >= 1; this._ticks--) {
+    // fire forever() loops
+    this._tick()
+    t++
+  }
+
+  // clear screen & render all sprites
+  this._draw()
+
+  requestAnimationFrame(this._frame)
+}
+
+World.prototype._tick = function() {
   // remove stopped `forever` loops
   for (var i=this._deadLoops.length; i--; ) {
     this.unlisten('frame', this._deadLoops[i])
   }
   this._deadLoops = []
 
-  // abort when stop()'d
-  if (!this.isRunning) {
-    return
-  }
-
   // trigger `forever` loops
   this.emit('frame')
-
-  // clear screen & render all sprites
-  this._draw()
-
-  requestAnimationFrame(this.frame.bind(this))
 }
 
 World.prototype._draw = function() {
@@ -315,6 +329,7 @@ World.prototype.getFingers = function() {
 }
 
 World.prototype.pointerDown = function(e) {
+  if (!this.isRunning) return
   const pos = this._toWorld(e.clientX, e.clientY)
   this._fingers[e.pointerId] = {
     finger: e.pointerId,
@@ -328,6 +343,7 @@ World.prototype.pointerDown = function(e) {
 }
 
 World.prototype.pointerMove = function(e) {
+  if (!this.isRunning) return
   const finger = this._fingers[e.pointerId]
   if (!finger) return
   finger._clientX = e.clientX
@@ -375,6 +391,7 @@ World.prototype.pointerMove = function(e) {
 }
 
 World.prototype.pointerUp = function(e) {
+  if (!this.isRunning) return
   const finger = this._fingers[e.pointerId]
   if (!finger) return
   delete this._fingers[e.pointerId]
