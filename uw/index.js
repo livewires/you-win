@@ -240,12 +240,10 @@ World.prototype.frame = function() {
   for (var i=0; i<sprites.length; i++) {
     const sprite = sprites[i]
 
-    if (sprite._needsPaint) sprite._paint()
-    if (sprite._needsTransform) sprite._transform()
-
-    if (sprite.isOnScreen()) { // TODO cache this
+    // isOnscreen is actually really expensive, because it computes the bbox
+    //if (sprite.isOnScreen()) { // TODO cache this
       sprite._draw(this._context)
-    }
+    //}
   }
   this._context.restore()
 
@@ -521,12 +519,16 @@ Base.prototype._setCostume = function(costume) {
   this._bbox = null
 }
 
-prop(Base, 'x', num, function() { this._needsTransform = true; this._bbox = null })
-prop(Base, 'y', num, function() { this._needsTransform = true; this._bbox = null })
-prop(Base, 'scale', num, function() { this._needsTransform = true; this._bbox = null })
-prop(Base, 'angle', num, function() { this._needsTransform = true; this._bbox = null })
-prop(Base, 'flipped', bool, function() { this._needsTransform = true })
-prop(Base, 'opacity', num, function() { this._needsPaint = true })
+prop(Base, 'x', num, function(x, oldX) {
+  this._translateBBox(x - oldX, 0)
+})
+prop(Base, 'y', num, function(y, oldY) {
+  this._translateBBox(0, y - oldY)
+})
+prop(Base, 'scale', num, function() { this._bbox = null })
+prop(Base, 'angle', num, function() { this._bbox = null })
+prop(Base, 'flipped', bool, function() {})
+prop(Base, 'opacity', num, function() {})
 
 bboxProp(Base, 'left', function(left) {
   this.x = left - this.scale * this._surface.xOffset
@@ -541,6 +543,18 @@ bboxProp(Base, 'top', function(top) {
   this.y = top + this.scale * this._surface.yOffset
 })
 
+Base.prototype._translateBBox = function(dx, dy) {
+  if (!this._bbox) return
+  if (dx) {
+    this._bbox.left += dx
+    this._bbox.right += dx
+  }
+  if (dy) {
+    this._bbox.top += dy
+    this._bbox.bottom += dy
+  }
+}
+
 Base.prototype._computeBBox = function() {
   if (this.angle === 0) {
     const costume = this._surface
@@ -554,42 +568,38 @@ Base.prototype._computeBBox = function() {
       top: y + costume.height * s,
     }
   } else {
-    return this._rotatedBounds()
+    const costume = this._surface
+    const s = this.scale
+    const left = costume.xOffset * s
+    const top = -costume.yOffset * s
+    const right = left + costume.width * s
+    const bottom = top - costume.height * s
+
+    const dir = this.angle + 90
+    const mSin = Math.sin(dir * Math.PI / 180)
+    const mCos = Math.cos(dir * Math.PI / 180)
+
+    const tlX = mSin * left - mCos * top
+    const tlY = mCos * left + mSin * top
+
+    const trX = mSin * right - mCos * top
+    const trY = mCos * right + mSin * top
+
+    const blX = mSin * left - mCos * bottom
+    const blY = mCos * left + mSin * bottom
+
+    const brX = mSin * right - mCos * bottom
+    const brY = mCos * right + mSin * bottom
+
+    return {
+      left: this.x + Math.min(tlX, trX, blX, brX),
+      right: this.x + Math.max(tlX, trX, blX, brX),
+      top: this.y + Math.max(tlY, trY, blY, brY),
+      bottom: this.y + Math.min(tlY, trY, blY, brY)
+    }
   }
 }
 lazyProp(Base, 'bbox', Base.prototype._computeBBox)
-
-Base.prototype._rotatedBounds = function() {
-  const costume = this._surface
-  const s = this.scale
-  const left = costume.xOffset * s
-  const top = -costume.yOffset * s
-  const right = left + costume.width * s
-  const bottom = top - costume.height * s
-
-  const dir = this.angle + 90
-  const mSin = Math.sin(dir * Math.PI / 180)
-  const mCos = Math.cos(dir * Math.PI / 180)
-
-  const tlX = mSin * left - mCos * top
-  const tlY = mCos * left + mSin * top
-
-  const trX = mSin * right - mCos * top
-  const trY = mCos * right + mSin * top
-
-  const blX = mSin * left - mCos * bottom
-  const blY = mCos * left + mSin * bottom
-
-  const brX = mSin * right - mCos * bottom
-  const brY = mCos * right + mSin * bottom
-
-  return {
-    left: this.x + Math.min(tlX, trX, blX, brX),
-    right: this.x + Math.max(tlX, trX, blX, brX),
-    top: this.y + Math.max(tlY, trY, blY, brY),
-    bottom: this.y + Math.min(tlY, trY, blY, brY)
-  }
-}
 
 // TODO Base.prototype.raise
 // TODO Base.prototype.lower
@@ -602,14 +612,6 @@ Base.prototype.destroy = function() {
     // assume destroy() is rare
     this.world.sprites.splice(index, 1)
   }
-}
-
-Base.prototype._paint = function() {
-  this._needsPaint = false
-}
-
-Base.prototype._transform = function() {
-  // TODO remove
 }
 
 Base.prototype.isTouchingEdge = function() {
