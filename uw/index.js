@@ -34,19 +34,12 @@ function prop(O, name, normalise, onChange) {
   })
 }
 
-function lazyProp(O, name, compute) {
-  Object.defineProperty(O.prototype, name, {
-    get: function() {
-      return this['_' + name] || (this['_' + name] = compute.call(this))
-    },
-    enumerable: true,
-    configurable: true,
-  })
-}
-
 function bboxProp(O, name, set) {
   Object.defineProperty(O.prototype, name, {
-    get: function() { return this.bbox[name] },
+    get: function() {
+      if (!this._validBBox) this._computeBBox()
+      return this['_' + name]
+    },
     set: function(value) { set.call(this, num(value)) },
     enumerable: true,
     configurable: true,
@@ -272,7 +265,7 @@ World.prototype._draw = function() {
   const sprites = this.sprites
   for (var i=0; i<sprites.length; i++) {
     const sprite = sprites[i]
-    if (sprite._bbox && !sprite.isOnScreen()) {
+    if (sprite._validBBox && !sprite.isOnScreen()) {
       // avoid expensive bbox computation
       continue
     }
@@ -533,6 +526,12 @@ const Base = function(props, init) {
   this.world = world
   var props = props || {}
 
+  this._validBBox = false
+  this._left = false
+  this._right = false
+  this._bottom = false
+  this._top = false
+
   this._angle = 0
   if (init) init.call(this, props)
 
@@ -551,20 +550,30 @@ const Base = function(props, init) {
 emitter(Base.prototype)
 
 Base.prototype._setCostume = function(costume) {
-  this._bbox = null
+  // TODO don't destroy bbox if width/height is same?
+  this._validBBox = false
 }
 
 prop(Base, 'x', num, function(x, oldX) {
-  this._translateBBox(x - oldX, 0)
+  if (this._validBBox) {
+    const dx = x - oldX
+    this._left += dx
+    this._right += dx
+  }
 })
 prop(Base, 'y', num, function(y, oldY) {
-  this._translateBBox(0, y - oldY)
+  if (this._validBBox) {
+    const dy = y - oldY
+    this._top += dy
+    this._bottom += dy
+  }
 })
-prop(Base, 'scale', num, function() { this._bbox = null })
-prop(Base, 'angle', num, function() { this._bbox = null })
-prop(Base, 'flipped', bool, function() {})
-prop(Base, 'opacity', num, function() {})
+prop(Base, 'scale', num, function() { this._validBBox = false })
+prop(Base, 'angle', num, function() { this._validBBox = false })
+prop(Base, 'flipped', bool)
+prop(Base, 'opacity', num)
 
+// TODO opt?
 bboxProp(Base, 'left', function(left) {
   this.x = left - this.scale * this._surface.xOffset
 })
@@ -578,33 +587,17 @@ bboxProp(Base, 'top', function(top) {
   this.y = top + this.scale * this._surface.yOffset
 })
 
-Base.prototype._translateBBox = function(dx, dy) {
-  if (!this._bbox) return
-  if (dx) {
-    this._bbox.left += dx
-    this._bbox.right += dx
-  }
-  if (dy) {
-    this._bbox.top += dy
-    this._bbox.bottom += dy
-  }
-}
-
 Base.prototype._computeBBox = function() {
+  const costume = this._surface
+  const s = this.scale
   if (this.angle === 0) {
-    const costume = this._surface
-    const s = this.scale
     const x = this.x + costume.xOffset * s
     const y = this.y + costume.yOffset * s
-    return {
-      left: x,
-      bottom: y,
-      right: x + costume.width * s,
-      top: y + costume.height * s,
-    }
+    this._left = x
+    this._bottom = y
+    this._right = x + costume.width * s
+    this._top = y + costume.height * s
   } else {
-    const costume = this._surface
-    const s = this.scale
     const left = costume.xOffset * s
     const top = -costume.yOffset * s
     const right = left + costume.width * s
@@ -626,15 +619,13 @@ Base.prototype._computeBBox = function() {
     const brX = mSin * right - mCos * bottom
     const brY = mCos * right + mSin * bottom
 
-    return {
-      left: this.x + Math.min(tlX, trX, blX, brX),
-      right: this.x + Math.max(tlX, trX, blX, brX),
-      top: this.y + Math.max(tlY, trY, blY, brY),
-      bottom: this.y + Math.min(tlY, trY, blY, brY)
-    }
+    this._left = this.x + Math.min(tlX, trX, blX, brX)
+    this._right = this.x + Math.max(tlX, trX, blX, brX)
+    this._top = this.y + Math.max(tlY, trY, blY, brY)
+    this._bottom = this.y + Math.min(tlY, trY, blY, brY)
   }
+  this._validBBox = true
 }
-lazyProp(Base, 'bbox', Base.prototype._computeBBox)
 
 // TODO Base.prototype.raise
 // TODO Base.prototype.lower
@@ -650,20 +641,20 @@ Base.prototype.destroy = function() {
 }
 
 Base.prototype.isTouchingEdge = function() {
-  const b = this.bbox
+  if (!this._validBBox) this._computeBBox()
   const w = this.world.width, h = this.world.height
-  return b.left <= 0 || b.right >= w || b.bottom <= 0 || b.top >= h
+  return this._left <= 0 || this._right >= w || this._bottom <= 0 || this._top >= h
 }
 
 Base.prototype.isOnScreen = function() {
-  const b = this.bbox
+  if (!this._validBBox) this._computeBBox()
   const w = this.world.width, h = this.world.height
-  return b.right > 0 && b.left < w && b.top > 0 && b.bottom < h
+  return this._right > 0 && this._left < w && this._top > 0 && this._bottom < h
 }
 
 Base.prototype.touchesPoint = function(x, y) {
-  var bounds = this.bbox
-  if (x < bounds.left || y < bounds.bottom || x > bounds.right || y > bounds.top) {
+  if (!this._validBBox) this._computeBBox()
+  if (x < this._left || y < this._bottom || x > this._right || y > this._top) {
     return false
   }
   const costume = this._surface
@@ -694,7 +685,6 @@ Base.prototype._draw = function(ctx) {
   ctx.translate(costume.xOffset, costume.yOffset)
   ctx.globalAlpha = this.opacity
   costume.draw(ctx)
-  // TODO opacity
   ctx.restore()
 }
 
@@ -702,9 +692,9 @@ Base.prototype.isTouchingFast = function(s) {
   if (!(s instanceof Base)) { throw new Error('not a sprite: ' + s) }
   if (s === this) return false
   if (s.opacity === 0) return false
-  const mb = this.bbox
-  const ob = s.bbox
-  if (mb.left >= ob.right || mb.right <= ob.left || mb.top <= ob.bottom || mb.bottom >= ob.top) {
+  if (!this._validBBox) this._computeBBox()
+  if (!s._validBBox) s._computeBBox()
+  if (this._left >= s._right || this._right <= s._left || this._top <= s._bottom || this._bottom >= s._top) {
     return false
   }
   return true
@@ -714,13 +704,11 @@ Base.prototype.isTouching = function(s) {
   if (!this.isTouchingFast(s)) {
     return false
   }
-  const mb = this.bbox
-  const ob = s.bbox
 
-  const left = Math.max(mb.left, ob.left)
-  const top = Math.min(mb.top, ob.top)
-  const right = Math.min(mb.right, ob.right)
-  const bottom = Math.max(mb.bottom, ob.bottom)
+  const left = Math.max(this._left, s._left)
+  const top = Math.min(this._top, s._top)
+  const right = Math.min(this._right, s._right)
+  const bottom = Math.max(this._bottom, s._bottom)
 
   const cw = (right - left + 0.5)|0
   const ch = (top - bottom + 0.5)|0
