@@ -83,7 +83,6 @@ function init(promiseMap) {
     .then(results => {
       bar.style.width = '100%'
       bar.style.opacity = 0
-      //setTimeout(() => document.body.removeChild(bar), 500)
       assets = results
     })
 }
@@ -154,6 +153,7 @@ var World = function(props) {
   document.body.style.margin = '0px'
   document.body.appendChild(this._wrap)
   this._resize()
+  this._deadLoops = []
 
   if (props.title) {
     document.title = props.title
@@ -183,7 +183,7 @@ emitter(World.prototype)
 World.prototype.start = function() {
   if (this.isRunning) return
   this.isRunning = true
-  setTimeout(this.frame.bind(this))
+  requestAnimationFrame(this.frame.bind(this))
 }
 
 World.prototype.pause = function() {
@@ -191,8 +191,9 @@ World.prototype.pause = function() {
 }
 
 World.prototype.stop = function() {
+  if (!this.isRunning) return
   this.isRunning = false
-  setTimeout(() => this.listeners('frame').forEach(f => this.unlisten('frame', f)))
+  this._deadLoops = this._deadLoops.concat(this.listeners('frame'))
 }
 
 World.prototype.destroy = function() {
@@ -225,9 +226,27 @@ World.prototype._resize = function() {
 }
 
 World.prototype.frame = function() {
-  if (!this.isRunning) return
+  // remove stopped `forever` loops
+  for (var i=this._deadLoops.length; i--; ) {
+    this.unlisten('frame', this._deadLoops[i])
+  }
+  this._deadLoops = []
+
+  // abort when stop()'d
+  if (!this.isRunning) {
+    return
+  }
+
+  // trigger `forever` loops
   this.emit('frame')
 
+  // clear screen & render all sprites
+  this._draw()
+
+  requestAnimationFrame(this.frame.bind(this))
+}
+
+World.prototype._draw = function() {
   if (this._needsResize) this._resize()
 
   this._context.clearRect(0, 0, this.width, this.height)
@@ -247,8 +266,6 @@ World.prototype.frame = function() {
     sprite._draw(this._context)
   }
   this._context.restore()
-
-  requestAnimationFrame(this.frame.bind(this))
 }
 
 prop(World, 'width', round, function() { this._needsResize = true })
@@ -1072,7 +1089,7 @@ function forever(cb) {
   const w = world
   w.on('frame', function listener() {
     if (cb() === false) {
-      setTimeout(() => w.unlisten('frame', listener))
+      w._deadLoops.push(listener)
     }
   })
 }
