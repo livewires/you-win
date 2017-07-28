@@ -239,11 +239,12 @@ World.prototype.frame = function() {
   const sprites = this.sprites
   for (var i=0; i<sprites.length; i++) {
     const sprite = sprites[i]
+    if (sprite._bbox && !sprite.isOnScreen()) {
+      // avoid expensive bbox computation
+      continue
+    }
 
-    // isOnscreen is actually really expensive, because it computes the bbox
-    //if (sprite.isOnScreen()) { // TODO cache this
-      sprite._draw(this._context)
-    //}
+    sprite._draw(this._context)
   }
   this._context.restore()
 
@@ -623,8 +624,7 @@ Base.prototype.isTouchingEdge = function() {
 Base.prototype.isOnScreen = function() {
   const b = this.bbox
   const w = this.world.width, h = this.world.height
-  // TODO
-  return true //!(b.right > 0 && b.left < w && b.bottom > 0 && b.top < h)
+  return b.right > 0 && b.left < w && b.top > 0 && b.bottom < h
 }
 
 Base.prototype.touchesPoint = function(x, y) {
@@ -776,7 +776,6 @@ function characters(text, emit) {
         emoji += String.fromCodePoint(text.codePointAt(index++))
         index++ // utf-16
       }
-      console.log(emoji)
       emit(emoji)
     }
   }
