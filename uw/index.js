@@ -272,7 +272,7 @@ World.prototype._draw = function() {
     }
 
     // add height because the Y-origin should start at the bottom, not the top
-    sprite._draw(this._context, -this.scrollX|0, (this.height + this.scrollY)|0)
+    sprite._draw(this._context, -this._scrollX|0, (this._height + this._scrollY)|0)
   }
 }
 
@@ -550,6 +550,8 @@ const Base = function(props, init) {
 }
 emitter(Base.prototype)
 
+// TODO: cache rotated sprites.
+
 Base.prototype._setCostume = function(costume) {
   // TODO don't destroy bbox if width/height is same?
   this._validBBox = false
@@ -679,14 +681,14 @@ Base.prototype.touchesPoint = function(x, y) {
 Base.prototype._draw = function(ctx, x=0, y=0) {
   const costume = this._surface
   ctx.save()
-  ctx.translate(x + this.x|0, y - this.y|0)
-  ctx.rotate(this.angle * Math.PI / 180)
-  if (this.flipped) {
+  ctx.translate(x + this._x|0, y - this._y|0)
+  ctx.rotate(this._angle * Math.PI / 180)
+  if (this._flipped) {
     ctx.scale(-1, 1)
   }
-  ctx.scale(this.scale, this.scale)
+  ctx.scale(this._scale, this._scale)
   ctx.translate(costume.xOffset|0, costume.yOffset|0)
-  ctx.globalAlpha = this.opacity
+  ctx.globalAlpha = this._opacity
   costume.draw(ctx)
   ctx.restore()
 }
