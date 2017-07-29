@@ -258,9 +258,6 @@ World.prototype._draw = function() {
 
   this._context.clearRect(0, 0, this.width, this.height)
   this._context.imageSmoothingEnabled = false
-  this._context.save()
-  // add height because the Y-origin should start at the bottom, not the top
-  this._context.translate(-this.scrollX, this.scrollY + this.height)
 
   const sprites = this.sprites
   for (var i=0; i<sprites.length; i++) {
@@ -270,9 +267,9 @@ World.prototype._draw = function() {
       continue
     }
 
-    sprite._draw(this._context)
+    // add height because the Y-origin should start at the bottom, not the top
+    sprite._draw(this._context, -this.scrollX|0, (this.height + this.scrollY)|0)
   }
-  this._context.restore()
 }
 
 prop(World, 'width', round, function() { this._needsResize = true })
@@ -642,6 +639,7 @@ Base.prototype.destroy = function() {
 
 Base.prototype.isTouchingEdge = function() {
   if (!this._validBBox) this._computeBBox()
+  // TODO take into account scrolling!
   const w = this.world.width, h = this.world.height
   return this._left <= 0 || this._right >= w || this._bottom <= 0 || this._top >= h
 }
@@ -649,6 +647,7 @@ Base.prototype.isTouchingEdge = function() {
 Base.prototype.isOnScreen = function() {
   if (!this._validBBox) this._computeBBox()
   const w = this.world.width, h = this.world.height
+  // TODO take into account scrolling!
   return this._right > 0 && this._left < w && this._top > 0 && this._bottom < h
 }
 
@@ -673,16 +672,16 @@ Base.prototype.touchesPoint = function(x, y) {
   return costume.isOpaqueAt(cx - costume.xOffset, cy - costume.yOffset)
 }
 
-Base.prototype._draw = function(ctx) {
+Base.prototype._draw = function(ctx, x=0, y=0) {
   const costume = this._surface
   ctx.save()
-  ctx.translate(this.x, -this.y)
+  ctx.translate(x + this.x|0, y - this.y|0)
   ctx.rotate(this.angle * Math.PI / 180)
   if (this.flipped) {
     ctx.scale(-1, 1)
   }
   ctx.scale(this.scale, this.scale)
-  ctx.translate(costume.xOffset, costume.yOffset)
+  ctx.translate(costume.xOffset|0, costume.yOffset|0)
   ctx.globalAlpha = this.opacity
   costume.draw(ctx)
   ctx.restore()
