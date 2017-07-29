@@ -803,11 +803,15 @@ function characters(text, emit) {
   }
 }
 
+Costume._emojiCache = Object.create(null)
 Costume._emoji = function(emoji) {
   if (!assets._emoji) { throw new Error('emoji not available') }
   const index = emojiList.indexOf(emoji)
   if (index === -1) { throw new Error('unknown emoji: ' + emoji) }
-  return assets._emoji.slice({
+  if (Costume._emojiCache[index]) {
+    return Costume._emojiCache[index]
+  }
+  return Costume._emojiCache[index] = assets._emoji.slice({
     index: index,
     xSize: 32,
     ySize: 32,
