@@ -299,8 +299,8 @@ World.prototype._bindPointer = function(e) {
 
 World.prototype._toWorld = function(sx, sy) {
   return {
-    x: (sx - this.translateX) / this.scale + this.scrollX,
-    y: this.height - (sy - this.translateY) / this.scale + this.scrollY,
+    x: (sx - this.translateX) / this.scale + this._scrollX,
+    y: this._height - (sy - this.translateY) / this.scale + this._scrollY,
   }
 }
 
@@ -538,8 +538,8 @@ const Base = function(props, init) {
 
   const s = props.scale || 1
   Object.assign(this, {
-    x: (world.width / 2 + world.scrollX)|0,
-    y: (world.height / 2 + world.scrollY)|0,
+    x: (world._width / 2 + world._scrollX)|0,
+    y: (world._height / 2 + world._scrollY)|0,
     scale: 1,
     opacity: 1,
     angle: 0,
@@ -643,16 +643,16 @@ Base.prototype.destroy = function() {
 
 Base.prototype.isTouchingEdge = function() {
   if (!this._validBBox) this._computeBBox()
-  // TODO take into account scrolling!
-  const w = this.world.width, h = this.world.height
-  return this._left <= 0 || this._right >= w || this._bottom <= 0 || this._top >= h
+  const w = this.world._width, h = this.world._height
+  const sx = this.world._scrollX, sy = this.world._scrollY
+  return this._left <= +sx || this._right >= w + sx || this._bottom <= +sy || this._top >= h + sy
 }
 
 Base.prototype.isOnScreen = function() {
   if (!this._validBBox) this._computeBBox()
-  const w = this.world.width, h = this.world.height
-  // TODO take into account scrolling!
-  return this._right > 0 && this._left < w && this._top > 0 && this._bottom < h
+  const w = this.world._width, h = this.world._height
+  const sx = this.world._scrollX, sy = this.world._scrollY
+  return this._right > +sx && this._left < w + sx && this._top > +sy && this._bottom < h + sy
 }
 
 Base.prototype.touchesPoint = function(x, y) {
