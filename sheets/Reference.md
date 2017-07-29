@@ -257,7 +257,7 @@ Sprites have some useful functions attached to them.
 
   * **`sprite.lower()`**
 
-    Send the sprite to the back, below all the other sprites. **TODO**
+    Send the sprite to the back, below all the other sprites.
 
   * **`sprite.getTouching()`**
 

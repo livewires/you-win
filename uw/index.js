@@ -630,8 +630,28 @@ Base.prototype._computeBBox = function() {
   this._validBBox = true
 }
 
-// TODO Base.prototype.raise
-// TODO Base.prototype.lower
+Base.prototype.raise = function() {
+  const sprites = this.world.sprites
+  const index = sprites.indexOf(this)
+  if (index === -1) return
+  // avoid splice--shift 'em down ourselves
+  for (var i = index; i<sprites.length - 1; i++) {
+    sprites[i] = sprites[i + 1]
+  }
+  sprites[i] = this
+}
+
+Base.prototype.lower = function() {
+  const sprites = this.world.sprites
+  const index = sprites.indexOf(this)
+  if (index === -1) return
+  // avoid splice--shift 'em up ourselves
+  for (var i = index; i > 0; i--) {
+    sprites[i] = sprites[i - 1]
+  }
+  sprites[0] = this
+}
+
 
 Base.prototype.destroy = function() {
   if (this.dead) return
