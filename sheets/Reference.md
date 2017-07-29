@@ -273,9 +273,17 @@ Sprites have some useful functions attached to them.
     }
     ```
 
+  * **`sprite.getTouchingFast()`**
+
+    The same as `getTouching`, but avoids the accurate-but-slow Scratch-like pixel-perfect collision detection, which compares the images of the two sprites pixel-by-pixel.
+
   * **`sprite.isTouching(otherSprite)`**
 
     Returns `true` if the two sprites are overlapping; `false` otherwise.
+
+  * **`sprite.isTouchingFast(otherSprite)`**
+
+    The same as `isTouching`, but avoids the accurate-but-slow Scratch-like pixel-perfect collision detection, which compares the images of the two sprites pixel-by-pixel.
 
   * **`sprite.touchesPoint(x, y)`**
 
