@@ -155,9 +155,6 @@ var World = function(props) {
   window.addEventListener('resize', () => { this._needsResize = true })
   this._bindPointer()
 
-  window.addEventListener('blur', this.pause.bind(this))
-  window.addEventListener('focus', this.start.bind(this))
-
   //const de = document.documentElement
   Object.assign(this, {
     background: '#fff',
@@ -169,17 +166,22 @@ var World = function(props) {
   this.sprites = []
 
   this._frame = this._frame.bind(this)
+  this.start = this.start.bind(this)
+  this.pause = this.pause.bind(this)
+  this.stop = this.stop.bind(this)
   this.start()
 }
 emitter(World.prototype)
 
-// TODO argh
 World.prototype.start = function() {
   if (this.isRunning) return
   this.isRunning = true
   this._ticks = 0
   this._lastFrame = +new Date()
   requestAnimationFrame(this._frame.bind(this))
+
+  window.addEventListener('blur', this.pause)
+  window.addEventListener('focus', this.start)
 }
 
 World.prototype.pause = function() {
@@ -190,10 +192,12 @@ World.prototype.stop = function() {
   if (!this.isRunning) return
   this.pause()
   this._deadLoops = this._deadLoops.concat(this.listeners('frame'))
+
+  window.removeEventListener('blur', this.pause)
+  window.removeEventListener('focus', this.start)
 }
 
 World.prototype.destroy = function() {
-  if (!this.isRunning) return
   this.stop()
   for (let s of this.sprites) {
     s.destroy()
