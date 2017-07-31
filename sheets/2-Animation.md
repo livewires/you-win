@@ -1,16 +1,5 @@
 # Intro #2: Animation
 
-animation, movement, conditionals, trig
-
-- UW.forever ✔
-- assign-increment ✔
-- phone.zAngle ✔
-- events ✔
-- movement. UW.sin, UW.cos, UW.atan2 ✔
-- conditions. ✔
-- !Sprite.isOnScreen ✔
-- destroy ✔
-- setInterval? counter?
 
 ## Animation
 
@@ -21,9 +10,8 @@ So far, we've only set up static scenes. We've learnt how to position different 
   * First, start a **new project**, and make a Sprite with your favourite emoji.
 
     ```js
-    var face = new Sprite({
-      costume: '🐮',
-    })
+    var face = new Sprite
+    face.costume = '🐮'
     ```
 
 
@@ -71,7 +59,7 @@ You can make the sprite move faster by increasing the number `2`, since the spri
 
     ```js
     // ...
-      face.scale *= 1.05
+    face.scale *= 1.05
     ```
 
 
@@ -85,7 +73,7 @@ First, we need to initialise a `Phone` object, so that `you-win` knows to start 
   * Put this near the top of your program, after the `import` lines.
 
     ```js
-    var phone = new Phone()
+    var phone = new Phone
     ```
 
   * Rotate the sprite when the phone rotates.
@@ -121,11 +109,10 @@ That gets boring quickly, so let's make a projectile.
 
     ```js
     world.on('tap', e => {
-      var bullet = new Sprite({
-        costume: '👾',
-        x: e.fingerX,
-        y: e.fingerY,
-      })
+      var bullet = new Sprite
+      bullet.costume = '👾'
+      bullet.x = e.fingerX
+      bullet.y = e.fingerY
 
       // TODO: move the bullet ...
     })
@@ -193,10 +180,9 @@ Now to work out the correct angle! We need to use `atan2` for this. This is a sp
 
     ```js
     world.on('tap', e => {
-      var bullet = new Sprite({
-        // ... [go to face]
-        angle: UW.atan2(e.fingerX - face.x, e.fingerY - face.y),
-      })
+      var bullet = new Sprite
+      // ... [go to face]
+      bullet.angle = UW.atan2(e.fingerX - face.x, e.fingerY - face.y)
 
       // ... [move at an angle]
     })
@@ -297,9 +283,4 @@ However, we haven't quite cleaned up after ourselves--the forever block for the 
           return false // stop this forever block
         }
     ```
-
-
-## Other ideas
-
-* `setInterval` --for fraction-of-a-second granularity, rather than every frame
 

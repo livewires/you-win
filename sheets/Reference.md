@@ -69,12 +69,11 @@ UW.init({
 
 ### Emoji costumes
 
-Emoji costumes are loaded by default. To use them, just pass an emoji string to `Sprite`:
+Emoji costumes are loaded by default. To use them, just set your Sprite's `.costume` attribute to an emoji string:
 
 ```js
-new Sprite({
-  costume: '🙂',
-})
+var s = new Sprite
+s.costume = '🙂'
 ```
 
 The emoji costumes are sized 32x32 pixels. Most but not all emoji are included.
@@ -94,12 +93,11 @@ Set up the world after [loading your assets](#assets).
 UW.init({
     // ...
 })
-.then(() => {
+.then(world => {
     
-    var world = new World({
-        width: 480,
-        height: 360,
-    })
+    var world = new World
+    world.width = 300
+    world.height = 460
 
     // make sprites...
 
@@ -173,7 +171,8 @@ forever(() => {
 
 A **`Sprite`** is an image in the world that can be moved and rotated and so on.
 
-To create a Sprite, you must give the name of one of your costumes. You may also include additional attributes. 
+To create a Sprite, you must give the name of one of your costumes.
+(For experts: you may also include an object with additional attributes.)
 
 ```js
 UW.init({
@@ -181,14 +180,12 @@ UW.init({
 })
 .then(() => {
 
-    var cat = new Sprite({
-      costume: 'cat',
-    })
+    var cat = new Sprite
+    cat.costume = 'cat'
 
-    var bigCat = new Sprite({
-      costume: 'cat',
-      scale: 2, // twice as big
-    })
+    var bigCat = new Sprite
+    bigCat.costume = 'cat'
+    bigCat.scale = 2 // twice as big
 
 })
 ```
@@ -316,16 +313,15 @@ A **Text** object is like a Sprite, but instead of a costume, it's used to displ
 The text has a retro aesthetic. It also supports emoji (using the same emoji set as Sprites can use). Which means that this:
 
 ```js
-var text = new Text({
-    text: '⛄',
-})
+var snowy = new Text
+snowy.text = '⛄'
 ```
 
 ...is quite similar to this:
 
 ```js
-var text = new Sprite({
-    costume: '⛄',
+var snowy = new Sprite
+snowy.costume = '⛄'
 })
 ```
 
@@ -349,11 +345,11 @@ A **Polygon** is like a Sprite, but has a _shape_ instead of a costume. This sha
 Here's an example Polygon:
 
 ```js
-new Polygon({
-    points: [[0, 0], [0, 32], [32, 32], [32, 0]],
-    fill: '#007de0',
-    outline: 'black',
-    thickness: 2,
+var p = new Polygon
+p.points = [[0, 0], [0, 32], [32, 32], [32, 0]]
+p.fill = '#007de0'
+p.outline = 'black'
+p.thickness = 2
 })
 ```
 
@@ -364,7 +360,7 @@ new Polygon({
     A list of points. Each point is a 2-element list with the `x` and `y` coordinates (relative to the polygon's center), like so:
 
     ```js
-      points: [[0, 0], [-16, 20], [16, 20]],
+    p.points = [[0, 0], [-16, 20], [16, 20]]
     ```
 
   * **`polygon.fill`**
@@ -428,10 +424,10 @@ If you're testing your game on a computer, mouse clicks and drags will work to s
 ```js
 world.on('tap', e => {
     // make a ball where you clicked
-    var ball = new Sprite('beachball', {
-        x: e.fingerX,
-        y: e.fingerY,
-    })
+    var ball = new Sprite
+    ball.costume = 'beachball'
+    ball.x = e.fingerX
+    ball.y = e.fingerY
 
     ball.on('tap', e => {
         // flip
@@ -448,7 +444,8 @@ world.on('tap', e => {
 ### Dragging sprites around
 
 ```js
-var ball = new Sprite('beachball')
+var ball = new Sprite
+ball.costume = 'beachball'
 ball.on('drag', e => {
     // move when dragged
     ball.x += e.deltaX
@@ -472,7 +469,7 @@ ball.on('drag', e => {
 You need to make a `Phone` object before you can access the readings:
 
 ```js
-var phone = new Phone()
+var phone = new Phone
 ```
 
 It has the following attributes which you can get:

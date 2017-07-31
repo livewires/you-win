@@ -419,6 +419,8 @@ const Costume = function(canvas) {
   this._context = canvas.getContext('2d')
 }
 
+Costume.blank = new Costume(document.createElement('canvas'))
+
 Costume.prototype.draw = function(context, x=0, y=0) {
   context.drawImage(this._canvas, x, y)
 }
@@ -457,7 +459,9 @@ Costume.load = function(url) {
 }
 
 Costume.get = function(name) {
-  if (name.constructor === Costume || name.constructor === SliceCostume) {
+  if (name === '') {
+    return Costume.blank
+  } else if (name.constructor === Costume || name.constructor === SliceCostume) {
     return name
   } else if (testEmoji.test(name)) {
     return Costume._emoji(name)
@@ -793,7 +797,9 @@ Base.prototype.getTouchingFast = function() {
 /* Sprite */
 
 const Sprite = function(props) {
-  if (!props.costume) { throw new Error('Sprite needs costume') }
+  var props = Object.assign({
+    costume: '',
+  }, props || {})
   Base.call(this, props, function(props) {
     this.costume = props.costume
   })
@@ -910,7 +916,7 @@ const Text = function(props) {
     fill: '#000',
     scale: 1,
   }, props || {})
-  if (props.text === undefined) { throw new Error('Text needs text') }
+  //if (props.text === undefined) { throw new Error('Text needs text') }
   Base.call(this, props, function(props) {
     this._fill = props.fill
     this.text = props.text // draw shape
@@ -999,9 +1005,6 @@ const Polygon = function(props) {
     closed: undefined,
   }, props || {})
   if (props.closed === undefined) props.closed = !!props.fill
-  if (!props.fill && !props.outline) {
-    throw new Error('Polygon needs either fill or outline')
-  }
   Base.call(this, props, function(props) {
     this._fill = props.fill
     this._outline = props.outline
@@ -1034,9 +1037,6 @@ const Rect = function(props) {
     height: 1,
   }, props || {})
   if (props.closed === undefined) props.closed = !!props.fill
-  if (!props.fill && !props.outline) {
-    throw new Error('Rect needs either fill or outline')
-  }
   this._closed = true
   Base.call(this, props, function(props) {
     this._fill = props.fill
