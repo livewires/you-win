@@ -17,22 +17,10 @@ Because `game-over` was taken.
 
  1. **Install [Node.js](https://nodejs.org/en/download/)**, which includes NPM.
 
- 2. Make sure you have the **latest version of NPM**.
+ 2. **Install `you-win` globally**.
 
     ```sh
-    $ npm install -g npm@5
-    ```
-
-    If that doesn't work, try using `sudo`:
-
-    ```sh
-    $ sudo npm install -g npm@5
-    ```
-
- 3. **Install `you-win` globally**.
-
-    ```sh
-    $ npm install -g https://github.com/livewires/you-win.git
+    $ npm install -g you-win
     ```
 
 
