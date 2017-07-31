@@ -129,7 +129,6 @@ World has the following methods:
 
   * **`world.stop()`**
 
-    **TODO** implement
 
 ### forever
 
@@ -242,11 +241,13 @@ Sprites have quite a few attributes which you can change. You can also set their
     > **Important:** you usually need to assign these last. If you set the the position of an edge, and then for example change the `scale`, the edge won't line up anymore! So make sure you set edge positions after setting the other attributes.
     
 
+<!--
   * **`sprite.xOffset`** / **`sprite.yOffset`**
 
     The offset between the sprite's position, and the bottom-left corner of the sprite. The default is minus half the width and height of the costume, respectively, so that the sprite's costume is centered on the sprite's position.
 
     Usually you don't need to change this.
+-->
 
 
 Sprites have some useful functions attached to them.
@@ -310,20 +311,42 @@ Sprites have some useful functions attached to them.
 
 ## Text
 
-**TODO**: document
+A **Text** object is like a Sprite, but instead of a costume, it's used to display _text_.
 
-  * **`sprite.text`**
+The text has a retro aesthetic. It also supports emoji (using the same emoji set as Sprites can use). Which means that this:
 
-    The text to display. Note that the Text's `x` / `y` position is measured to its bottom-left corner.
+```js
+var text = new Text({
+    text: '⛄',
+})
+```
 
-  * **`sprite.fill`**
+...is quite similar to this:
+
+```js
+var text = new Sprite({
+    costume: '⛄',
+})
+```
+
+`Text` objects have all the same attributes as a [Sprite](#sprite)--but instead of a `costume`, they have the following:
+
+  * **`obj.text`**
+
+    The text to display. Note that the Text's `x` / `y` position is measured from its bottom-left corner, unlike a Sprite (which is measured to the center of the image).
+
+  * **`obj.fill`**
 
     The color of the text, e.g. `text.fill = '#007de0'`
 
 
 ## Polygon
 
-**TODO** refactor Costume.polygon -> Polygon 'class'
+A **Polygon** is like a Sprite, but has a _shape_ instead of a costume. This shape is defined using a list of points. Examples include making a filled rectangle, a triangle with a fill and an outline, and thick lines.
+
+<img src="figs/polygons.png" width=200>
+
+Here's an example Polygon:
 
 ```js
 new Polygon({
@@ -334,29 +357,33 @@ new Polygon({
 })
 ```
 
-A Polygon has all the same attributes as a [Sprite](#sprite)--but instead of a `costume`, it has the following:
+`Polygon`s have all the same attributes as a [Sprite](#sprite)--but instead of a `costume`, they have the following:
 
-  * **`sprite.points`**
+  * **`polygon.points`**
 
-    A list of points. Each point is a 2-element list, like so:
+    A list of points. Each point is a 2-element list with the `x` and `y` coordinates (relative to the polygon's center), like so:
 
-  * **`sprite.fill`**
+    ```js
+      points: [[0, 0], [-16, 20], [16, 20]],
+    ```
+
+  * **`polygon.fill`**
 
     The color of the text, e.g. `text.fill = '#007de0'`.
 
     Leave out this setting, or set it to `null`, for no fill (just an outline).
 
-  * **`sprite.outline`**
+  * **`polygon.outline`**
 
     The outline color, e.g. `shape.outline = 'black'`.
     
     Leave out this setting, or set it to `null`, for no outline. You must specify _either_ a fill or an outline (or both).
 
-  * **`sprite.thickness`**
+  * **`polygon.thickness`**
 
     How thick to draw the outline (in pixels). Defaults to 2.
 
-  * **`sprite.closed`**
+  * **`polygon.closed`**
 
     Whether the last point should be joined to the first one, to make a closed shape.
     
@@ -457,23 +484,79 @@ It has the following attributes which you can get:
 
 ## Sound
 
-**TODO**
+To use sounds, make sure to `import {Sound} from 'you-win'`.
 
+To load a sound , use `Sound.load`. See [Assets](#assets) for details on the `static/` folder and where to put your sound files.
+
+```js
+UW.init({
+  moo: Sound.load('/moo.wav'),
+})
+.then(() => {
+
+})
+```
+
+Before you can play your sound, you must create a `Sound` object.
+
+```js
+  var sound = new Sound('moo')
+```
+
+Finally, you can play your sound at the appropriate time.
+
+```js
+    sound.play()
+```
 
 ### Maths
 
-**TODO**: document
+Some built-in maths utilities.
 
   * **`UW.range([start], end, [step])`**
+
+    Return a list of numbers starting at `start` (default `0`), and ending before `end`. Behaves identically to Python's `range()`.
+    
+    The optional `step` argument (default `1`) is how much to move between each item. 
+
+    ```js
+    UW.range(5) // => [0, 1, 2, 3, 4]
+    UW.range(5, 10) // => [5, 6, 7, 8, 9]
+    UW.range(10, 20, 2) // => [10, 12, 14, 16, 18]
+    UW.range(0, -5, -1) // => [0, -1, -2, -3, -4]
+    ```
+
+  * **`UW.dist(dx, dy)`**
+    
+    The distance between (0, 0) and (dx, dy), calculated using Pythagoras' Theorem.
+
+Some trigonometric functions. These work in degrees, unlike the ones built-in to JavaScript which use radians.
+
   * **`UW.sin(deg)`**
   * **`UW.cos(deg)`**
   * **`UW.atan2(x, y)`**
-  * **`UW.dist(dx, dy)`**
+
 
 ### Random
 
-**TODO**: document
+Some built-in ways of getting random things are included.
 
   * **`UW.randomInt(from, to)`**
+
+    Return a random integer (whole number) between `from` and `to`, inclusive.
+
+    ```js
+    UW.randomInt(1, 3) // => 2
+    UW.randomInt(1, 3) // => 1
+    UW.randomInt(1, 3) // => 3
+    ```
+
   * **`UW.randomChoice(array)`**
+
+    Return a randomly-selected item of an array.
+
+    ```js
+    UW.randomChoice(['🐄', '🐑', '🐎']) // => '🐑'
+    ```
+
 
