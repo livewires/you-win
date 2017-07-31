@@ -21,7 +21,7 @@ So far, we've only set up static scenes. We've learnt how to position different 
   * First, start a **new project**, and make a Sprite with your favourite emoji.
 
     ```js
-    var face = = new Sprite({
+    var face = new Sprite({
       costume: '🐮',
     })
     ```
