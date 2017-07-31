@@ -1,6 +1,6 @@
 {
   "name": "you-win",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "a friendly games library for geeky people who've probably used Scratch before",
   "bin": {
     "you-win": "server.js"
