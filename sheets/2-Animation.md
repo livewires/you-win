@@ -21,7 +21,7 @@ We need a way to react to time passing. We do this by using **`forever`** to run
 
 ```js
 forever(() => {
-  // do stuff
+    // do stuff
 })
 ```
 
@@ -33,7 +33,7 @@ We can use `forever` to make our sprite spin!
 
     ```js
     forever(() => {
-      face.angle += 1
+        face.angle += 1
     })
     ```
 
@@ -49,17 +49,16 @@ Now we know the basics of animation, lets try some simple movement.
 
     ```js
     forever(() => {
-      face.x += 2
+        face.x += 2
     })
     ```
 
 You can make the sprite move faster by increasing the number `2`, since the sprite will move further on each frame.
 
-  * **Challenge**: experiment with animating other properties, like increasing scale:
+  * **Challenge**: experiment with animating other properties, like gradually increasing scale:
 
     ```js
-    // ...
-    face.scale *= 1.05
+        face.scale *= 1.05
     ```
 
 
@@ -80,7 +79,7 @@ First, we need to initialise a `Phone` object, so that `you-win` knows to start 
 
     ```js
     forever(() => {
-      face.angle = phone.zAngle
+        face.angle = phone.zAngle
     })
     ```
 
@@ -97,7 +96,7 @@ Let's have our face shoot out a projectile toward our finger when we tap.
 
     ```js
     world.on('tap', e => {
-      alert("don't touch this")
+        alert("don't touch this")
     })
     ```
 
@@ -109,12 +108,12 @@ That gets boring quickly, so let's make a projectile.
 
     ```js
     world.on('tap', e => {
-      var bullet = new Sprite
-      bullet.costume = '👾'
-      bullet.x = e.fingerX
-      bullet.y = e.fingerY
+        var bullet = new Sprite
+        bullet.costume = '👾'
+        bullet.x = e.fingerX
+        bullet.y = e.fingerY
 
-      // TODO: move the bullet ...
+        // TODO: move the bullet ...
     })
     ```
 
@@ -126,12 +125,12 @@ Now let's try moving our projectile!
 
     ```js
     world.on('tap', e => {
-      // ... [make the bullet]
+        // ... [make the bullet]
 
-      forever(() => {
-        bullet.x += 3
-        bullet.y += 3
-      })
+        forever(() => {
+            bullet.x += 3
+            bullet.y += 3
+        })
     })
     ```
 
@@ -161,12 +160,12 @@ Currently, our bullets all go at 45°, which is dull. Let's fire them out at a r
 
     ```js
     world.on('tap', e => {
-      // ... [make the bullet, with random angle]
+        // ... [make the bullet, with random angle]
 
-      forever(() => {
-        bullet.x += 4 * UW.sin(bullet.angle)
-        bullet.y += 4 * UW.cos(bullet.angle)
-      })
+        forever(() => {
+            bullet.x += 4 * UW.sin(bullet.angle)
+            bullet.y += 4 * UW.cos(bullet.angle)
+        })
     })
     ```
 
@@ -180,11 +179,11 @@ Now to work out the correct angle! We need to use `atan2` for this. This is a sp
 
     ```js
     world.on('tap', e => {
-      var bullet = new Sprite
-      // ... [go to face]
-      bullet.angle = UW.atan2(e.fingerX - face.x, e.fingerY - face.y)
+        var bullet = new Sprite
+        // ... [go to face]
+        bullet.angle = UW.atan2(e.fingerX - face.x, e.fingerY - face.y)
 
-      // ... [move at an angle]
+        // ... [move at an angle]
     })
     ```
 
@@ -225,7 +224,7 @@ Let's see what we can do with conditions.
     var velocity = 2
 
     forever(() => {
-      face.x += velocity
+        face.x += velocity
     })
     ```
 
@@ -235,10 +234,10 @@ We're moving him to the right (increasing x). This time, we're using a variable 
 
     ```js
     forever(() => {
-      face.x += velocity
-      if (world.width < face.right) {
-        velocity = -2
-      }
+        face.x += velocity
+        if (world.width < face.right) {
+            velocity = -2
+        }
     })
     ```
 
@@ -267,7 +266,7 @@ Finally, if we don't destroy the bullets, eventually the game will get really sl
 
     ```js
         if (!bullet.isOnScreen()) {
-          bullet.destroy()
+            bullet.destroy()
         }
     ```
 
@@ -279,8 +278,8 @@ However, we haven't quite cleaned up after ourselves--the forever block for the 
 
     ```js
         if (!bullet.isOnScreen()) {
-          bullet.destroy()
-          return false // stop this forever block
+            bullet.destroy()
+            return false // stop this forever block
         }
     ```
 
