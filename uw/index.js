@@ -148,10 +148,6 @@ var World = function(props) {
   this._resize()
   this._deadLoops = []
 
-  if (props.title) {
-    document.title = props.title
-  }
-
   window.addEventListener('resize', () => { this._needsResize = true })
   this._bindPointer()
 
@@ -282,6 +278,9 @@ prop(World, 'scrollX', num, function() { this._fixFingers() })
 prop(World, 'scrollY', num, function() { this._fixFingers() })
 prop(World, 'background', str, function(background) {
   this._wrap.style.background = background
+})
+prop(World, 'title', str, title => {
+  document.title = title
 })
 
 World.prototype._bindPointer = function(e) {
