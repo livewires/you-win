@@ -11,8 +11,6 @@ UW.init({
     var world = new World
     world.title = ''
     world.background = 'white'
-    world.width = 300
-    world.height = 460
 
     // ...
 

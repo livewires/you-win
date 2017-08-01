@@ -24,6 +24,24 @@ Because `game-over` was taken.
     ```
 
 
+## Getting Started ##
+
+Open a terminal (**Command Prompt** on Windows, **Terminal** on macOS/Linux).
+
+  * Use the `cd` command to move into the directory of your choice.
+  * Start a new project, by typing:
+
+    ```
+    you-win first.js
+    ```
+
+This will create a new game from the `you-win` template, which should save you a bit of typing.
+
+Open the `first.js` file you just created in your favourite text editor: for example **Gedit** (Ubuntu only), **VSCode**, **Brackets**, or **Sublime Text**. The template should look [like this](https://github.com/livewires/you-win/blob/master/README.md).
+
+Back in your Terminal, you should see a web address output to the console, eg `http://192.168.1.10:8000/`. Open that address in a web browser, preferably **Chromium** or **Google Chrome**. (You can also open the same link on your phone.)
+
+
 ## Credits ##
 
 * Emoji artwork provided by [EmojiOne](https://www.emojione.com/). A kid-friendly subset of emoji are included with the `you-win` dibstribution. The images are scaled down and palletised for compression and "retro" look. I believe this complies with the [Free License Agreement](https://d2gx6z0drfblcq.cloudfront.net/license-free.pdf).
