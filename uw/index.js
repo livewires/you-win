@@ -996,10 +996,7 @@ Costume._polygon = function(props) {
     ctx.lineWidth = props.thickness
     ctx.stroke()
   }
-  const c = new Costume(canvas)
-  c.xOffset = -minX - 2 * margin // 2*? weird.
-  c.yOffset = minY + 2 * margin
-  return c
+  return new Costume(canvas)
 }
 
 const Polygon = function(props) {
