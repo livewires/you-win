@@ -346,3 +346,18 @@ Excellent work! You've learnt how to:
   * Using `if` for **conditions**
   * `destroy`-ing Sprites when you're finished with them
 
+
+## What next?
+
+If you want something else to try, here are some extensions to try! Why not:
+
+  * Carry on moving the bullets at an angle, but have their picture stay upright.
+
+    _Hint: you'll need a `var` statement for this--but make sure you get it in the right place!_
+
+    _Hint #2: the relevant phenomenon here is called "scope", and it's hard to understand, so ask someone to explain it to you!_
+
+  * Generally have a play around with the thing you just made, or more generally, everything you've learnt in chapters 1 and 2.
+
+    Come back when you're ready for the next thing 🙃
+
