@@ -1,11 +1,24 @@
 
-For making mobile apps.
+Mobile games for beginners.
 
 ## Docs ##
 
-The plan is to make a tutorial-style course for teaching JS/this lib.
+Setup:
 
-For now, there's an [API Reference](sheets/Reference.md).
+  * [Install](#installing)
+  * [Getting Started](#getting-started)
+
+Tutorial-style guide for beginners to JS:
+
+  * [Intro #1: **Numbers**](sheets/1-Numbers.md)
+  * [Intro #2: **Animation**](sheets/2-Animation.md)
+  * Intro #3: Functions **TODO**
+  * Intro #4: Arrays **TODO**
+  * [Game: **Jump**](sheets/Jump.md) (a _Doodle Jump_ clone)
+
+Library documentation:
+
+  * [API Reference](sheets/Reference.md).
 
 
 ### Why "you-win"? ###
@@ -37,7 +50,7 @@ Open a terminal (**Command Prompt** on Windows, **Terminal** on macOS/Linux).
 
 This will create a new game from the `you-win` template, which should save you a bit of typing.
 
-Open the `first.js` file you just created in your favourite text editor: for example **Gedit** (Ubuntu only), **VSCode**, **Brackets**, or **Sublime Text**. The template should look [like this](https://github.com/livewires/you-win/blob/master/README.md).
+Open the `first.js` file you just created in your favourite text editor: for example **Gedit** (Ubuntu only), **VSCode**, **Brackets**, or **Sublime Text**. The template should look [like this](https://github.com/livewires/you-win/blob/master/template.js).
 
 Back in your Terminal, you should see a web address output to the console, eg `http://192.168.1.10:8000/`. Open that address in a web browser, preferably **Chromium** or **Google Chrome**. (You can also open the same link on your phone.)
 
