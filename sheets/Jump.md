@@ -2,7 +2,7 @@
 
 We're going to make a _Doodle Jump_ clone!
 
-The game is a game about bouncing on platforms to get higher and higher...forever. Your score is based on how high you can jump. You'll tilt the phone left and right to control the game.
+The game is about bouncing on platforms to get higher and higher...forever. Your score is based on how high you can jump. You'll tilt the phone left and right to control the game.
 
 
 ## Starting out
@@ -27,7 +27,7 @@ The game is a game about bouncing on platforms to get higher and higher...foreve
 
 The first thing to do is to make our player fall down.
 
-We can simulate gravity using a **constant acceleration**. As you should know from Maths or Physics class, that means we need to keep track of **velocity**. Let's add a variable for just that.
+We can simulate gravity using a **constant acceleration**. As you should know from Maths or Physics class, that means we need to keep track of **velocity** (speed and direction). Let's add a variable for just that.
 
   * Add a variable called `velY`, which stores a number.
 
@@ -84,7 +84,7 @@ Save. Check the platform appears below the player!
 
 ## Bouncing
 
-Currently our player falls through the platform entirely. That's no good! Let's sort that out.
+Currently our player falls through the platform entirely. Let's sort that out.
 
 We can use `isTouching` to check for collisions between different objects. `isTouching` returns a Boolean value (`true` or `false`), which we can use inside an `if` condition.
 
@@ -108,7 +108,7 @@ We can use `isTouching` to check for collisions between different objects. `isTo
 
 ## Functions
 
-A game with just one platform isn't any good, so we need to make some more. But we don't want to copy/paste the code every time we make a platform--that would be no good at all!
+A game with just one platform isn't very impressive, so we need to add some more. But we don't want to copy/paste the code every time we make a platform--that would be no good at all!
 
 What we want to do is to move the code for making a platform into a **function**. A function (aka. procedure, aka. "custom block" from Scratch) lets you give a **name** to a piece of code, so you can refer to it by name.
 
@@ -143,7 +143,7 @@ Now we can easily make more platforms!
     // ...
     ```
 
-The platforms are all being made at the same height! That's no good; we want to make each platform higher than the last. Let's make a variable at the beginning of our program, to keep track of the height of the last one...
+The platforms are all being made at the same height - we really want to make each platform higher than the last. Let's make a variable at the beginning of our program, to keep track of the height of the last one...
 
   * Create a `lastY` variable.
 
@@ -152,7 +152,7 @@ The platforms are all being made at the same height! That's no good; we want to 
     ```
     _Add this before the `makePlatform` function._
 
-Make sure not to put this _inside_ `makePlatform`, or you'll get a **different** version of the `lastY` variable each time. We need to remember it between calls to our function, so it has to go outside of it.
+Make sure not to put this _inside_ `makePlatform`, or you'll get a **different** version of the `lastY` variable each time. We need to remember it between calls to our function, so it has to go outside.
 
 Now let's use it.
 
@@ -169,7 +169,7 @@ Now let's use it.
 
 ## Scrolling
 
-Now we've got some platforms to climb, we need to add scrolling, so that we can move up the platforms.
+Now we've got some platforms to climb, we need to add scrolling so we can move up the platforms.
 
 In _Doodle Jump_, the screen only ever scrolls up; never down. This is because the way for the game to end, is for the player to fall off the bottom of the screen!
 
