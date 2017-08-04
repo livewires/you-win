@@ -6,8 +6,15 @@ const {emojiList, splitEmoji, testEmoji} = require('./emojis')
 const {Asset, Request} = require('./assets')
 
 
-let num = x => +x
-let round = x => x < 0 ? (x - 0.5)|0 : (x + 0.5)|0
+let num = x => {
+  const n = +x
+  if (isNaN(n)) throw new Error('not a number: ' + x)
+  return n
+}
+let round = x => {
+  const n = num(x)
+  return n < 0 ? (n - 0.5)|0 : (n + 0.5)|0
+}
 let bool = x => !!x
 let str = x => {
   if (x === null) return ''
