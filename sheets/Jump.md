@@ -1,13 +1,13 @@
 # The Infinite Jumping Game
 
-- attach forever to object 
-- explain functions
-- (explain Arrays?)
+We're going to make a _Doodle Jump_ clone!
+
+The game is a game about bouncing on platforms to get higher and higher...forever. Your score is based on how high you can jump. You'll tilt the phone left and right to control the game.
 
 
 ## Starting out
 
-  * Set the `width` and `height` of your world
+  * Set the `width` and `height` of your world.
 
     ```js
     world.width = 300
@@ -175,7 +175,7 @@ In _Doodle Jump_, the screen only ever scrolls up; never down. This is because t
 
 We can scroll by changing `world.scrollY`. The `.scrollX` and `.scrollY` values are an **offset** added to the position of everything in the world, so you can use them to scroll around.
 
-We only want to scroll up, never down. We can do this by comparing the player's height -- `player.y` -- with the current scroll position -- `world.scrollY`.
+We only want to scroll up, never down. We can do this by comparing the player's height, `player.y`, with the current scroll position, `world.scrollY`.
 
   * Scroll up when the player is near the top of the screen.
 
@@ -190,16 +190,38 @@ You can tweak the number `300` to taste, to control how far up the screen the pl
 
 ## More Platforms!
 
+When we scroll up far enough, we run out of platforms.
+
+We could keep adding more by copy/pasting the `makePlatform()` line, but that doesn't seem sensible; however many we'll have, we'll run out eventually! Let's delete all but one of our `makePlatform()` calls, and have our game make 'em automatically.
+
+To do this, we need to compare the current scroll position, `world.scrollY`, with the y position of the last platform we made: which we stored in the `lastY` variable.
+
+  * **Challenge:** if the last platform is below the _top_ of the screen, make a new platform.
+
+    _Write this inside the `forever` loop for the **player**._
+
+    _Hint: you'll want to add the height of the screen to `world.scrollY`._ 
+
 
 ## Bouncing, take 2
 
-XXX need to check we're moving down
+At this point, you might notice that when we touch a platform, it gives us a push upwards... even if we're already moving upwards! That's just plain wrong.
 
-  * XXX
+We could check whether we're touching the bottom or the top of the platform, but that sounds tricky.
+
+Instead, let's check that we're moving downwards. We can do this by checking the `velY` variable, since that gives us our current speed and direction: it's positive when we're moving upward, and negative when we're moving downwards.
+
+  * **Challenge**: change the `if` so that we only bounce if both we're touching a platform **and** we're moving downwards.
+
+    You learnt about conditions [in chapter 2](2-Animation.md#conditions).
+
+    _Make sure you get the brackets in the right place! The **condition** for an if always has to be written in brackets._ 
 
     ```js
-    platform.isTouching(player) && velY < 0)
+    if ( … && … ) {
     ```
+
+Make sure the bouncing looks right now.
 
 
 ## Movement
@@ -208,9 +230,7 @@ In _Doodle Jump_, the player moves when you tilt the phone.
 
 We can read the phone's accelerometer to get the angle the phone's being held at, compared to gravity.
 
-Like last time we did this  
-First, we need to initialise a `Phone` object, so that `you-win` knows to start reading the phone's orientation sensors.
-
+Like last time, we need to initialise a `Phone` object, so that `you-win` knows to start reading the phone's orientation sensors.
 
   * Put this near the top of your program, after the `import` lines.
 
@@ -226,7 +246,9 @@ First, we need to initialise a `Phone` object, so that `you-win` knows to start 
     var phone = new Phone
     ```
 
-Now we can use `phone.zAngle` to get the **angle** at which the phone is held. But we need a **difference in X**. Think back to the bullets from chapter two: to turn an angle into a difference in X, we use trig--specifically, `UW.sin`.
+Now we can use `phone.zAngle` to get the **angle** at which the phone is held. But to move the player horizontally, we need a **difference in X**.
+
+Think back to the bullets from chapter two: to turn an angle into a difference in X, we use trigonometry: specifically, `UW.sin`.
 
   * Move the player horizontally when the phone is tilted.
 
@@ -240,7 +262,7 @@ The number `5` is a multiplier controlling how **fast** the player moves when yo
 
 ### Wrapping ###
 
-XXX
+In _Doodle Jump_, the player can "wrap" from one side of the screen to the other: when you go off the right, you appear back on the left side, and vice-versa.
 
   * Wrap when we go past the right-hand side of the screen.
   
@@ -254,12 +276,27 @@ XXX
   * Challenge: wrap when you go past the left-hand side of the screen.
 
 
-## Shooting
+## What next?
 
+* Different kinds of platforms!
 
-## Moving Platforms
+  Use `UW.randomChoice` to pick the kind of platform:
 
+* Trampolines which bounce you higher.
 
-## Moving Platforms
+  Bonus: an animation which rotates the player after he jumps off a trampoline!
 
+* Springs which bounce you even higher.
+
+* Platforms which move from side to side.
+
+* Randomly vary the distance between different kinds of platforms.
+
+  The springs can have a larger distance after them.
+
+  You can increase the minimum distance as you get higher, so it gets more difficult the higher up you get.
+
+* Add enemies which you have to avoid.
+
+* Let the player shoot bullets at the enemies to kill them!
 
