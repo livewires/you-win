@@ -56,11 +56,17 @@ Let's do that now!
 
   * Set the `width` and `height` of the world.
 
+    <s>
+    ```js
+    // ...
+    ```
+    </s>
+
     ```js
     world.width = 300
     world.height = 460
     ```
-    _Add this below the existing lines of code._
+    _Add this where the comment with three dots '...' is._
 
     To change the attributes of an object in JavaScript, we write the name of the object, followed by a dot, and then `=`, and then the new value.
 
@@ -89,12 +95,12 @@ We use the `var` keyword so we have a name to refer to our Sprite with.
 
 As before, we can set object attributes using "dot notation", and giving it the new value.
 
-Here are some kinds of values:
+Here are some kinds of values: _(These are just examples, don't type them in!)_
 
   * **Boolean**: either `true` or `false`.
 
     ```js
-    poop.flipped = true // face the other way
+    foo.flipped = true // face the other way
     ```
 
   * **Number**: e.g. `123` or `3.14`.
@@ -115,8 +121,8 @@ When we make a sprite, we get to specify its initial values. We can change any o
 
 Here are some other properties you can try:
 
-  * `opacity` (a number, starting at `1.0`)
-  * `angle` (a number, starting at `0`)
+  * `opacity` (a number between 0 and 1, starting at `1.0`)
+  * `angle` (a number, in degrees, starting at `0`)
   * `flipped` (a boolean, initially `false`)
 
 
@@ -153,6 +159,12 @@ We can add other Sprites, too!
 So we use `.x` and `.y` to set the **center** of the sprite.
 
 As well as those, we can use `.top`, `.bottom`, `.left`, and `.right`--which are the co-ordinates of the **edges** of the sprite.
+ 
+  * Move the cow to touch the left side of the screen.
+
+    ```js
+    cow.left = 0
+    ```
 
   * Move the poop to be to the right of the cow.
 
@@ -166,7 +178,7 @@ As well as those, we can use `.top`, `.bottom`, `.left`, and `.right`--which are
     ```js
     poop.left = cow.right
     ```
-    _Add this line._
+    _Add this line. Make sure it's after **both** of the `poop` and `cow` variables have been created._
 
 This moves the poop so that his left edge is the same as the right edge of the cow.
 
@@ -213,7 +225,7 @@ When you're a beginner programmer, it's traditional to introduce yourself by say
     ```
 
 
-## Fin
+## The End
 
 Good job! Now you know how to:
 

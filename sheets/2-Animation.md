@@ -110,6 +110,8 @@ First, we need to initialise a `Phone` object, so that `you-win` knows to start 
 
   * **Challenge**: what happens if you use negative `zAngle`?
 
+    (This might not make sense, depending on whether you're using an iPhone. THe idea is that the face always stays upright while you rotate the phone! Feel free to skip this if it doesn't make sense.)
+
 
 ## Events
 
@@ -315,6 +317,7 @@ Finally, if we don't destroy the bullets, eventually the game will get really sl
             bullet.destroy()
         }
     ```
+    _This should go inside the bullet's `forever`, just after the code to move it._
 
 The `destroy()` function attached to a Sprite removes it from the screen permanently.
 
@@ -330,9 +333,9 @@ However, we haven't quite cleaned up after ourselves--the forever block for the 
     ```
 
 
-## The End
+## Fin
 
-Good job! You've learnt how to:
+Excellent work! You've learnt how to:
 
   * do something over time with **`forever`**
   * **Change attributes** using `+=`
