@@ -1,3 +1,7 @@
+---
+title: "#2: Animation"
+---
+
 # Intro #2: Animation
 
 
@@ -359,5 +363,5 @@ If you want something else to try, here are some extensions to try! Why not:
 
   * Generally have a play around with the thing you just made, or more generally, everything you've learnt in chapters 1 and 2.
 
-    Come back when you're ready for the next thing 🙃
+    Come back when you're ready for the [next thing](Jump) 🙃
 

@@ -1,3 +1,7 @@
+---
+title: "#3: Arrays"
+---
+
 # Intro #3: Arrays
 
 arrays, collisions, picking random items

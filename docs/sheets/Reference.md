@@ -1,3 +1,6 @@
+---
+title: API Reference
+---
 
 # you-win: API Reference
 

@@ -1,3 +1,7 @@
+---
+title: "#1: Numbers"
+---
+
 # Intro #1: Numbers
 
 ## Getting Started
@@ -236,5 +240,5 @@ Good job! Now you know how to:
   * Set the **position** of objects inside the world
   * How to **pick random numbers** using `UW.randomInt`
 
-Let's continue on to [chapter two](#2-Animation.md)!
+Let's continue on to [chapter two](2-Animation)!
 

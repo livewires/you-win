@@ -1,0 +1,48 @@
+<!doctype html>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width, initial-scale=1.0">
+<title>you-win: {{title}}</title>
+
+<style>
+</style>
+<link rel=stylesheet href=/theme.css>
+
+<body class=has-nav>
+
+<nav id=nav>
+    <ul>
+        <h1 class=logo><span /></h1>
+        <a class=site href="https://github.com/livewires/you-win">you-win</a>
+
+    {{#each docs}}
+        {{#if (eq title ../title)}}
+        <li class=page>
+            <a href="#" class=page-title-active>{{title}}</a>
+            {{#if headings.length}}
+            <ul>
+                {{#each headings}}
+                <li class=page-heading><a href="#{{id}}">{{text}}</a>
+                {{/each}}
+            </ul>
+            {{/if}}
+        </li>
+        {{else}}
+        <li class=page><a href="/{{paths.name}}">{{title}}</a>
+        {{/if}}
+    {{/each}}
+    </ul>
+</nav>
+
+<div class=prose>
+{{{ contents }}}
+</div>
+
+<script async id=highlight-js src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+document.querySelector('#highlight-js').addEventListener('load', function() {
+    [].slice.apply(document.querySelectorAll('pre code')).forEach(function(b) {
+        hljs.highlightBlock(b)
+    })
+})
+</script>
+

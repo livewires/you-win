@@ -1,4 +1,9 @@
-## Intro #4: Functions
+---
+title: "#4: Functions"
+headings: true
+---
+
+# Intro #4: Functions
 
 Functions, scope, Promises, Sounds
 

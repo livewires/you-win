@@ -1,3 +1,7 @@
+---
+title: Infinite Jump!
+---
+
 # The Infinite Jumping Game
 
 We're going to make a _Doodle Jump_ clone!
