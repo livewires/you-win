@@ -78,16 +78,15 @@ sudo apt-get install -y build-essential
 <p>This will create a new game from the <code>you-win</code> template, which should save you a bit of typing.</p>
 <p>Now open the <code>first.js</code> file you just created in your favourite text editor. Text editors include <strong>Gedit</strong> (Ubuntu only), <strong>VSCode</strong>, <strong>Brackets</strong>, or <strong>Sublime Text</strong>.</p>
 <p>The template should look <a href="https://github.com/livewires/you-win/blob/master/template.js">like this</a>:</p>
-<pre><code class="lang-js">import * as UW from &#39;you-win&#39;
-import {forever, Phone, World, Sprite, Text, Polygon, Rect, Sound} from &#39;you-win&#39;
+<pre><code class="lang-js">const uw = require(&#39;you-win&#39;)
 
-// var phone = new Phone
+// var phone = new uw.Phone
 
-UW.init({
+uw.init({
 })
 .then(() =&gt; {
 
-    var world = new World
+    var world = new uw.World
     world.title = &#39;&#39;
     world.background = &#39;white&#39;
 

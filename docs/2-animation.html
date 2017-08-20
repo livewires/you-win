@@ -44,14 +44,14 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
 <p><strong>Animation</strong> means to give an appearance of movement. We do this by <strong>changing values over time</strong>.</p>
 <ul>
 <li><p>First, start a <strong>new project</strong>, and make a Sprite with your favourite emoji.</p>
-<pre><code class="lang-js">var face = new Sprite
+<pre><code class="lang-js">var face = new uw.Sprite
 face.costume = &#39;🐮&#39;
 </code></pre>
 </li>
 </ul>
 <h3 id="forever">Forever</h3>
 <p>We need a way to react to time passing. We do this by using <strong><code>forever</code></strong> to run code on every <em>frame</em>.</p>
-<pre><code class="lang-js">forever(() =&gt; {
+<pre><code class="lang-js">uw.forever(() =&gt; {
     // do stuff
 })
 </code></pre>
@@ -107,12 +107,12 @@ face.costume = &#39;🐮&#39;
 </li>
 <li><p>Rotate the sprite when the phone rotates.</p>
 <p><s></p>
-<pre><code class="lang-js">forever(() =&gt; {
+<pre><code class="lang-js">uw.forever(() =&gt; {
     // whatever you had before
 })
 </code></pre>
 <p></s></p>
-<pre><code class="lang-js">forever(() =&gt; {
+<pre><code class="lang-js">uw.forever(() =&gt; {
     face.angle = phone.zAngle
 })
 </code></pre>
@@ -126,7 +126,7 @@ face.costume = &#39;🐮&#39;
 <ul>
 <li><p>Delete (or comment out) the <code>forever</code> block for now – we won’t need it until later.</p>
 <p><s></p>
-<pre><code class="lang-js">forever(() =&gt; {
+<pre><code class="lang-js">uw.forever(() =&gt; {
     face.angle = phone.zAngle
 })
 </code></pre>
@@ -148,7 +148,7 @@ face.costume = &#39;🐮&#39;
 </code></pre>
 <p></s></p>
 <pre><code class="lang-js">world.on(&#39;tap&#39;, e =&gt; {
-    var bullet = new Sprite
+    var bullet = new uw.Sprite
     bullet.costume = &#39;👾&#39;
     bullet.x = e.fingerX
     bullet.y = e.fingerY
@@ -166,7 +166,7 @@ face.costume = &#39;🐮&#39;
 <pre><code class="lang-js">world.on(&#39;tap&#39;, e =&gt; {
     // ... [make the bullet] ...
 
-    forever(() =&gt; {
+    uw.forever(() =&gt; {
         bullet.x += 3
         bullet.y += 3
     })
@@ -185,8 +185,8 @@ face.costume = &#39;🐮&#39;
 </ul>
 <p>I’m not going to explain all of trig here, since that would be boring. For the purposes, we only need to know two things:</p>
 <ol>
-<li>You can use <code>.x += UW.sin(angle)</code> and <code>.y += UW.cos(angle)</code> to move a sprite at an angle.</li>
-<li>You can use <code>angle = UW.atan2(dx, dy)</code> to work out the angle you need to move something in a direction.</li>
+<li>You can use <code>.x += uw.sin(angle)</code> and <code>.y += uw.cos(angle)</code> to move a sprite at an angle.</li>
+<li>You can use <code>angle = uw.atan2(dx, dy)</code> to work out the angle you need to move something in a direction.</li>
 </ol>
 <p>Currently, our bullets all go at 45°, which is dull. Let’s fire them out at a random angle.</p>
 <ul>
@@ -197,9 +197,9 @@ face.costume = &#39;🐮&#39;
 <pre><code class="lang-js">world.on(&#39;tap&#39;, e =&gt; {
     // ... [make the bullet, with random angle] ...
 
-    forever(() =&gt; {
-        bullet.x += 4 * UW.sin(bullet.angle)
-        bullet.y += 4 * UW.cos(bullet.angle)
+    uw.forever(() =&gt; {
+        bullet.x += 4 * uw.sin(bullet.angle)
+        bullet.y += 4 * uw.cos(bullet.angle)
     })
 })
 </code></pre>
@@ -211,9 +211,9 @@ face.costume = &#39;🐮&#39;
 <ul>
 <li><p>Use <code>atan2</code> to get the correct angle.</p>
 <pre><code class="lang-js">world.on(&#39;tap&#39;, e =&gt; {
-    var bullet = new Sprite
+    var bullet = new uw.Sprite
     // ... [go to face] ...
-    bullet.angle = UW.atan2(e.fingerX - face.x, e.fingerY - face.y)
+    bullet.angle = uw.atan2(e.fingerX - face.x, e.fingerY - face.y)
 
     // ... [move at an angle] ...
 })
@@ -249,7 +249,7 @@ face.costume = &#39;🐮&#39;
 <li><p>First, make our cannon-face move.</p>
 <pre><code class="lang-js">var xVel = 2
 
-forever(() =&gt; {
+uw.forever(() =&gt; {
     face.x += xVel
 })
 </code></pre>
@@ -260,7 +260,7 @@ forever(() =&gt; {
 <p>We’re moving him to the right (increasing x).</p>
 <ul>
 <li><p>Now, let’s have it bounce off the right edge.</p>
-<pre><code class="lang-js">forever(() =&gt; {
+<pre><code class="lang-js">uw.forever(() =&gt; {
     face.x += xVel
     if (world.width &lt; face.right) {
         xVel = -2
