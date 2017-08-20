@@ -24,7 +24,7 @@ So far, we've only set up static scenes. We've learnt how to position different 
 We need a way to react to time passing. We do this by using **`forever`** to run code on every _frame_.
 
 ```js
-forever(() => {
+uw.forever(() => {
     // do stuff
 })
 ```
@@ -100,14 +100,14 @@ First, we need to initialise a `Phone` object, so that `you-win` knows to start 
 
     <s>
     ```js
-    forever(() => {
+    uw.forever(() => {
         // whatever you had before
     })
     ```
     </s>
 
     ```js
-    forever(() => {
+    uw.forever(() => {
         face.angle = phone.zAngle
     })
     ```
@@ -125,7 +125,7 @@ Let's have our face shoot out a projectile toward our finger when we tap.
   
     <s>
     ```js
-    forever(() => {
+    uw.forever(() => {
         face.angle = phone.zAngle
     })
     ```
@@ -173,7 +173,7 @@ Now let's try moving our projectile!
     world.on('tap', e => {
         // ... [make the bullet] ...
 
-        forever(() => {
+        uw.forever(() => {
             bullet.x += 3
             bullet.y += 3
         })
@@ -195,8 +195,8 @@ It'd be really neat if our bullets started at the face, and travelled outward to
 
 I'm not going to explain all of trig here, since that would be boring. For the purposes, we only need to know two things:
 
-1. You can use `.x += UW.sin(angle)` and `.y += UW.cos(angle)` to move a sprite at an angle.
-2. You can use `angle = UW.atan2(dx, dy)` to work out the angle you need to move something in a direction.
+1. You can use `.x += uw.sin(angle)` and `.y += uw.cos(angle)` to move a sprite at an angle.
+2. You can use `angle = uw.atan2(dx, dy)` to work out the angle you need to move something in a direction.
 
 Currently, our bullets all go at 45°, which is dull. Let's fire them out at a random angle.
 
@@ -210,9 +210,9 @@ Currently, our bullets all go at 45°, which is dull. Let's fire them out at a r
     world.on('tap', e => {
         // ... [make the bullet, with random angle] ...
 
-        forever(() => {
-            bullet.x += 4 * UW.sin(bullet.angle)
-            bullet.y += 4 * UW.cos(bullet.angle)
+        uw.forever(() => {
+            bullet.x += 4 * uw.sin(bullet.angle)
+            bullet.y += 4 * uw.cos(bullet.angle)
         })
     })
     ```
@@ -229,7 +229,7 @@ Now to work out the correct angle! We need to use `atan2` for this. This is a sp
     world.on('tap', e => {
         var bullet = new uw.Sprite
         // ... [go to face] ...
-        bullet.angle = UW.atan2(e.fingerX - face.x, e.fingerY - face.y)
+        bullet.angle = uw.atan2(e.fingerX - face.x, e.fingerY - face.y)
 
         // ... [move at an angle] ...
     })
@@ -271,7 +271,7 @@ Let's see what we can do with conditions.
     ```js
     var xVel = 2
 
-    forever(() => {
+    uw.forever(() => {
         face.x += xVel
     })
     ```
@@ -285,7 +285,7 @@ We're moving him to the right (increasing x).
   * Now, let's have it bounce off the right edge.
 
     ```js
-    forever(() => {
+    uw.forever(() => {
         face.x += xVel
         if (world.width < face.right) {
             xVel = -2

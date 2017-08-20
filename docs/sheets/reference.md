@@ -26,10 +26,10 @@ const uw = require('you-win')
 
 ## Assets
 
-Before you can do anything, you need initialise `you-win`. You do this by calling `UW.init`.
+Before you can do anything, you need initialise `you-win`. You do this by calling `uw.init`.
 
 ```js
-UW.init({
+uw.init({
     // the images you need
 })
 .then(() => {
@@ -37,7 +37,7 @@ UW.init({
 })
 ```
 
-  * **`UW.init(images)`**
+  * **`uw.init(images)`**
 
     Pulls in the media files you need for your game. The code **after `then`** will run once they're all ready.
     
@@ -48,10 +48,10 @@ UW.init({
 
 A **costume** is an image that controls how a `Sprite` looks.
 
-You create costumes inside `UW.init`, by giving their URL (web address).
+You create costumes inside `uw.init`, by giving their URL (web address).
 
 ```js
-UW.init({
+uw.init({
     asteroid: '/asteroid.jpg',
 })
 ```
@@ -61,7 +61,7 @@ UW.init({
 If you make a `static` folder in the same place as your game's `.js` file, you can put images inside it, and then load them here using the URL `'/my-image.jpg'`.
 
 ```js
-UW.init({
+uw.init({
     // get asteroid.jpg from my `static` folder
     asteroid: '/asteroid.jpg',
     face: 'https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png',
@@ -92,7 +92,7 @@ You can also use emoji inside [Text](#text).
 Set up the world after [loading your assets](#assets).
 
 ```js
-UW.init({
+uw.init({
     // ...
 })
 .then(world => {
@@ -137,7 +137,7 @@ World has the following methods:
 Write a forever loop with a function just inside it, like so:
 
 ```js
-forever(() => {
+uw.forever(() => {
     // do stuff
 })
 ```
@@ -145,11 +145,11 @@ forever(() => {
 Any code after the forever loop isn't affected:
 
 ```js
-forever(() => {
+uw.forever(() => {
     // do stuff
 })
 
-forever(() => {
+uw.forever(() => {
     // do other stuff
 })
 
@@ -159,7 +159,7 @@ forever(() => {
 If you want to **stop** a `forever` loop (so that it doesn't run forever!), you can `return false`:
 
 ```js
-forever(() => {
+uw.forever(() => {
     if (player.isTouching(floor)) { // the floor is lava
         // game over!
         return false // stop this loop
@@ -177,7 +177,7 @@ To create a Sprite, you must give the name of one of your costumes.
 (For experts: you may also include an object with additional attributes.)
 
 ```js
-UW.init({
+uw.init({
   'cat': 'https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png?1499126150626',
 })
 .then(() => {
@@ -488,7 +488,7 @@ To use sounds, make sure to `import {Sound} from 'you-win'`.
 To load a sound , use `Sound.load`. See [Assets](#assets) for details on the `static/` folder and where to put your sound files.
 
 ```js
-UW.init({
+uw.init({
   moo: Sound.load('/moo.wav'),
 })
 .then(() => {
@@ -512,50 +512,50 @@ Finally, you can play your sound at the appropriate time.
 
 Some built-in maths utilities.
 
-  * **`UW.range([start], end, [step])`**
+  * **`uw.range([start], end, [step])`**
 
     Return a list of numbers starting at `start` (default `0`), and ending before `end`. Behaves identically to Python's `range()`.
     
     The optional `step` argument (default `1`) is how much to move between each item. 
 
     ```js
-    UW.range(5) // => [0, 1, 2, 3, 4]
-    UW.range(5, 10) // => [5, 6, 7, 8, 9]
-    UW.range(10, 20, 2) // => [10, 12, 14, 16, 18]
-    UW.range(0, -5, -1) // => [0, -1, -2, -3, -4]
+    uw.range(5) // => [0, 1, 2, 3, 4]
+    uw.range(5, 10) // => [5, 6, 7, 8, 9]
+    uw.range(10, 20, 2) // => [10, 12, 14, 16, 18]
+    uw.range(0, -5, -1) // => [0, -1, -2, -3, -4]
     ```
 
-  * **`UW.dist(dx, dy)`**
+  * **`uw.dist(dx, dy)`**
     
     The distance between (0, 0) and (dx, dy), calculated using Pythagoras' Theorem.
 
 Some trigonometric functions. These work in degrees, unlike the ones built-in to JavaScript which use radians.
 
-  * **`UW.sin(deg)`**
-  * **`UW.cos(deg)`**
-  * **`UW.atan2(x, y)`**
+  * **`uw.sin(deg)`**
+  * **`uw.cos(deg)`**
+  * **`uw.atan2(x, y)`**
 
 
 ### Random
 
 Some built-in ways of getting random things are included.
 
-  * **`UW.randomInt(from, to)`**
+  * **`uw.randomInt(from, to)`**
 
     Return a random integer (whole number) between `from` and `to`, inclusive.
 
     ```js
-    UW.randomInt(1, 3) // => 2
-    UW.randomInt(1, 3) // => 1
-    UW.randomInt(1, 3) // => 3
+    uw.randomInt(1, 3) // => 2
+    uw.randomInt(1, 3) // => 1
+    uw.randomInt(1, 3) // => 3
     ```
 
-  * **`UW.randomChoice(array)`**
+  * **`uw.randomChoice(array)`**
 
     Return a randomly-selected item of an array.
 
     ```js
-    UW.randomChoice(['🐄', '🐑', '🐎']) // => '🐑'
+    uw.randomChoice(['🐄', '🐑', '🐎']) // => '🐑'
     ```
 
 

@@ -72,7 +72,7 @@ const uw = require('you-win')
 
 // var phone = new uw.Phone
 
-UW.init({
+uw.init({
 })
 .then(() => {
 

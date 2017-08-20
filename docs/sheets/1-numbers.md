@@ -25,7 +25,7 @@ const uw = require('you-win')
 
 // var phone = new uw.Phone
 
-UW.init({
+uw.init({
 })
 .then(() => {
 
@@ -46,7 +46,7 @@ Look closely at these parts:
 
     You can use comments to write messages for yourself, to remind yourself what different bits of your code do.
 
- 2. `UW.init`.
+ 2. `uw.init`.
 
     This is where we can load in any extra sounds or images for our game.
 
@@ -190,12 +190,12 @@ This moves the poop so that his left edge is the same as the right edge of the c
 
 Let's introduce some uncertainty into our creation.
 
-We can use `UW.randomInt(1, 10)` to pick a random number between `1` and `10`. (This is just like `pick random _ to _` from Scratch.)
+We can use `uw.randomInt(1, 10)` to pick a random number between `1` and `10`. (This is just like `pick random _ to _` from Scratch.)
 
   * Move your poop to a random `x` position.
 
     ```js
-    poop.x = UW.randomInt(0, world.width)
+    poop.x = uw.randomInt(0, world.width)
     ```
 
   * **Challenge:** Move your poop to a random `y` position.
@@ -237,7 +237,7 @@ Good job! Now you know how to:
   * **Set their attributes**, using dot notation and `=`
   * Use `Sprite`s and `Text`
   * Set the **position** of objects inside the world
-  * How to **pick random numbers** using `UW.randomInt`
+  * How to **pick random numbers** using `uw.randomInt`
 
 Let's continue on to [chapter two](2-Animation)!
 
