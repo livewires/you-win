@@ -150,6 +150,10 @@ body {
         font-size: 12pt;
     }
 
+    .prose a {
+      border-bottom: none;
+    }
+
     .prose {
         margin: 0 auto;
     }
@@ -220,7 +224,6 @@ nav a {
 
 .page {
     display: block;
-    /* border-bottom: 1px solid #aaa; */
 }
 
 .page-title-active {
@@ -249,6 +252,7 @@ nav a {
         font-size: 0.875em;
         border-right: 1px solid #aaa;
         background: #fafafa;
+        border-bottom: 0;
     }
     nav a {
         padding: 0.375em 1em;
@@ -262,6 +266,11 @@ nav a {
         min-height: 100vh;
         padding-bottom: 4.5em;
         box-sizing: border-box;
+    }
+    
+    .page-as-pdf {
+        position: absolute;
+        bottom: 3em;
     }
 
     .logo {
