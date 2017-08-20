@@ -903,7 +903,7 @@ Costume._text = function(props) {
     })
 
     const canvas = document.createElement('canvas')
-    canvas.width = x
+    canvas.width = x || 1
     canvas.height = 36
     const ctx = canvas.getContext('2d')
     ctx.imageSmoothingEnabled = false
@@ -976,8 +976,8 @@ Costume._polygon = function(props) {
     maxY += round(margin)
 
     const canvas = document.createElement('canvas')
-    canvas.width = maxX - minX
-    canvas.height = maxY - minY
+    canvas.width = maxX - minX || 1
+    canvas.height = maxY - minY || 1
     const ctx = canvas.getContext('2d')
     ctx.imageSmoothingEnabled = false
 
@@ -1048,8 +1048,8 @@ prop(Polygon, 'points', array, Polygon.prototype._render)
 
 const Rect = function(props) {
     var props = Object.assign({
-        width: 1,
-        height: 1,
+        width: 32,
+        height: 32,
     }, props || {})
     if (props.closed === undefined) props.closed = !!props.fill
     this._closed = true
