@@ -33,7 +33,9 @@ const docs = articles => (files, metalsmith, done) => {
 const m = Metalsmith(__dirname)
 m.metadata({
     version: require('../package.json').version,
-    css: fs.readFileSync('static/theme.css', 'utf-8'),
+    css: fs.readFileSync('static/theme.css', 'utf-8')
+          .replace(/\/\*[^\/]*\*\//g, '')
+          .replace(/ *\n */g, ''),
 })
 m.source('sheets/')
 m.destination('.')

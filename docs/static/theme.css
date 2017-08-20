@@ -47,43 +47,6 @@ body {
     position: relative;
 }
 
-
-
-.subtitle {
-    font-weight: 700;
-    text-align: right;
-    display: block;
-    font-size: 32px;
-    letter-spacing: -2px;
-    line-height: 32px;
-    color: #3786e3;
-    margin: 0 -2px 44px auto;
-    padding: 4px 0;
-    text-decoration: none;
-    position: relative;
-}
-.subtitle span {
-    color: #000;
-}
-.subtitle span:before {
-    display: inline-block;
-    content: "";
-    width: 12px;
-    height: 8px;
-    background: url("data:image/svg+xml,<svg viewBox='0 0 3 2' xmlns='http://www.w3.org/2000/svg'><path d='M0 0h1v1h-1zM1 1h1v1h-1zM2 0h1v1h-1z'/></svg>") no-repeat;
-    margin: 0 2px 0 2px;
-}
-
-a.subtitle:before {
-    content: "< ";
-}
-
-
-.container {
-    max-width: 100%;
-    clear: both;
-}
-
 /*****************************************************************************/
 
 .prose {
@@ -169,7 +132,6 @@ a.subtitle:before {
     position: absolute;
     left: 0.5em;
 }
-
 
 .prose img,
 .prose video {
