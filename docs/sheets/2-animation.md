@@ -14,7 +14,7 @@ So far, we've only set up static scenes. We've learnt how to position different 
   * First, start a **new project**, and make a Sprite with your favourite emoji.
 
     ```js
-    var face = new Sprite
+    var face = new uw.Sprite
     face.costume = '🐮'
     ```
 
@@ -153,7 +153,7 @@ That gets boring quickly, so let's make a projectile.
 
     ```js
     world.on('tap', e => {
-        var bullet = new Sprite
+        var bullet = new uw.Sprite
         bullet.costume = '👾'
         bullet.x = e.fingerX
         bullet.y = e.fingerY
@@ -227,7 +227,7 @@ Now to work out the correct angle! We need to use `atan2` for this. This is a sp
 
     ```js
     world.on('tap', e => {
-        var bullet = new Sprite
+        var bullet = new uw.Sprite
         // ... [go to face] ...
         bullet.angle = UW.atan2(e.fingerX - face.x, e.fingerY - face.y)
 

@@ -21,16 +21,15 @@ Your Chrome window should have a white screen. This is a blank canvas in which w
 Have a look at the template that's open in your text editor. It should look like this:
 
 ```js
-import * as UW from 'you-win'
-import {forever, Phone, World, Sprite, Text, Polygon, Rect, Sound} from 'you-win'
+const uw = require('you-win')
 
-// var phone = new Phone
+// var phone = new uw.Phone
 
 UW.init({
 })
 .then(() => {
 
-    var world = new World
+    var world = new uw.World
     world.title = ''
     world.background = 'white'
 
@@ -41,7 +40,7 @@ UW.init({
 
 Look closely at these parts:
 
- 1. `// var phone = new Phone`
+ 1. `// var phone = new uw.Phone`
 
     This is a comment! Lines starting with `//` are ignored by JavaScript.
 
@@ -51,7 +50,7 @@ Look closely at these parts:
 
     This is where we can load in any extra sounds or images for our game.
 
- 3. `new World`
+ 3. `new uw.World`
 
     This is where we make the `World`. The world represents the screen. We can set its `width` and `height` to change the size of the screen. (It's like the _Stage_ in Scratch.)
 
@@ -89,7 +88,7 @@ We can add images to the World by creating `Sprites`. A Sprite is an image on th
   * Add this code, after the block which makes the World.
 
     ```js
-    var poop = new Sprite
+    var poop = new uw.Sprite
     poop.costume = '💩'
     ```
 
@@ -153,7 +152,7 @@ We can add other Sprites, too!
   * Add a second sprite, called `cow`.
 
     ```js
-    var cow = new Sprite
+    var cow = new uw.Sprite
     cow.costume = '🐄'
     ```
 
@@ -217,7 +216,7 @@ When you're a beginner programmer, it's traditional to introduce yourself by say
   * Create a `Text` object.
   
     ```js
-    var label = new Text
+    var label = new uw.Text
     label.text = "Hello world!"
     ```
 

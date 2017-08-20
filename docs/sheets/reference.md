@@ -20,8 +20,7 @@ title: API Reference
 To import all these names so you can use them in your code, use the following line:
 
 ```js
-import * as UW from 'you-win'
-import {forever, Phone, World, Sprite, Text, Polygon} from 'you-win'
+const uw = require('you-win')
 ```
 
 
@@ -75,7 +74,7 @@ UW.init({
 Emoji costumes are loaded by default. To use them, just set your Sprite's `.costume` attribute to an emoji string:
 
 ```js
-var s = new Sprite
+var s = new uw.Sprite
 s.costume = '🙂'
 ```
 
@@ -98,7 +97,7 @@ UW.init({
 })
 .then(world => {
     
-    var world = new World
+    var world = new uw.World
     world.width = 300
     world.height = 460
 
@@ -183,10 +182,10 @@ UW.init({
 })
 .then(() => {
 
-    var cat = new Sprite
+    var cat = new uw.Sprite
     cat.costume = 'cat'
 
-    var bigCat = new Sprite
+    var bigCat = new uw.Sprite
     bigCat.costume = 'cat'
     bigCat.scale = 2 // twice as big
 
@@ -316,14 +315,14 @@ A **Text** object is like a Sprite, but instead of a costume, it's used to displ
 The text has a retro aesthetic. It also supports emoji (using the same emoji set as Sprites can use). Which means that this:
 
 ```js
-var snowy = new Text
+var snowy = new uw.Text
 snowy.text = '⛄'
 ```
 
 ...is quite similar to this:
 
 ```js
-var snowy = new Sprite
+var snowy = new uw.Sprite
 snowy.costume = '⛄'
 })
 ```
@@ -348,7 +347,7 @@ A **Polygon** is like a Sprite, but has a _shape_ instead of a costume. This sha
 Here's an example Polygon:
 
 ```js
-var p = new Polygon
+var p = new uw.Polygon
 p.points = [[0, 0], [0, 32], [32, 32], [32, 0]]
 p.fill = '#007de0'
 p.outline = 'black'
@@ -427,7 +426,7 @@ If you're testing your game on a computer, mouse clicks and drags will work to s
 ```js
 world.on('tap', e => {
     // make a ball where you clicked
-    var ball = new Sprite
+    var ball = new uw.Sprite
     ball.costume = 'beachball'
     ball.x = e.fingerX
     ball.y = e.fingerY
@@ -447,7 +446,7 @@ world.on('tap', e => {
 ### Dragging sprites around
 
 ```js
-var ball = new Sprite
+var ball = new uw.Sprite
 ball.costume = 'beachball'
 ball.on('drag', e => {
     // move when dragged
@@ -472,7 +471,7 @@ ball.on('drag', e => {
 You need to make a `Phone` object before you can access the readings:
 
 ```js
-var phone = new Phone
+var phone = new uw.Phone
 ```
 
 It has the following attributes which you can get:
@@ -500,7 +499,7 @@ UW.init({
 Before you can play your sound, you must create a `Sound` object.
 
 ```js
-  var sound = new Sound('moo')
+  var sound = new uw.Sound('moo')
 ```
 
 Finally, you can play your sound at the appropriate time.

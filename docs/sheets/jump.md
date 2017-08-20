@@ -74,7 +74,7 @@ Now our player falls down! Let's add some platforms for him to bounce on. (We wo
   * Create a `platform`. This is going to be a `Polygon` instead of a `Sprite`.
 
     ```js
-    var platform = new Polygon
+    var platform = new uw.Polygon
     platform.points = [[-30, 0], [30, 0], [30, 10], [-30, 10]]
     platform.y = 100
     ```
@@ -242,12 +242,12 @@ Like last time, we need to initialise a `Phone` object, so that `you-win` knows 
 
     <s>
     ```js
-    // var phone = new Phone
+    // var phone = new uw.Phone
     ```
     </s>
 
     ```js
-    var phone = new Phone
+    var phone = new uw.Phone
     ```
 
 Now we can use `phone.zAngle` to get the **angle** at which the phone is held. But to move the player horizontally, we need a **difference in X**.
