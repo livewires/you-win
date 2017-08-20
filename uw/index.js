@@ -153,7 +153,6 @@ var World = function(props) {
     document.body.style.margin = '0px'
     document.body.appendChild(this._wrap)
     this._resize()
-    this._deadLoops = []
 
     window.addEventListener('resize', () => { this._needsResize = true })
     this._bindPointer()
@@ -174,7 +173,7 @@ var World = function(props) {
     this.stop = this.stop.bind(this)
     this.start()
 }
-emitter(World.prototype, ['frame', 'tap', 'drag', 'drop'])
+emitter(World.prototype, ['tick', 'tap', 'drag', 'drop'])
 
 World.prototype.start = function() {
     if (this.isRunning) return
@@ -194,7 +193,9 @@ World.prototype.pause = function() {
 World.prototype.stop = function() {
     if (!this.isRunning) return
     this.pause()
-    this._deadLoops = this._deadLoops.concat(this.listeners('frame'))
+    for (var i=0; i<sprites.length; i++) {
+        sprites[i].destroy()
+    }
 
     window.removeEventListener('blur', this.pause)
     window.removeEventListener('focus', this.start)
@@ -250,15 +251,24 @@ World.prototype._frame = function() {
 }
 
 World.prototype._tick = function() {
-    // remove stopped `forever` loops
-    for (var i=this._deadLoops.length; i--; ) {
-        this.unlisten('frame', this._deadLoops[i])
-    }
-    this._deadLoops = []
-
     // trigger `forever` loops
-    this.emitFrame()
+    this.tick()
+    const sprites = this.sprites
+    for (var i=0; i<sprites.length; i++) {
+        sprites[i].tick()
+    }
 }
+World.prototype.tick = function(cb) {
+    // TODO opt?
+    var dead = []
+    for (let fn of this.listeners('tick')) {
+        if (fn() === false) {
+            dead.push(fn)
+        }
+    }
+    for (let fn of dead) this.unlisten('tick', fn)
+}
+World.prototype.forever = World.prototype.onTick
 
 World.prototype._draw = function() {
     if (this._needsResize) this._resize()
@@ -558,7 +568,7 @@ const Base = function(props, init) {
     this.dead = false
     world.sprites.push(this)
 }
-emitter(Base.prototype, ['tap', 'drag', 'drop'])
+emitter(Base.prototype, ['tick', 'tap', 'drag', 'drop'])
 
 // TODO: cache rotated sprites.
 
@@ -798,6 +808,8 @@ Base.prototype.getTouchingFast = function() {
     return result
 }
 
+Base.prototype.tick = World.prototype.tick
+Base.prototype.forever = Base.prototype.onTick
 
 
 /* Sprite */
@@ -1119,18 +1131,6 @@ Sound.prototype.play = function() {
 
 
 
-// forever
-
-function forever(cb) {
-    if (typeof cb !== 'function') throw new Error('oops')
-    const w = world
-    w.onFrame(function listener() {
-        if (cb() === false) {
-            w._deadLoops.push(listener)
-        }
-    })
-}
-
 
 /* events */
 
@@ -1185,7 +1185,6 @@ module.exports = {
     Polygon,
     Rect,
     Sound,
-    forever,
 }
 Object.assign(module.exports, maths)
 
