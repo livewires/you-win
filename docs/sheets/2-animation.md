@@ -323,18 +323,7 @@ Finally, if we don't destroy the bullets, eventually the game will get really sl
     ```
     _This should go inside the bullet's `forever`, just after the code to move it._
 
-The `destroy()` function attached to a Sprite removes it from the screen permanently.
-
-However, we haven't quite cleaned up after ourselves--the forever block for the bullet will keep running, even though it's no longer on screen! This isn't super-important, but in larger games it might cause us to run out of memory. So let's `return false` to stop the `forever` block from running:
-
-  * We should also `return false`, to make sure the `forever` block stops.
-
-    ```js
-        if (!bullet.isOnScreen()) {
-            bullet.destroy()
-            return false // stop this forever block
-        }
-    ```
+The `destroy()` function attached to a Sprite removes it from the screen permanently. This also stops any `forever` loops attached to it.
 
 
 ## Fin
