@@ -17,7 +17,6 @@ async function closeChrome(chrome) {
     await chrome.kill()
 }
 
-
 async function newPage(chrome, url) {
     const target = await CDP.New({port: chrome.port})
     const client = await CDP({target})
@@ -26,6 +25,21 @@ async function newPage(chrome, url) {
     await Page.navigate({url, referrer: ''})
     await Page.loadEventFired()
     return {chrome, Page, client}
+}
+
+async function domChanged(client) {
+    const browserCode = () => {
+        return new Promise(done => {
+            new MutationObserver(() => done()).observe(document.body, {
+                childList: true,
+            })
+        })
+    }
+    const {Runtime} = client
+    await Runtime.evaluate({
+        expression: `(${browserCode})()`,
+        awaitPromise: true,
+    })
 }
 
 async function renderPDF({chrome, Page, client}, options) {

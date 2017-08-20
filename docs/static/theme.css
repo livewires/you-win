@@ -51,7 +51,7 @@ body {
 
 .prose {
     font-size: 1rem;
-    max-width: 32em;
+    max-width: 36em;
     font-weight: normal;
     margin: 0 auto;
 }
@@ -70,6 +70,8 @@ body {
     font-weight: 500;
     font-size: 1.5em;
     margin: 1.333em 0 0;
+    border-top: 2px solid #ddd;
+    padding-top: 0.666em;
 }
 .prose h3 {
     font-weight: 600;
@@ -264,7 +266,7 @@ nav a {
     nav > ul {
         position: relative;
         min-height: 100vh;
-        padding-bottom: 4.5em;
+        padding-bottom: 6em;
         box-sizing: border-box;
     }
     
