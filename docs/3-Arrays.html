@@ -1,0 +1,87 @@
+<!doctype html>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width, initial-scale=1.0">
+<title>you-win: #3: Arrays</title>
+
+<style>
+</style>
+<link rel=stylesheet href=/static/theme.css>
+
+<body class=has-nav>
+
+<nav id=nav>
+    <ul>
+        <h1 class=title><a href="https://github.com/livewires/you-win">you-win</a></h1>
+
+        <li class=page><a href="/install">Install</a>
+        <li class=page><a href="/1-Numbers">#1: Numbers</a>
+        <li class=page><a href="/2-Animation">#2: Animation</a>
+        <li class=page>
+            <a href="#" class=page-title-active>#3: Arrays</a>
+            <ul>
+                <li class=page-heading><a href="#console-arrays">Console: Arrays</a>
+                <li class=page-heading><a href="#iteration">Iteration</a>
+                <li class=page-heading><a href="#choosing-random-things">Choosing random things</a>
+                <li class=page-heading><a href="#collisions">Collisions</a>
+                <li class=page-heading><a href="#the-end">The end</a>
+            </ul>
+        </li>
+        <li class=page><a href="/4-Functions">#4: Functions</a>
+        <li class=page><a href="/Jump">Game: Infinite Jump!</a>
+        <li class=page><a href="/Reference">API Reference</a>
+
+        <a class=logo href="http://livewires.org.uk/"></a>
+    </ul>
+</nav>
+
+<div class=prose>
+<h1 id="intro-3-arrays">Intro #3: Arrays</h1>
+<p>arrays, collisions, picking random items</p>
+<ul>
+<li>arrays, iteration</li>
+<li>UW.range</li>
+<li>array of text</li>
+<li>UW.randomChoice</li>
+<li>UW.getFingers</li>
+<li>collisions Sprite.getTouching</li>
+</ul>
+<h2 id="console-arrays">Console: Arrays</h2>
+<ul>
+<li>array literals (of numbers)</li>
+<li>UW.range() TODO</li>
+<li>iteration</li>
+</ul>
+<h2 id="iteration">Iteration</h2>
+<ul>
+<li>make a sprite every N y positions.</li>
+<li>challenge (optional): make a grid of sprites</li>
+</ul>
+<h2 id="choosing-random-things">Choosing random things</h2>
+<ul>
+<li>text literals</li>
+<li>making lists of text</li>
+<li>UW.choose() for costumes 🌲🌳🌴🌵🎄</li>
+<li>fill the screen with random kinds of tree</li>
+</ul>
+<h2 id="collisions">Collisions</h2>
+<ul>
+<li>for other in getTouching()</li>
+<li>lets…burn the trees with fire</li>
+<li>on drag</li>
+<li>move fire to finger</li>
+<li>destroy any overlapping trees</li>
+</ul>
+<h2 id="the-end">The end</h2>
+<p>Nice! Now you know about Javascript Arrays, how to get random numbers, how to pick an item from an Array at random, how to detect a finger being dragged, and how to get overlapping objects.</p>
+
+</div>
+
+<script async id=highlight-js src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+document.querySelector('#highlight-js').addEventListener('load', function() {
+    [].slice.apply(document.querySelectorAll('pre code')).forEach(function(b) {
+        hljs.highlightBlock(b)
+    })
+})
+</script>
+

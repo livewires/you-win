@@ -1,0 +1,74 @@
+<!doctype html>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width, initial-scale=1.0">
+<title>you-win: #4: Functions</title>
+
+<style>
+</style>
+<link rel=stylesheet href=/static/theme.css>
+
+<body class=has-nav>
+
+<nav id=nav>
+    <ul>
+        <h1 class=title><a href="https://github.com/livewires/you-win">you-win</a></h1>
+
+        <li class=page><a href="/install">Install</a>
+        <li class=page><a href="/1-Numbers">#1: Numbers</a>
+        <li class=page><a href="/2-Animation">#2: Animation</a>
+        <li class=page><a href="/3-Arrays">#3: Arrays</a>
+        <li class=page>
+            <a href="#" class=page-title-active>#4: Functions</a>
+            <ul>
+                <li class=page-heading><a href="#console">Console</a>
+                <li class=page-heading><a href="#scope">Scope</a>
+                <li class=page-heading><a href="#sounds">Sounds</a>
+            </ul>
+        </li>
+        <li class=page><a href="/Jump">Game: Infinite Jump!</a>
+        <li class=page><a href="/Reference">API Reference</a>
+
+        <a class=logo href="http://livewires.org.uk/"></a>
+    </ul>
+</nav>
+
+<div class=prose>
+<h1 id="intro-4-functions">Intro #4: Functions</h1>
+<p>Functions, scope, Promises, Sounds</p>
+<p><strong>TODO</strong>: consider forever().then() ?</p>
+<ul>
+<li>functions, scope</li>
+<li>Promises</li>
+<li>sounds [TODO!]</li>
+</ul>
+<h2 id="console">Console</h2>
+<ul>
+<li>define a square() function.</li>
+<li>terms: call, arguments</li>
+</ul>
+<h2 id="scope">Scope</h2>
+<ul>
+<li>define a tree() function.</li>
+<li>Every function gets its own set of variables.</li>
+<li>forever; grow, perhaps?</li>
+<li>each call to tree() gets its own instance of the variables inside tree.</li>
+</ul>
+<h2 id="sounds">Sounds</h2>
+<ul>
+<li>init is really a Promise.</li>
+<li>.then means “do something after the Promise finishes.”</li>
+<li>we can play Sounds…</li>
+<li>…and wait until they’re done.</li>
+</ul>
+
+</div>
+
+<script async id=highlight-js src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+document.querySelector('#highlight-js').addEventListener('load', function() {
+    [].slice.apply(document.querySelectorAll('pre code')).forEach(function(b) {
+        hljs.highlightBlock(b)
+    })
+})
+</script>
+

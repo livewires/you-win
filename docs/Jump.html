@@ -1,0 +1,281 @@
+<!doctype html>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width, initial-scale=1.0">
+<title>you-win: Game: Infinite Jump!</title>
+
+<style>
+</style>
+<link rel=stylesheet href=/static/theme.css>
+
+<body class=has-nav>
+
+<nav id=nav>
+    <ul>
+        <h1 class=title><a href="https://github.com/livewires/you-win">you-win</a></h1>
+
+        <li class=page><a href="/install">Install</a>
+        <li class=page><a href="/1-Numbers">#1: Numbers</a>
+        <li class=page><a href="/2-Animation">#2: Animation</a>
+        <li class=page><a href="/3-Arrays">#3: Arrays</a>
+        <li class=page><a href="/4-Functions">#4: Functions</a>
+        <li class=page>
+            <a href="#" class=page-title-active>Game: Infinite Jump!</a>
+            <ul>
+                <li class=page-heading><a href="#starting-out">Starting out</a>
+                <li class=page-heading><a href="#gravity">Gravity</a>
+                <li class=page-heading><a href="#platforms">Platforms</a>
+                <li class=page-heading><a href="#bouncing">Bouncing</a>
+                <li class=page-heading><a href="#functions">Functions</a>
+                <li class=page-heading><a href="#scrolling">Scrolling</a>
+                <li class=page-heading><a href="#more-platforms-">More Platforms!</a>
+                <li class=page-heading><a href="#bouncing-take-2">Bouncing, take 2</a>
+                <li class=page-heading><a href="#movement">Movement</a>
+                <li class=page-heading><a href="#what-next-">What next?</a>
+            </ul>
+        </li>
+        <li class=page><a href="/Reference">API Reference</a>
+
+        <a class=logo href="http://livewires.org.uk/"></a>
+    </ul>
+</nav>
+
+<div class=prose>
+<h1 id="the-infinite-jumping-game">The Infinite Jumping Game</h1>
+<p>We’re going to make a <em>Doodle Jump</em> clone!</p>
+<p>The game is about bouncing on platforms to get higher and higher…forever. Your score is based on how high you can jump. You’ll tilt the phone left and right to control the game.</p>
+<h2 id="starting-out">Starting out</h2>
+<ul>
+<li><p>Set the <code>width</code> and <code>height</code> of your world.</p>
+<pre><code class="lang-js">world.width = 300
+world.height = 460
+</code></pre>
+</li>
+<li><p><strong>Challenge:</strong> create a sprite for your player character. Call it <code>player</code>.</p>
+<p><em>Have a look back at chapter one, if you’ve forgotten how to create sprites!</em></p>
+<p>Make sure the player is just the right size on the screen of your phone: not too big, not too small.</p>
+</li>
+<li><p>Set the <code>background</code> color of your world, to taste.</p>
+</li>
+</ul>
+<h2 id="gravity">Gravity</h2>
+<p>The first thing to do is to make our player fall down.</p>
+<p>We can simulate gravity using a <strong>constant acceleration</strong>. As you should know from Maths or Physics class, that means we need to keep track of <strong>velocity</strong> (speed and direction). Let’s add a variable for just that.</p>
+<ul>
+<li><p>Add a variable called <code>velY</code>, which stores a number.</p>
+<pre><code class="lang-js">var velY = -2
+</code></pre>
+</li>
+<li><p>Add a <code>forever</code> loop for the player.</p>
+<pre><code class="lang-js">forever(() =&gt; { // player
+    player.y += velY
+})
+</code></pre>
+</li>
+</ul>
+<p>Save. You’ll notice the player falls at a constant speed, which isn’t right at all! Let’s change velocity over time, to simulate gravity:</p>
+<ul>
+<li><p>Decrease velocity, so the player falls.</p>
+<p><s></p>
+<pre><code class="lang-js">var velY = -2
+</code></pre>
+<p></s></p>
+<pre><code class="lang-js">var velY = 0
+
+forever(() =&gt; { // player
+    player.y += velY
+    velY -= 2               // &lt;-- add this line
+})
+</code></pre>
+</li>
+</ul>
+<h2 id="platforms">Platforms</h2>
+<p>Now our player falls down! Let’s add some platforms for him to bounce on. (We won’t do the bouncing part just yet; that’ll have to wait for later.)</p>
+<ul>
+<li><p>Create a <code>platform</code>. This is going to be a <code>Polygon</code> instead of a <code>Sprite</code>.</p>
+<pre><code class="lang-js">var platform = new Polygon
+platform.points = [[-30, 0], [30, 0], [30, 10], [-30, 10]]
+platform.y = 100
+</code></pre>
+</li>
+<li><p>Set the <code>fill</code> and <code>outline</code> colors for your Polygon, to taste.</p>
+</li>
+<li><p>Tweak the size of your platform as necessary. You can do this by changing its <code>points</code>.</p>
+</li>
+</ul>
+<p>Save. Check the platform appears below the player!</p>
+<h2 id="bouncing">Bouncing</h2>
+<p>Currently our player falls through the platform entirely. Let’s sort that out.</p>
+<p>We can use <code>isTouching</code> to check for collisions between different objects. <code>isTouching</code> returns a Boolean value (<code>true</code> or <code>false</code>), which we can use inside an <code>if</code> condition.</p>
+<ul>
+<li><p>Check if the platform is touching the player.</p>
+<pre><code class="lang-js">forever(() =&gt; { // platform
+    if (player.isTouching(platform)) {
+        // ...jump...
+    }
+})
+</code></pre>
+</li>
+<li><p>To jump, we want to <strong>set</strong> the player’s Y velocity to be a large, positive number. Let’s try <code>10</code>.</p>
+<pre><code class="lang-js">        velY = 10
+</code></pre>
+<p><em>Add this inside the <code>if</code> condition you just wrote.</em></p>
+</li>
+</ul>
+<h2 id="functions">Functions</h2>
+<p>A game with just one platform isn’t very impressive, so we need to add some more. But we don’t want to copy/paste the code every time we make a platform–that would be no good at all!</p>
+<p>What we want to do is to move the code for making a platform into a <strong>function</strong>. A function (aka. procedure, aka. “custom block” from Scratch) lets you give a <strong>name</strong> to a piece of code, so you can refer to it by name.</p>
+<ul>
+<li><p>Move the platform code into a function, by adding <code>function makePlatform( ) {</code> at the beginning of that section, and <code>}</code> at the end.</p>
+<pre><code class="lang-js">function makePlatform() {
+  //...[all your platform code]...
+}
+</code></pre>
+<p><em>Put the <code>function</code> bits <strong>around</strong> your existing code.</em></p>
+<p>You’ll want to re-indent your code at this point–try selecting the code inside the function, and pressing the <kbd>Tab</kbd> key.</p>
+</li>
+</ul>
+<p>Save. You’ll notice the platform disappears. This is because we haven’t <strong>called</strong> our function; we’ve defined it, but not used it yet! Let’s do that now.</p>
+<ul>
+<li><p>Make a platform by calling your new function.</p>
+<pre><code class="lang-js">makePlatform()
+</code></pre>
+<p><em>Add this at the end of your program, before the final <code>})</code>.</em></p>
+</li>
+</ul>
+<p>Now we can easily make more platforms!</p>
+<ul>
+<li><p>Add some more platforms.</p>
+<pre><code class="lang-js">makePlatform()
+makePlatform()
+makePlatform()
+// ...
+</code></pre>
+</li>
+</ul>
+<p>The platforms are all being made at the same height - we really want to make each platform higher than the last. Let’s make a variable at the beginning of our program, to keep track of the height of the last one…</p>
+<ul>
+<li><p>Create a <code>lastY</code> variable.</p>
+<pre><code class="lang-js">var lastY = 100
+</code></pre>
+<p><em>Add this before the <code>makePlatform</code> function.</em></p>
+</li>
+</ul>
+<p>Make sure not to put this <em>inside</em> <code>makePlatform</code>, or you’ll get a <strong>different</strong> version of the <code>lastY</code> variable each time. We need to remember it between calls to our function, so it has to go outside.</p>
+<p>Now let’s use it.</p>
+<ul>
+<li><p>Use <code>lastY</code> inside <code>makePlatform</code>.</p>
+<pre><code class="lang-js">    platform.y = lastY
+</code></pre>
+</li>
+<li><p><strong>Challenge:</strong> increase <code>lastY</code> every time you make a platform.</p>
+<p><em>Make sure you do this <strong>inside</strong> <code>makePlatform</code>!</em></p>
+</li>
+</ul>
+<h2 id="scrolling">Scrolling</h2>
+<p>Now we’ve got some platforms to climb, we need to add scrolling so we can move up the platforms.</p>
+<p>In <em>Doodle Jump</em>, the screen only ever scrolls up; never down. This is because the way for the game to end, is for the player to fall off the bottom of the screen!</p>
+<p>We can scroll by changing <code>world.scrollY</code>. The <code>.scrollX</code> and <code>.scrollY</code> values are an <strong>offset</strong> added to the position of everything in the world, so you can use them to scroll around.</p>
+<p>We only want to scroll up, never down. We can do this by comparing the player’s height, <code>player.y</code>, with the current scroll position, <code>world.scrollY</code>.</p>
+<ul>
+<li><p>Scroll up when the player is near the top of the screen.</p>
+<pre><code class="lang-js">if (world.scrollY &lt; player.y - 300) {
+    world.scrollY = player.y - 300
+}
+</code></pre>
+</li>
+</ul>
+<p>You can tweak the number <code>300</code> to taste, to control how far up the screen the player has to go for the game to start scrolling. </p>
+<h2 id="more-platforms-">More Platforms!</h2>
+<p>When we scroll up far enough, we run out of platforms.</p>
+<p>We could keep adding more by copy/pasting the <code>makePlatform()</code> line, but that doesn’t seem sensible; however many we’ll have, we’ll run out eventually! Let’s delete all but one of our <code>makePlatform()</code> calls, and have our game make ‘em automatically.</p>
+<p>To do this, we need to compare the current scroll position, <code>world.scrollY</code>, with the y position of the last platform we made: which we stored in the <code>lastY</code> variable.</p>
+<ul>
+<li><p><strong>Challenge:</strong> if the last platform is below the <em>top</em> of the screen, make a new platform.</p>
+<p><em>Write this inside the <code>forever</code> loop for the <strong>player</strong>.</em></p>
+<p><em>Hint: you’ll want to add the height of the screen to <code>world.scrollY</code>.</em> </p>
+</li>
+</ul>
+<h2 id="bouncing-take-2">Bouncing, take 2</h2>
+<p>At this point, you might notice that when we touch a platform, it gives us a push upwards… even if we’re already moving upwards! That’s just plain wrong.</p>
+<p>We could check whether we’re touching the bottom or the top of the platform, but that sounds tricky.</p>
+<p>Instead, let’s check that we’re moving downwards. We can do this by checking the <code>velY</code> variable, since that gives us our current speed and direction: it’s positive when we’re moving upward, and negative when we’re moving downwards.</p>
+<ul>
+<li><p><strong>Challenge</strong>: change the <code>if</code> so that we only bounce if both we’re touching a platform <strong>and</strong> we’re moving downwards.</p>
+<p>You learnt about conditions <a href="2-Animation.md#conditions">in chapter 2</a>.</p>
+<p><em>Make sure you get the brackets in the right place! The <strong>condition</strong> for an if always has to be written in brackets.</em> </p>
+<pre><code class="lang-js">if ( … &amp;&amp; … ) {
+</code></pre>
+</li>
+</ul>
+<p>Make sure the bouncing looks right now.</p>
+<h2 id="movement">Movement</h2>
+<p>In <em>Doodle Jump</em>, the player moves when you tilt the phone.</p>
+<p>We can read the phone’s accelerometer to get the angle the phone’s being held at, compared to gravity.</p>
+<p>Like last time, we need to initialise a <code>Phone</code> object, so that <code>you-win</code> knows to start reading the phone’s orientation sensors.</p>
+<ul>
+<li><p>Put this near the top of your program, after the <code>import</code> lines.</p>
+<p>You might find a commented out-line already, in which case just uncomment it!</p>
+<p><s></p>
+<pre><code class="lang-js">// var phone = new Phone
+</code></pre>
+<p></s></p>
+<pre><code class="lang-js">var phone = new Phone
+</code></pre>
+</li>
+</ul>
+<p>Now we can use <code>phone.zAngle</code> to get the <strong>angle</strong> at which the phone is held. But to move the player horizontally, we need a <strong>difference in X</strong>.</p>
+<p>Think back to the bullets from chapter two: to turn an angle into a difference in X, we use trigonometry: specifically, <code>UW.sin</code>.</p>
+<ul>
+<li><p>Move the player horizontally when the phone is tilted.</p>
+<pre><code class="lang-js">player.x += 5 * UW.sin(phone.zAngle)   // adjust `5` to taste
+</code></pre>
+<p><em>Inside the <code>forever</code> for the player.</em></p>
+</li>
+</ul>
+<p>The number <code>5</code> is a multiplier controlling how <strong>fast</strong> the player moves when you tilt the phone. Adjust it until it feels right to you.</p>
+<h3 id="wrapping">Wrapping</h3>
+<p>In <em>Doodle Jump</em>, the player can “wrap” from one side of the screen to the other: when you go off the right, you appear back on the left side, and vice-versa.</p>
+<ul>
+<li><p>Wrap when we go past the right-hand side of the screen.</p>
+<pre><code class="lang-js">if (player.x &gt; world.width) {
+  player.x = 0
+}
+</code></pre>
+<p><em>Inside the <code>forever</code> for the player.</em></p>
+</li>
+<li><p>Challenge: wrap when you go past the left-hand side of the screen.</p>
+</li>
+</ul>
+<h2 id="what-next-">What next?</h2>
+<ul>
+<li><p>Different kinds of platforms!</p>
+<p>Use <code>UW.randomChoice</code> to pick the kind of platform:</p>
+</li>
+<li><p>Trampolines which bounce you higher.</p>
+<p>Bonus: an animation which rotates the player after he jumps off a trampoline!</p>
+</li>
+<li><p>Springs which bounce you even higher.</p>
+</li>
+<li><p>Platforms which move from side to side.</p>
+</li>
+<li><p>Randomly vary the distance between different kinds of platforms.</p>
+<p>The springs can have a larger distance after them.</p>
+<p>You can increase the minimum distance as you get higher, so it gets more difficult the higher up you get.</p>
+</li>
+<li><p>Add enemies which you have to avoid.</p>
+</li>
+<li><p>Let the player shoot bullets at the enemies to kill them!</p>
+</li>
+</ul>
+
+</div>
+
+<script async id=highlight-js src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+document.querySelector('#highlight-js').addEventListener('load', function() {
+    [].slice.apply(document.querySelectorAll('pre code')).forEach(function(b) {
+        hljs.highlightBlock(b)
+    })
+})
+</script>
+

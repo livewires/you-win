@@ -1,0 +1,124 @@
+<!doctype html>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width, initial-scale=1.0">
+<title>you-win: Install</title>
+
+<style>
+</style>
+<link rel=stylesheet href=/static/theme.css>
+
+<body class=has-nav>
+
+<nav id=nav>
+    <ul>
+        <h1 class=title><a href="https://github.com/livewires/you-win">you-win</a></h1>
+
+        <li class=page>
+            <a href="#" class=page-title-active>Install</a>
+            <ul>
+                <li class=page-heading><a href="#install-chrome">Install Chrome</a>
+                <li class=page-heading><a href="#option-1-glitch">Option #1: Glitch</a>
+                <li class=page-heading><a href="#option-2-node-js">Option #2: Node.js</a>
+                <li class=page-heading><a href="#remote-debugging">Remote Debugging</a>
+            </ul>
+        </li>
+        <li class=page><a href="/1-Numbers">#1: Numbers</a>
+        <li class=page><a href="/2-Animation">#2: Animation</a>
+        <li class=page><a href="/3-Arrays">#3: Arrays</a>
+        <li class=page><a href="/4-Functions">#4: Functions</a>
+        <li class=page><a href="/Jump">Game: Infinite Jump!</a>
+        <li class=page><a href="/Reference">API Reference</a>
+
+        <a class=logo href="http://livewires.org.uk/"></a>
+    </ul>
+</nav>
+
+<div class=prose>
+<h2 id="install-chrome">Install Chrome</h2>
+<p>You need Chrome or Chromium running on a desktop.</p>
+<ul>
+<li><p>On Ubuntu:</p>
+<pre><code class="lang-bash">apt install chromium-browser
+</code></pre>
+</li>
+</ul>
+<p>You need Chrome running on an Android.</p>
+<ul>
+<li>Either install Chrome from <a href="https://www.apkmirror.com/apk/google-inc/chrome/">APK Mirror</a>;</li>
+<li>or install Chrome from the Play Store, which requires a Google account.</li>
+</ul>
+<h2 id="option-1-glitch">Option #1: Glitch</h2>
+<p>You can use <strong><a href="https://glitch.com">Glitch</a></strong> to code a mobile game, without installing anything.</p>
+<p>Open our <a href="https://glitch.com/edit/#!/you-win-template?path=app.js:17:0">you-win template</a>, <strong>remix</strong> it, and start coding immediately!</p>
+<h2 id="option-2-node-js">Option #2: Node.js</h2>
+<p>If you prefer, you can <strong>install</strong> <code>you-win</code> to your computer.</p>
+<ol>
+<li><p><strong>Install <a href="https://nodejs.org/en/download/">Node.js</a></strong>, which includes NPM.</p>
+<p>On <strong>Ubuntu</strong>, run the following in a Terminal:</p>
+<pre><code class="lang-bash">curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+sudo apt-get install -y build-essential
+</code></pre>
+</li>
+<li><p><strong>Install <code>you-win</code></strong> globally.</p>
+<p>Run the following in your shell (<strong>Command Prompt</strong> on Windows, <strong>Terminal</strong> on macOS/Linux):</p>
+<pre><code class="lang-sh">npm install -g you-win
+</code></pre>
+</li>
+<li><p><strong>Start a new project!</strong></p>
+<p>In your shell, use the <code>cd</code> command to move into your Documents folder.</p>
+<pre><code class="lang-sh">cd Documents
+</code></pre>
+<p>Run the <code>you-win</code> command to make a new project:</p>
+<pre><code class="lang-sh">you-win first.js
+</code></pre>
+</li>
+</ol>
+<p>This will create a new game from the <code>you-win</code> template, which should save you a bit of typing.</p>
+<p>Now open the <code>first.js</code> file you just created in your favourite text editor. Text editors include <strong>Gedit</strong> (Ubuntu only), <strong>VSCode</strong>, <strong>Brackets</strong>, or <strong>Sublime Text</strong>.</p>
+<p>The template should look <a href="https://github.com/livewires/you-win/blob/master/template.js">like this</a>:</p>
+<pre><code class="lang-js">import * as UW from &#39;you-win&#39;
+import {forever, Phone, World, Sprite, Text, Polygon, Rect, Sound} from &#39;you-win&#39;
+
+// var phone = new Phone
+
+UW.init({
+})
+.then(() =&gt; {
+
+    var world = new World
+    world.title = &#39;&#39;
+    world.background = &#39;white&#39;
+
+    // ...
+
+})
+</code></pre>
+<p>To run your game:</p>
+<ul>
+<li>Open <a href="http://localhost:8000">http://localhost:8000</a> in Chrome on your computer.</li>
+<li>In your Terminal, you should see a web address output to the console, eg <code>http://192.168.1.10:8000/</code>. Open that address on your Android.</li>
+</ul>
+<h2 id="remote-debugging">Remote Debugging</h2>
+<p>You need an Android running 4.2 or later (e.g. a Galaxy S3 or newer).</p>
+<ol>
+<li>In Settings on your Android, find “About phone”, and tap <strong>Build number</strong> seven times to <a href="https://developer.android.com/studio/debug/dev-options.html">enable Developer Options</a>.</li>
+<li>Go back, and open Developer Options. Enable <strong>USB Debugging</strong>.</li>
+<li>On your desktop, in Chrome or Chromium, <a href="https://developers.google.com/web/tools/chrome-devtools/#open">open DevTools</a> (<kbd>Ctrl+Shift+J</kbd>; or <kbd>⌥⌘J</kbd> on Mac). Go to <strong>More Tools</strong> → <strong>Remote devices</strong>. Make sure <strong>Discover USB Devices</strong> is ticked.</li>
+<li>Connect your Android to your computer, using a microUSB cable. Select <strong>Allow USB Debugging</strong> on the prompt that appears.</li>
+<li>On your computer, find the <code>you-win</code> tab on your phone, and click <strong>Inspect</strong>.</li>
+</ol>
+<p>Now you can see a preview of your phone on the computer–but more importantly, you can see any error messages which appear! </p>
+<p>Read Google’s <a href="https://developers.google.com/web/tools/chrome-devtools/remote-debugging/#discover">Remote Debugging article</a> for more details.</p>
+
+</div>
+
+<script async id=highlight-js src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+document.querySelector('#highlight-js').addEventListener('load', function() {
+    [].slice.apply(document.querySelectorAll('pre code')).forEach(function(b) {
+        hljs.highlightBlock(b)
+    })
+})
+</script>
+
