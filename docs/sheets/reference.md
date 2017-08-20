@@ -397,7 +397,7 @@ If a tap overlaps more than one sprite (because the sprites are overlapping), th
 
 If a sprite wants to handle an event, it should `return true`. From then on, no other sprites (nor the `world`!) will see the event.
 
-There are two types of event:
+There are a few kinds of event:
 
   * **`world.on('tap', e => { ... })`** / **`sprite.on('tap', e => { ... })`**
 
@@ -409,8 +409,6 @@ There are two types of event:
 
   * **`world.on('drag', e => { ... })`** / **`sprite.on('drag', e => { ... })`**
 
-    A `tap` event happens when a finger is pressed against the screen and let go without moving.
-
     The event object `e` has the following attributes:
 
       * **`e.startX`** / **`e.startY`**: the coordinate the drag started from.
@@ -418,6 +416,9 @@ There are two types of event:
       * **`e.fingerX`** / **`e.fingerY`**: the current coordinates of the drag.
 
     If the Sprite doesn't want to hear about the event anymore, it can `return false`.
+
+  * **`world.on('drop', e => { ... })`** / **`sprite.on('drop', e => { ... })`**
+
 
 If you're testing your game on a computer, mouse clicks and drags will work to simulate touches -- but remember that unlike fingers, a mouse pointer can only be in one place at a time!
 
