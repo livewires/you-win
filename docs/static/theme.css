@@ -164,11 +164,10 @@ a.subtitle:before {
 .prose ol > li:before {
     content: counter(step-count);
     font-weight: 500;
-    margin-top: 1px;
-    border-bottom: 2px solid #555;
+    /* border-bottom: 2px solid #555; */
     display: inline-block;
     position: absolute;
-    left: 0.25em;
+    left: 0.5em;
 }
 
 
@@ -245,6 +244,7 @@ nav a {
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0.375em 2em;
+    white-space: nowrap;
 }
 .title a {
     font-size: 2rem;
@@ -279,7 +279,6 @@ nav a {
         left: 0;
         top: 0;
         bottom: 0;
-        white-space: nowrap;
         overflow-y: auto;
         font-size: 0.875em;
         border-right: 1px solid #aaa;

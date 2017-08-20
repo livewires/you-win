@@ -1,5 +1,5 @@
 ---
-title: Infinite Jump!
+title: "Game: Infinite Jump!"
 ---
 
 # The Infinite Jumping Game

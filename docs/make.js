@@ -42,6 +42,9 @@ m.use(paths({
     property: 'paths'
 }))
 m.use(docs([
+
+    'install',
+
     // Tutorial
     '1-Numbers',
     '2-Animation',
