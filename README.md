@@ -2,12 +2,12 @@
 Mobile games for beginners.
 
   * [Install](https://livewires.github.io/you-win/install)
-  * Read the [Intro tutorial](https://livewires.github.io/1-Numbers)
-  * Make a [Doodle Jump clone](https://livewires.github.io/Jump)
+  * Read the [Intro tutorial](https://livewires.github.io/you-win/1-numbers)
+  * Make a [Doodle Jump clone](https://livewires.github.io/you-win/jump)
 
 For experts:
 
-  * [API Reference](sheets/Reference.md).
+  * [API Reference](https://livewires.github.io/you-win/reference).
 
 
 ### Why "you-win"?

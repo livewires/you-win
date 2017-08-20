@@ -46,16 +46,17 @@ m.use(docs([
     'install',
 
     // Tutorial
-    '1-Numbers',
-    '2-Animation',
-    '3-Arrays',
-    '4-Functions',
+    '1-numbers',
+    '2-animation',
+    '3-arrays',
+    '4-functions',
 
     // games
-    'Jump',
+    'jump',
 
-    // API
-    'Reference',
+    // api
+    'reference',
+
 ]))
 //m.use(debug)
 m.use(markdown({
