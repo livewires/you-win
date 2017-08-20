@@ -9,10 +9,10 @@ set.sort((a, b) => b.length - a.length)
 set = set.filter(emoji => !/^[0-9*#]$/.test(emoji))
 
 function reEscape(s) {
-  return (s
-    .replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
-    .replace(/[\u0100-\uffff]/g, x => '\\u' + x.charCodeAt(0).toString(16))
-  )
+    return (s
+        .replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+        .replace(/[\u0100-\uffff]/g, x => '\\u' + x.charCodeAt(0).toString(16))
+    )
 }
 
 

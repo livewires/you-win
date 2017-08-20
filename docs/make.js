@@ -36,8 +36,8 @@ const m = Metalsmith(__dirname)
 m.metadata({
     version: require('../package.json').version,
     css: fs.readFileSync('static/theme.css', 'utf-8')
-          .replace(/\/\*[^\/]*\*\//g, '')
-          .replace(/ *\n */g, ''),
+        .replace(/\/\*[^\/]*\*\//g, '')
+        .replace(/ *\n */g, ''),
 })
 m.source('sheets/')
 m.destination('.')
@@ -69,12 +69,12 @@ m.use(markdown({
 }))
 m.use(headings('h2'))
 m.use(layouts({
-  engine: 'handlebars',
-  default: 'default.html',
+    engine: 'handlebars',
+    default: 'default.html',
 }))
 m.use(pdf({
-  format: 'A4',
-  printBackground: true,
+    format: 'A4',
+    printBackground: true,
 }))
 m.build(function(err) {
     if (err) throw err
