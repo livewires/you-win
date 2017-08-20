@@ -6,38 +6,38 @@
 
 <style>
 body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  position: fixed;
-  background: #000;
-  user-select: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: fixed;
+    background: #000;
+    user-select: none;
 }
 
 #error {
-  padding: 1em;
-  margin: 0;
-  display: none;
-  background: #fff;
-  color: #e40046;
-  font-size: 1.125em;
-  font-family: Source Code Pro, Monaco, Menlo, monospace;
-  white-space: pre-wrap;
+    padding: 1em;
+    margin: 0;
+    display: none;
+    background: #fff;
+    color: #e40046;
+    font-size: 1.125em;
+    font-family: Source Code Pro, Monaco, Menlo, monospace;
+    white-space: pre-wrap;
 }
 
 
 .progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 24px;
-  background: #3786e3;
-  transition: .3s all, opacity .6s;
-  z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 24px;
+    background: #3786e3;
+    transition: .3s all, opacity .6s;
+    z-index: 1;
 }
 .progress.error {
-  background: #ecc;
+    background: #ecc;
 }
 </style>
 
@@ -57,51 +57,51 @@ const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:'
 const host = location.host
 var ws
 function connect() {
-  ws = new WebSocket(`${protocol}//${host}/ws`)
-  ws.addEventListener('message', onMessage)
-  ws.addEventListener('close', () => setTimeout(connect, 1000))
-  ws.addEventListener('open', () => console.log('watching'))
-}
+    ws = new WebSocket(`${protocol}//${host}/ws`)
+        ws.addEventListener('message', onMessage)
+        ws.addEventListener('close', () => setTimeout(connect, 1000))
+        ws.addEventListener('open', () => console.log('watching'))
+    }
 connect()
 
 function onMessage(e) {
-  const json = JSON.parse(e.data)
-  if (json._type === 'refresh') {
-    console.log('refreshing')
-    refresh()
-  }
+    const json = JSON.parse(e.data)
+    if (json._type === 'refresh') {
+        console.log('refreshing')
+        refresh()
+    }
 }
 
 var script
 var isRefreshing = false
 function refresh() {
-  if (isRefreshing) return
-  isRefreshing = true
-  const url = 'app.js?' + (new Date|0)
+    if (isRefreshing) return
+    isRefreshing = true
+    const url = 'app.js?' + (new Date|0)
 
-  stackTrace.style.display = 'none'
-  seenError = false
-  if (script) document.body.removeChild(script)
+    stackTrace.style.display = 'none'
+    seenError = false
+    if (script) document.body.removeChild(script)
 
-  isRefreshing = false
-  script = document.createElement('script')
-  script.setAttribute('id', 'game')
-  script.setAttribute('src', url)
-  document.body.appendChild(script)
+    isRefreshing = false
+    script = document.createElement('script')
+    script.setAttribute('id', 'game')
+    script.setAttribute('src', url)
+    document.body.appendChild(script)
 }
 refresh()
 
 function showError(msg, source, line, col, err) {
-  if (seenError) return
-  if (!err) err = msg
-  console.error(err)
-  seenError = true
-  var err = err || msg
-  var line = line || err.lineno || 'unknown'
-  if (!source || /\/app.js$/.test(source)) {
-    stackTrace.textContent = (err.stack || err.message || err) + '\n  ⇒ line ' + line
-    stackTrace.style.display = 'block'
-  }
+    if (seenError) return
+    if (!err) err = msg
+    console.error(err)
+    seenError = true
+    var err = err || msg
+    var line = line || err.lineno || 'unknown'
+    if (!source || /\/app.js$/.test(source)) {
+        stackTrace.textContent = (err.stack || err.message || err) + '\n  ⇒ line ' + line
+        stackTrace.style.display = 'block'
+    }
 }
 //window.onerror = showError
 </script>
