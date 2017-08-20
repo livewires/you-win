@@ -76,7 +76,7 @@ function init(promiseMap) {
     bar.style.width = '5%'
 
     return Asset.loadAll(map, Costume.load)
-        .on('progress', e => {
+        .onProgress(e => {
             var frac = e.loaded / e.total
             bar.style.width = (frac * 100) + '%';
         })
@@ -174,7 +174,7 @@ var World = function(props) {
     this.stop = this.stop.bind(this)
     this.start()
 }
-emitter(World.prototype)
+emitter(World.prototype, ['frame', 'tap', 'drag', 'drop'])
 
 World.prototype.start = function() {
     if (this.isRunning) return
@@ -257,7 +257,7 @@ World.prototype._tick = function() {
     this._deadLoops = []
 
     // trigger `forever` loops
-    this.emit('frame')
+    this.emitFrame()
 }
 
 World.prototype._draw = function() {
@@ -359,7 +359,7 @@ World.prototype.pointerMove = function(e) {
         if (finger.canceled) {
             return
         }
-        if (finger.sprite.emit('drag', finger) === false) {
+        if (finger.sprite.emitDrag(finger) === false) {
             finger.canceled = true
         }
         return
@@ -380,13 +380,13 @@ World.prototype.pointerMove = function(e) {
     for (var i=sprites.length; i--; ) {
         const s = sprites[i]
         if (s.opacity !== 0 && s.touchesPoint(pos.x, pos.y)) {
-            if (s.emit('drag', finger)) { // true
+            if (s.emitDrag(finger)) { // true
                 finger.sprite = s
                 return
             }
         }
     }
-    this.emit('drag', finger)
+    this.emitDrag(finger)
     finger.sprite = this
 }
 
@@ -397,18 +397,18 @@ World.prototype.pointerUp = function(e) {
     delete this._fingers[e.pointerId]
     const pos = this._toWorld(e.clientX, e.clientY)
     if (finger.wasDragged) {
-        finger.sprite.emit('drop', finger)
+        finger.sprite.emitDrop(finger)
     } else {
         const sprites = this.sprites
         for (var i=sprites.length; i--; ) {
             const s = sprites[i]
             if (s.opacity !== 0 && s.touchesPoint(pos.x, pos.y)) {
-                if (s.emit('tap', finger)) { // true
+                if (s.emitTap(finger)) { // true
                     return
                 }
             }
         }
-        this.emit('tap', finger)
+        this.emitTap(finger)
     }
 }
 
@@ -558,7 +558,7 @@ const Base = function(props, init) {
     this.dead = false
     world.sprites.push(this)
 }
-emitter(Base.prototype)
+emitter(Base.prototype, ['tap', 'drag', 'drop'])
 
 // TODO: cache rotated sprites.
 
@@ -1124,7 +1124,7 @@ Sound.prototype.play = function() {
 function forever(cb) {
     if (typeof cb !== 'function') throw new Error('oops')
     const w = world
-    w.on('frame', function listener() {
+    w.onFrame(function listener() {
         if (cb() === false) {
             w._deadLoops.push(listener)
         }

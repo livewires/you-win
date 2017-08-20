@@ -133,7 +133,7 @@ face.costume = &#39;🐮&#39;
 <p></s></p>
 </li>
 <li><p>Use <code>on(&#39;tap&#39;)</code> to detect when the screen is tapped.</p>
-<pre><code class="lang-js">world.on(&#39;tap&#39;, e =&gt; {
+<pre><code class="lang-js">world.onTap(e =&gt; {
     alert(&quot;dont touch this&quot;)
 })
 </code></pre>
@@ -147,7 +147,7 @@ face.costume = &#39;🐮&#39;
 <pre><code class="lang-js">    alert(&quot;dont touch this&quot;)
 </code></pre>
 <p></s></p>
-<pre><code class="lang-js">world.on(&#39;tap&#39;, e =&gt; {
+<pre><code class="lang-js">world.onTap(e =&gt; {
     var bullet = new Sprite
     bullet.costume = &#39;👾&#39;
     bullet.x = e.fingerX
@@ -156,14 +156,14 @@ face.costume = &#39;🐮&#39;
     // TODO: move the bullet ...
 })
 </code></pre>
-<p><em>Add this <strong>inside</strong> the <code>world.on(&#39;tap&#39;...</code> block.</em></p>
+<p><em>Add this <strong>inside</strong> the <code>world.onTap</code> block.</em></p>
 </li>
 </ul>
 <p>What’s going on here? <code>e</code> is an <strong>event</strong> object, telling us the details of the <strong>tap</strong> event. The <code>e.fingerX</code> and <code>e.fingerY</code> attributes tell us the coordinates of the tap.</p>
 <p>Now let’s try moving our projectile!</p>
 <ul>
 <li><p>Add a <code>forever</code> block to move the Sprite we created after the tap.</p>
-<pre><code class="lang-js">world.on(&#39;tap&#39;, e =&gt; {
+<pre><code class="lang-js">world.onTap(e =&gt; {
     // ... [make the bullet] ...
 
     forever(() =&gt; {
@@ -194,7 +194,7 @@ face.costume = &#39;🐮&#39;
 <p><em>Hint: you want to set their <code>angle</code> to a random number between <code>1</code> and <code>360</code>.</em></p>
 </li>
 <li><p>Now move them at that angle by replacing your <code>forever</code> block.</p>
-<pre><code class="lang-js">world.on(&#39;tap&#39;, e =&gt; {
+<pre><code class="lang-js">world.onTap(e =&gt; {
     // ... [make the bullet, with random angle] ...
 
     forever(() =&gt; {
@@ -210,7 +210,7 @@ face.costume = &#39;🐮&#39;
 <p>Now to work out the correct angle! We need to use <code>atan2</code> for this. This is a special version of inverse <em>tan()</em> which takes two numbers–a difference in <code>x</code> and a difference in <code>y</code>–and returns the correct angle.</p>
 <ul>
 <li><p>Use <code>atan2</code> to get the correct angle.</p>
-<pre><code class="lang-js">world.on(&#39;tap&#39;, e =&gt; {
+<pre><code class="lang-js">world.onTap(e =&gt; {
     var bullet = new Sprite
     // ... [go to face] ...
     bullet.angle = UW.atan2(e.fingerX - face.x, e.fingerY - face.y)
@@ -312,7 +312,7 @@ forever(() =&gt; {
 <li><strong>Change attributes</strong> using <code>+=</code></li>
 <li><em>Move</em> things over time (<strong>animation</strong>!)</li>
 <li>React to the <strong>orientation</strong> of the phone</li>
-<li>How to <strong>detect taps</strong> using <code>.on(&#39;tap&#39;, e =&gt; { ... })</code></li>
+<li>How to <strong>detect taps</strong> using <code>.onTap</code></li>
 <li>How to move things at an <strong>angle</strong></li>
 <li>Using <code>if</code> for <strong>conditions</strong></li>
 <li><code>destroy</code>-ing Sprites when you’re finished with them</li>
