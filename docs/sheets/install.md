@@ -6,7 +6,7 @@ title: Install
 
 You need Chrome or Chromium running on a desktop.
 
-  * On Ubuntu:
+  * **On Ubuntu**:
 
     ```bash
     apt install chromium-browser
@@ -31,7 +31,7 @@ If you prefer, you can **install** `you-win` to your computer.
 
  1. **Install [Node.js](https://nodejs.org/en/download/)**, which includes NPM.
 
-    On **Ubuntu**, run the following in a Terminal:
+    **On Ubuntu**, run the following in a Terminal:
 
     ```bash
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
@@ -94,13 +94,41 @@ To run your game:
 
 ## Remote Debugging
 
+### ADB Driver
+
+First, make sure you have the Android ADB driver installed.
+
+  * **On Ubuntu**:
+
+    ```sh
+    apt install android-tools-adb
+    ```
+
+    Make sure you're in the `plugdev` group.
+
+    ```sh
+    sudo usermod -aG plugdev $LOGNAME
+    ```
+
+  * **On Windows:** [Install the OEM driver](https://developer.android.com/studio/run/oem-usb.html#InstallingDriver) from your manufacturer.
+
+  * **On macOS:** "It just works. Skip this step."
+
+
+### USB Debugging
+
 You need an Android running 4.2 or later (e.g. a Galaxy S3 or newer).
 
- 1. In Settings on your Android, find "About phone", and tap **Build number** seven times to [enable Developer Options](https://developer.android.com/studio/debug/dev-options.html).
- 2. Go back, and open Developer Options. Enable **USB Debugging**.
- 3. On your desktop, in Chrome or Chromium, [open DevTools](https://developers.google.com/web/tools/chrome-devtools/#open) (<kbd>Ctrl+Shift+J</kbd>; or <kbd>⌥⌘J</kbd> on Mac). Go to **More Tools** → **Remote devices**. Make sure **Discover USB Devices** is ticked.
- 4. Connect your Android to your computer, using a microUSB cable. Select **Allow USB Debugging** on the prompt that appears.
- 5. On your computer, find the `you-win` tab on your phone, and click **Inspect**.
+On your Android phone:
+
+ 1. In **Settings**, find **About phone**, and tap **Build number** 7 times. This should [enable Developer Options](https://developer.android.com/studio/debug/dev-options.html).
+ 2. Go back, and open **Developer Options**. Enable **USB Debugging**.
+ 3. Use a micro USB cable to connect your Android to your computer. Make sure to **Allow USB Debugging** on your phone.
+
+On your desktop:
+
+ 1. In Chrome, [open DevTools](https://developers.google.com/web/tools/chrome-devtools/#open) (<kbd>Ctrl+Shift+J</kbd>; or <kbd>⌥⌘J</kbd> on Mac). Go to **More Tools** → **Remote devices**. Make sure **Discover USB Devices** is ticked.
+ 2. Find the `you-win` tab running on your phone, and click **Inspect**.
 
 Now you can see a preview of your phone on the computer--but more importantly, you can see any error messages which appear! 
  
