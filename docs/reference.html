@@ -318,17 +318,16 @@ p.thickness = 2
 <p>An <strong>event</strong> tells you that something has happened. Both Worlds and Sprites will emit events when they are tapped or dragged.</p>
 <p>If a tap overlaps more than one sprite (because the sprites are overlapping), then the sprites are told about the events in order. The front-most one sees the event first.</p>
 <p>If a sprite wants to handle an event, it should <code>return true</code>. From then on, no other sprites (nor the <code>world</code>!) will see the event.</p>
-<p>There are two types of event:</p>
+<p>There are a few kinds of event:</p>
 <ul>
-<li><p><strong><code>world.on(&#39;tap&#39;, e =&gt; { ... })</code></strong> / <strong><code>sprite.on(&#39;tap&#39;, e =&gt; { ... })</code></strong></p>
+<li><p><strong><code>world.onTap(e =&gt; { ... })</code></strong> / <strong><code>sprite.onTap(e =&gt; { ... })</code></strong></p>
 <p>A <code>tap</code> event happens when a finger is pressed against the screen and let go without moving.</p>
 <p>The event object <code>e</code> has the following attributes:</p>
 <ul>
 <li><strong><code>e.fingerX</code></strong> / <strong><code>e.fingerY</code></strong>: the coordinates of the tap.</li>
 </ul>
 </li>
-<li><p><strong><code>world.on(&#39;drag&#39;, e =&gt; { ... })</code></strong> / <strong><code>sprite.on(&#39;drag&#39;, e =&gt; { ... })</code></strong></p>
-<p>A <code>tap</code> event happens when a finger is pressed against the screen and let go without moving.</p>
+<li><p><strong><code>world.onDrag(e =&gt; { ... })</code></strong> / <strong><code>sprite.onDrag(e =&gt; { ... })</code></strong></p>
 <p>The event object <code>e</code> has the following attributes:</p>
 <ul>
 <li><strong><code>e.startX</code></strong> / <strong><code>e.startY</code></strong>: the coordinate the drag started from.</li>
@@ -337,17 +336,19 @@ p.thickness = 2
 </ul>
 <p>If the Sprite doesn’t want to hear about the event anymore, it can <code>return false</code>.</p>
 </li>
+<li><p><strong><code>world.onDrop(e =&gt; { ... })</code></strong> / <strong><code>sprite.onDrop(e =&gt; { ... })</code></strong></p>
+</li>
 </ul>
 <p>If you’re testing your game on a computer, mouse clicks and drags will work to simulate touches – but remember that unlike fingers, a mouse pointer can only be in one place at a time!</p>
 <h3 id="detecting-taps">Detecting taps</h3>
-<pre><code class="lang-js">world.on(&#39;tap&#39;, e =&gt; {
+<pre><code class="lang-js">world.onTap(e =&gt; {
     // make a ball where you clicked
     var ball = new uw.Sprite
     ball.costume = &#39;beachball&#39;
     ball.x = e.fingerX
     ball.y = e.fingerY
 
-    ball.on(&#39;tap&#39;, e =&gt; {
+    ball.onTap(e =&gt; {
         // flip
         ball.flipped = !ball.flipped
 
@@ -360,7 +361,7 @@ p.thickness = 2
 <h3 id="dragging-sprites-around">Dragging sprites around</h3>
 <pre><code class="lang-js">var ball = new uw.Sprite
 ball.costume = &#39;beachball&#39;
-ball.on(&#39;drag&#39;, e =&gt; {
+ball.onDrag(e =&gt; {
     // move when dragged
     ball.x += e.deltaX
     ball.y += e.deltaY

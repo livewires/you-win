@@ -396,9 +396,9 @@ If a tap overlaps more than one sprite (because the sprites are overlapping), th
 
 If a sprite wants to handle an event, it should `return true`. From then on, no other sprites (nor the `world`!) will see the event.
 
-There are two types of event:
+There are a few kinds of event:
 
-  * **`world.on('tap', e => { ... })`** / **`sprite.on('tap', e => { ... })`**
+  * **`world.onTap(e => { ... })`** / **`sprite.onTap(e => { ... })`**
 
     A `tap` event happens when a finger is pressed against the screen and let go without moving.
 
@@ -406,9 +406,7 @@ There are two types of event:
 
       * **`e.fingerX`** / **`e.fingerY`**: the coordinates of the tap.
 
-  * **`world.on('drag', e => { ... })`** / **`sprite.on('drag', e => { ... })`**
-
-    A `tap` event happens when a finger is pressed against the screen and let go without moving.
+  * **`world.onDrag(e => { ... })`** / **`sprite.onDrag(e => { ... })`**
 
     The event object `e` has the following attributes:
 
@@ -418,20 +416,22 @@ There are two types of event:
 
     If the Sprite doesn't want to hear about the event anymore, it can `return false`.
 
+  * **`world.onDrop(e => { ... })`** / **`sprite.onDrop(e => { ... })`**
+
 If you're testing your game on a computer, mouse clicks and drags will work to simulate touches -- but remember that unlike fingers, a mouse pointer can only be in one place at a time!
 
 
 ### Detecting taps
 
 ```js
-world.on('tap', e => {
+world.onTap(e => {
     // make a ball where you clicked
     var ball = new uw.Sprite
     ball.costume = 'beachball'
     ball.x = e.fingerX
     ball.y = e.fingerY
 
-    ball.on('tap', e => {
+    ball.onTap(e => {
         // flip
         ball.flipped = !ball.flipped
 
@@ -448,7 +448,7 @@ world.on('tap', e => {
 ```js
 var ball = new uw.Sprite
 ball.costume = 'beachball'
-ball.on('drag', e => {
+ball.onDrag(e => {
     // move when dragged
     ball.x += e.deltaX
     ball.y += e.deltaY
