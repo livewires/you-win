@@ -5,16 +5,15 @@
 
 <style>
 </style>
-<link rel=stylesheet href=/theme.css>
+<link rel=stylesheet href=/static/theme.css>
 
 <body class=has-nav>
 
 <nav id=nav>
     <ul>
-        <h1 class=logo><span /></h1>
-        <a class=site href="https://github.com/livewires/you-win">you-win</a>
+        <h1 class=title><a href="https://github.com/livewires/you-win">you-win</a></h1>
 
-    {{#each docs}}
+        {{#each docs}}
         {{#if (eq title ../title)}}
         <li class=page>
             <a href="#" class=page-title-active>{{title}}</a>
@@ -29,7 +28,9 @@
         {{else}}
         <li class=page><a href="/{{paths.name}}">{{title}}</a>
         {{/if}}
-    {{/each}}
+        {{/each}}
+
+        <a class=logo href="http://livewires.org.uk/"></a>
     </ul>
 </nav>
 

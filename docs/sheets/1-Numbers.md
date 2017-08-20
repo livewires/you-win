@@ -138,8 +138,8 @@ These are the co-ordinates of the center of the sprite, starting from the bottom
 
 Here's a quick diagram introducing coordinates:
 
-<img src="figs/sprite-xy.png" width=240>
-<img src="figs/sprite-angle.png" width=180>
+<img src="static/sprite-xy.png" width=240>
+<img src="static/sprite-angle.png" width=180>
 
   * Move your poop to the position `(100, 100)`.
 

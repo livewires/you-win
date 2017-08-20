@@ -203,8 +203,8 @@ Sprites have quite a few attributes which you can change. You can also set their
 
     The rotation of the sprite, going clockwise.
 
-    <img src="figs/sprite-xy.png" width=240>
-    <img src="figs/sprite-angle.png" width=180>
+    <img src="static/sprite-xy.png" width=240>
+    <img src="static/sprite-angle.png" width=180>
 
   * **`sprite.scale = 1.0`**
 
@@ -343,7 +343,7 @@ snowy.costume = '⛄'
 
 A **Polygon** is like a Sprite, but has a _shape_ instead of a costume. This shape is defined using a list of points. Examples include making a filled rectangle, a triangle with a fill and an outline, and thick lines.
 
-<img src="figs/polygons.png" width=200>
+<img src="static/polygons.png" width=200>
 
 Here's an example Polygon:
 
