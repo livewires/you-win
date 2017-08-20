@@ -6,6 +6,7 @@ const markdown = require('metalsmith-markdown')
 const layouts = require('metalsmith-layouts')
 const paths = require('metalsmith-paths')
 const headings = require('metalsmith-headings')
+const pdf = require('./pdfs')
 
 
 const Handlebars = require('handlebars')
@@ -18,6 +19,7 @@ const debug = (files, metalsmith, done) => {
     console.log(metalsmith.metadata().collections.articles[0].paths)
 }
 */
+
 
 const docs = articles => (files, metalsmith, done) => {
     setImmediate(done)
@@ -70,8 +72,12 @@ m.use(layouts({
   engine: 'handlebars',
   default: 'default.html',
 }))
+m.use(pdf({
+  format: 'A4',
+  printBackground: true,
+}))
 m.build(function(err) {
-    if (err) throw err;
+    if (err) throw err
 })
 
 
