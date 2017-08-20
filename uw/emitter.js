@@ -34,10 +34,6 @@ function unlisten(e, fn) {
     if (i !== -1) l.splice(i, 1)
     return this
 }
-function toggleListener(e, fn, value) {
-    if (value) this.on(e, fn)
-    else this.unlisten(e, fn)
-}
 function listeners(e) {
     const m = this._listeners
     return m ? m.get(e) || [] : []
@@ -59,12 +55,24 @@ const PROPERTIES = {
     on: {value: on},
     once: {value: once},
     unlisten: {value: unlisten},
-    toggleListener: {value: toggleListener},
     listeners: {value: listeners},
     emit: {value: emit},
 }
 
-module.exports = function emitter(o) {
-    Object.defineProperties(o, PROPERTIES)
+module.exports = function emitter(o, names) {
+  const props = Object.assign({}, PROPERTIES)
+  for (let name of names) {
+    const capital = name[0].toUpperCase() + name.substr(1)
+    props['on' + capital] = {
+      value: function(fn) { return this.on(name, fn) },
+    }
+    props['onNext' + capital] = {
+      value: function(fn) { return this.once(name, fn) }
+    }
+    props['emit' + capital] = {
+      value: function(arg) { return this.emit(name, arg) }
+    }
+  }
+  Object.defineProperties(o, props)
 }
 

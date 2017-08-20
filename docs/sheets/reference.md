@@ -399,7 +399,7 @@ If a sprite wants to handle an event, it should `return true`. From then on, no 
 
 There are a few kinds of event:
 
-  * **`world.on('tap', e => { ... })`** / **`sprite.on('tap', e => { ... })`**
+  * **`world.onTap(e => { ... })`** / **`sprite.onTap(e => { ... })`**
 
     A `tap` event happens when a finger is pressed against the screen and let go without moving.
 
@@ -407,7 +407,7 @@ There are a few kinds of event:
 
       * **`e.fingerX`** / **`e.fingerY`**: the coordinates of the tap.
 
-  * **`world.on('drag', e => { ... })`** / **`sprite.on('drag', e => { ... })`**
+  * **`world.onDrag(e => { ... })`** / **`sprite.onDrag(e => { ... })`**
 
     The event object `e` has the following attributes:
 
@@ -417,8 +417,7 @@ There are a few kinds of event:
 
     If the Sprite doesn't want to hear about the event anymore, it can `return false`.
 
-  * **`world.on('drop', e => { ... })`** / **`sprite.on('drop', e => { ... })`**
-
+  * **`world.onDrop(e => { ... })`** / **`sprite.onDrop(e => { ... })`**
 
 If you're testing your game on a computer, mouse clicks and drags will work to simulate touches -- but remember that unlike fingers, a mouse pointer can only be in one place at a time!
 
@@ -426,14 +425,14 @@ If you're testing your game on a computer, mouse clicks and drags will work to s
 ### Detecting taps
 
 ```js
-world.on('tap', e => {
+world.onTap(e => {
     // make a ball where you clicked
     var ball = new Sprite
     ball.costume = 'beachball'
     ball.x = e.fingerX
     ball.y = e.fingerY
 
-    ball.on('tap', e => {
+    ball.onTap(e => {
         // flip
         ball.flipped = !ball.flipped
 
@@ -450,7 +449,7 @@ world.on('tap', e => {
 ```js
 var ball = new Sprite
 ball.costume = 'beachball'
-ball.on('drag', e => {
+ball.onDrag(e => {
     // move when dragged
     ball.x += e.deltaX
     ball.y += e.deltaY

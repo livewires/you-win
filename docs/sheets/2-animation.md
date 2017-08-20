@@ -134,7 +134,7 @@ Let's have our face shoot out a projectile toward our finger when we tap.
   * Use `on('tap')` to detect when the screen is tapped.
 
     ```js
-    world.on('tap', e => {
+    world.onTap(e => {
         alert("dont touch this")
     })
     ```
@@ -152,7 +152,7 @@ That gets boring quickly, so let's make a projectile.
     </s>
 
     ```js
-    world.on('tap', e => {
+    world.onTap(e => {
         var bullet = new Sprite
         bullet.costume = '👾'
         bullet.x = e.fingerX
@@ -161,7 +161,7 @@ That gets boring quickly, so let's make a projectile.
         // TODO: move the bullet ...
     })
     ```
-    _Add this **inside** the `world.on('tap'...` block._
+    _Add this **inside** the `world.onTap` block._
 
 What's going on here? `e` is an **event** object, telling us the details of the **tap** event. The `e.fingerX` and `e.fingerY` attributes tell us the coordinates of the tap.
 
@@ -170,7 +170,7 @@ Now let's try moving our projectile!
   * Add a `forever` block to move the Sprite we created after the tap.
 
     ```js
-    world.on('tap', e => {
+    world.onTap(e => {
         // ... [make the bullet] ...
 
         forever(() => {
@@ -207,7 +207,7 @@ Currently, our bullets all go at 45°, which is dull. Let's fire them out at a r
   * Now move them at that angle by replacing your `forever` block.
 
     ```js
-    world.on('tap', e => {
+    world.onTap(e => {
         // ... [make the bullet, with random angle] ...
 
         forever(() => {
@@ -226,7 +226,7 @@ Now to work out the correct angle! We need to use `atan2` for this. This is a sp
   * Use `atan2` to get the correct angle.
 
     ```js
-    world.on('tap', e => {
+    world.onTap(e => {
         var bullet = new Sprite
         // ... [go to face] ...
         bullet.angle = UW.atan2(e.fingerX - face.x, e.fingerY - face.y)
@@ -345,7 +345,7 @@ Excellent work! You've learnt how to:
   * **Change attributes** using `+=`
   * _Move_ things over time (**animation**!)
   * React to the **orientation** of the phone
-  * How to **detect taps** using `.on('tap', e => { ... })`
+  * How to **detect taps** using `.onTap`
   * How to move things at an **angle**
   * Using `if` for **conditions**
   * `destroy`-ing Sprites when you're finished with them
