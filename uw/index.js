@@ -558,8 +558,8 @@ const Base = function(props, init) {
 
     const s = props.scale || 1
     Object.assign(this, {
-        x: (world._width / 2 + world._scrollX)|0,
-        y: (world._height / 2 + world._scrollY)|0,
+        posX: (world._width / 2 + world._scrollX)|0,
+        posY: (world._height / 2 + world._scrollY)|0,
         scale: 1,
         opacity: 1,
         angle: 0,
@@ -577,14 +577,14 @@ Base.prototype._setCostume = function(costume) {
     this._validBBox = false
 }
 
-prop(Base, 'x', num, function(x, oldX) {
+prop(Base, 'posX', num, function(x, oldX) {
     if (this._validBBox) {
         const dx = x - oldX
         this._left += dx
         this._right += dx
     }
 })
-prop(Base, 'y', num, function(y, oldY) {
+prop(Base, 'posY', num, function(y, oldY) {
     if (this._validBBox) {
         const dy = y - oldY
         this._top += dy
@@ -598,24 +598,24 @@ prop(Base, 'opacity', num)
 
 // TODO opt?
 bboxProp(Base, 'left', function(left) {
-    this.x = left - this.scale * this._surface.xOffset
+    this.posX = left - this.scale * this._surface.xOffset
 })
 bboxProp(Base, 'right', function(right) {
-    this.x = right - this.scale * (this._surface.width + this._surface.xOffset)
+    this.posX = right - this.scale * (this._surface.width + this._surface.xOffset)
 })
 bboxProp(Base, 'bottom', function(bottom) {
-    this.y = bottom + this.scale * (this._surface.height + this._surface.yOffset)
+    this.posY = bottom + this.scale * (this._surface.height + this._surface.yOffset)
 })
 bboxProp(Base, 'top', function(top) {
-    this.y = top + this.scale * this._surface.yOffset
+    this.posY = top + this.scale * this._surface.yOffset
 })
 
 Base.prototype._computeBBox = function() {
     const costume = this._surface
     const s = this.scale
     if (this.angle === 0) {
-        const x = this.x + costume.xOffset * s
-        const y = this.y + costume.yOffset * s
+        const x = this.posX + costume.xOffset * s
+        const y = this.posY + costume.yOffset * s
         this._left = x
         this._bottom = y
         this._right = x + costume.width * s
@@ -642,10 +642,10 @@ Base.prototype._computeBBox = function() {
         const brX = mSin * right - mCos * bottom
         const brY = mCos * right + mSin * bottom
 
-        this._left = this.x + Math.min(tlX, trX, blX, brX)
-        this._right = this.x + Math.max(tlX, trX, blX, brX)
-        this._top = this.y + Math.max(tlY, trY, blY, brY)
-        this._bottom = this.y + Math.min(tlY, trY, blY, brY)
+        this._left = this.posX + Math.min(tlX, trX, blX, brX)
+        this._right = this.posX + Math.max(tlX, trX, blX, brX)
+        this._top = this.posY + Math.max(tlY, trY, blY, brY)
+        this._bottom = this.posY + Math.min(tlY, trY, blY, brY)
     }
     this._validBBox = true
 }
@@ -703,8 +703,8 @@ Base.prototype.touchesPoint = function(x, y) {
         return false
     }
     const costume = this._surface
-    var cx = (x - this.x) / this.scale
-    var cy = (this.y - y) / this.scale // TODO
+    var cx = (x - this._posX) / this.scale
+    var cy = (this._posY - y) / this.scale // TODO
     if (this.angle !== 0) {
         const d = -this.angle * Math.PI / 180 // (dir = angle + 90)
         const ox = cx
@@ -721,7 +721,7 @@ Base.prototype.touchesPoint = function(x, y) {
 Base.prototype._draw = function(ctx, x=0, y=0) {
     const costume = this._surface
     ctx.save()
-    ctx.translate(x + this._x|0, y - this._y|0)
+    ctx.translate(x + this._posX|0, y - this._posY|0)
     ctx.rotate(this._angle * Math.PI / 180)
     if (this._flipped) {
         ctx.scale(-1, 1)

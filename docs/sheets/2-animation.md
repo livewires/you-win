@@ -47,7 +47,7 @@ We can use `forever` to make our sprite spin!
     ```
     _Add this, **inside** the `forever`._
 
-In JavaScript, `x += 1` is shorthand for `x = x + 1`. You can read it as **"change by"**.
+In JavaScript, `n += 1` is shorthand for `n = n + 1`. You can read it as **"change by"**.
 
 By increasing the angle of the sprite on every frame, our sprite will slowly rotate clockwise.
 
@@ -64,7 +64,7 @@ Now we know the basics of animation, lets try some simple movement.
     </s>
 
     ```js
-    face.x += 2
+    face.posX += 2
     ```
 
 You can make the sprite move faster by increasing the number `2`, since the sprite will move further on each frame.
@@ -155,8 +155,8 @@ That gets boring quickly, so let's make a projectile.
     world.onTap(e => {
         var bullet = new Sprite
         bullet.costume = '👾'
-        bullet.x = e.fingerX
-        bullet.y = e.fingerY
+        bullet.posX = e.fingerX
+        bullet.posY = e.fingerY
 
         // TODO: move the bullet ...
     })
@@ -174,8 +174,8 @@ Now let's try moving our projectile!
         // ... [make the bullet] ...
 
         forever(() => {
-            bullet.x += 3
-            bullet.y += 3
+            bullet.posX += 3
+            bullet.posY += 3
         })
     })
     ```
@@ -195,7 +195,7 @@ It'd be really neat if our bullets started at the face, and travelled outward to
 
 I'm not going to explain all of trig here, since that would be boring. For the purposes, we only need to know two things:
 
-1. You can use `.x += UW.sin(angle)` and `.y += UW.cos(angle)` to move a sprite at an angle.
+1. You can use `.posX += UW.sin(angle)` and `.posY += UW.cos(angle)` to move a sprite at an angle.
 2. You can use `angle = UW.atan2(dx, dy)` to work out the angle you need to move something in a direction.
 
 Currently, our bullets all go at 45°, which is dull. Let's fire them out at a random angle.
@@ -211,8 +211,8 @@ Currently, our bullets all go at 45°, which is dull. Let's fire them out at a r
         // ... [make the bullet, with random angle] ...
 
         forever(() => {
-            bullet.x += 4 * UW.sin(bullet.angle)
-            bullet.y += 4 * UW.cos(bullet.angle)
+            bullet.posX += 4 * UW.sin(bullet.angle)
+            bullet.posY += 4 * UW.cos(bullet.angle)
         })
     })
     ```
@@ -221,7 +221,7 @@ By multiplying `sin` and `cos` by 4, we increase the speed of movement.
 
 So we've done the first part -- moving the bullets in a direction.
 
-Now to work out the correct angle! We need to use `atan2` for this. This is a special version of inverse _tan()_ which takes two numbers--a difference in `x` and a difference in `y`--and returns the correct angle.
+Now to work out the correct angle! We need to use `atan2` for this. This is a special version of inverse _tan()_ which takes two numbers--a difference in X and a difference in Y--and returns the correct angle.
 
   * Use `atan2` to get the correct angle.
 
@@ -229,7 +229,7 @@ Now to work out the correct angle! We need to use `atan2` for this. This is a sp
     world.onTap(e => {
         var bullet = new Sprite
         // ... [go to face] ...
-        bullet.angle = UW.atan2(e.fingerX - face.x, e.fingerY - face.y)
+        bullet.angle = UW.atan2(e.fingerX - face.posX, e.fingerY - face.posY)
 
         // ... [move at an angle] ...
     })
@@ -272,7 +272,7 @@ Let's see what we can do with conditions.
     var xVel = 2
 
     forever(() => {
-        face.x += xVel
+        face.posX += xVel
     })
     ```
 
@@ -286,7 +286,7 @@ We're moving him to the right (increasing x).
 
     ```js
     forever(() => {
-        face.x += xVel
+        face.posX += xVel
         if (world.width < face.right) {
             xVel = -2
         }
@@ -306,7 +306,7 @@ We do this by comparing his `right` edge to the width of the world. If his right
 
     You'll need to add a second `if` block.
 
-    Hint: the left-hand side of the world is where `x = 0`...
+    Hint: the left-hand side of the world is where _X = 0_...
 
   * Check that the bullets still come from the face, and head toward your finger!
 

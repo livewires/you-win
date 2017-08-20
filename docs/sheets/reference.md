@@ -119,7 +119,9 @@ It has the following attributes:
 
     An offset applied to all of the objects on-screen.
 
-    You can change these in order to move around the virtual "camera" to show different parts of the world, e.g. for writing a platformer. But be aware, the `x` and `y` positions of your sprites won't change when you scroll; so a sprite at `x: 0, y: 0` may no longer be in the bottom-left corner of the screen!
+    You can change these in order to move around the virtual "camera" to show different parts of the world, e.g. for writing a platformer.
+    
+    But be aware, the X and Y positions of your sprites won't change when you scroll; so a sprite at _(0, 0)_ will no longer be in the bottom-left corner of the screen!
 
   * **`world.background`**
 
@@ -195,9 +197,9 @@ UW.init({
 
 Sprites have quite a few attributes which you can change. You can also set their initial values when you make the sprite.
 
-  * **`sprite.x`** / **`sprite.y`**
+  * **`sprite.posX`** / **`sprite.posY`**
 
-    The co-ordinates of the center of the sprite, starting from the bottom-left corner of the screen.
+    The X and Y co-ordinates of the center of the sprite, starting from the bottom-left corner of the screen.
 
   * **`sprite.angle = 0`**
 
@@ -332,7 +334,7 @@ snowy.costume = '⛄'
 
   * **`obj.text`**
 
-    The text to display. Note that the Text's `x` / `y` position is measured from its bottom-left corner, unlike a Sprite (which is measured to the center of the image).
+    The text to display.
 
   * **`obj.fill`**
 
@@ -360,7 +362,7 @@ p.thickness = 2
 
   * **`polygon.points`**
 
-    A list of points. Each point is a 2-element list with the `x` and `y` coordinates (relative to the polygon's center), like so:
+    A list of points. Each point is a 2-element list with the X and Y coordinates (relative to the polygon's center), like so:
 
     ```js
     p.points = [[0, 0], [-16, 20], [16, 20]]
@@ -429,8 +431,8 @@ world.onTap(e => {
     // make a ball where you clicked
     var ball = new Sprite
     ball.costume = 'beachball'
-    ball.x = e.fingerX
-    ball.y = e.fingerY
+    ball.posX = e.fingerX
+    ball.posY = e.fingerY
 
     ball.onTap(e => {
         // flip
@@ -451,8 +453,8 @@ var ball = new Sprite
 ball.costume = 'beachball'
 ball.onDrag(e => {
     // move when dragged
-    ball.x += e.deltaX
-    ball.y += e.deltaY
+    ball.posX += e.deltaX
+    ball.posY += e.deltaY
     return true
 })
 ```

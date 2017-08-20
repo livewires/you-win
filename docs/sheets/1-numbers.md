@@ -132,7 +132,7 @@ Here are some other properties you can try:
 
 ## Coordinates
 
-Let's move our sprite about. We can do this using the attributes `poop.x` and `poop.y`.
+Let's move our sprite about. We can do this using the attributes `poop.posX` and `poop.posY`.
 
 These are the co-ordinates of the center of the sprite, starting from the bottom-left corner of the screen.
 
@@ -144,8 +144,8 @@ Here's a quick diagram introducing coordinates:
   * Move your poop to the position `(100, 100)`.
 
     ```js
-    poop.x = 100
-    poop.y = 100
+    poop.posX = 100
+    poop.posY = 100
     ```
 
 We can add other Sprites, too!
@@ -160,7 +160,7 @@ We can add other Sprites, too!
 
 ## Edges
 
-So we use `.x` and `.y` to set the **center** of the sprite.
+So we use `.posX` and `.posY` to set the **center** of the sprite.
 
 As well as those, we can use `.top`, `.bottom`, `.left`, and `.right`--which are the co-ordinates of the **edges** of the sprite.
  
@@ -174,7 +174,7 @@ As well as those, we can use `.top`, `.bottom`, `.left`, and `.right`--which are
 
     <s>
     ```js
-    poop.y = 100
+    poop.posY = 100
     ```
     </s>
     _Delete this line._
@@ -193,13 +193,13 @@ Let's introduce some uncertainty into our creation.
 
 We can use `UW.randomInt(1, 10)` to pick a random number between `1` and `10`. (This is just like `pick random _ to _` from Scratch.)
 
-  * Move your poop to a random `x` position.
+  * Move your poop to a random `posX` position.
 
     ```js
-    poop.x = UW.randomInt(0, world.width)
+    poop.posX = UW.randomInt(0, world.width)
     ```
 
-  * **Challenge:** Move your poop to a random `y` position.
+  * **Challenge:** Move your poop to a random `posY` position.
 
 Refresh the page; every time you refresh, the position of the poop should change!
 

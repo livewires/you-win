@@ -43,7 +43,7 @@ We can simulate gravity using a **constant acceleration**. As you should know fr
 
     ```js
     forever(() => { // player
-        player.y += velY
+        player.posY += velY
     })
     ```
 
@@ -61,7 +61,7 @@ Save. You'll notice the player falls at a constant speed, which isn't right at a
     var velY = 0
 
     forever(() => { // player
-        player.y += velY
+        player.posY += velY
         velY -= 2               // <-- add this line
     })
     ```
@@ -76,7 +76,7 @@ Now our player falls down! Let's add some platforms for him to bounce on. (We wo
     ```js
     var platform = new Polygon
     platform.points = [[-30, 0], [30, 0], [30, 10], [-30, 10]]
-    platform.y = 100
+    platform.posY = 100
     ```
 
   * Set the `fill` and `outline` colors for your Polygon, to taste.
@@ -163,7 +163,7 @@ Now let's use it.
   * Use `lastY` inside `makePlatform`.
     
     ```js
-        platform.y = lastY
+        platform.posY = lastY
     ```
 
   * **Challenge:** increase `lastY` every time you make a platform.
@@ -179,13 +179,13 @@ In _Doodle Jump_, the screen only ever scrolls up; never down. This is because t
 
 We can scroll by changing `world.scrollY`. The `.scrollX` and `.scrollY` values are an **offset** added to the position of everything in the world, so you can use them to scroll around.
 
-We only want to scroll up, never down. We can do this by comparing the player's height, `player.y`, with the current scroll position, `world.scrollY`.
+We only want to scroll up, never down. We can do this by comparing the player's height, `player.posY`, with the current scroll position, `world.scrollY`.
 
   * Scroll up when the player is near the top of the screen.
 
     ```js
-    if (world.scrollY < player.y - 300) {
-        world.scrollY = player.y - 300
+    if (world.scrollY < player.posY - 300) {
+        world.scrollY = player.posY - 300
     }
     ```
 
@@ -198,7 +198,7 @@ When we scroll up far enough, we run out of platforms.
 
 We could keep adding more by copy/pasting the `makePlatform()` line, but that doesn't seem sensible; however many we'll have, we'll run out eventually! Let's delete all but one of our `makePlatform()` calls, and have our game make 'em automatically.
 
-To do this, we need to compare the current scroll position, `world.scrollY`, with the y position of the last platform we made: which we stored in the `lastY` variable.
+To do this, we need to compare the current scroll position, `world.scrollY`, with the Y position of the last platform we made: which we stored in the `lastY` variable.
 
   * **Challenge:** if the last platform is below the _top_ of the screen, make a new platform.
 
@@ -257,7 +257,7 @@ Think back to the bullets from chapter two: to turn an angle into a difference i
   * Move the player horizontally when the phone is tilted.
 
     ```js
-    player.x += 5 * UW.sin(phone.zAngle)   // adjust `5` to taste
+    player.posX += 5 * UW.sin(phone.zAngle)   // adjust `5` to taste
     ```
     _Inside the `forever` for the player._
 
@@ -271,8 +271,8 @@ In _Doodle Jump_, the player can "wrap" from one side of the screen to the other
   * Wrap when we go past the right-hand side of the screen.
   
     ```js
-    if (player.x > world.width) {
-      player.x = 0
+    if (player.posX > world.width) {
+      player.posX = 0
     }
     ```
     _Inside the `forever` for the player._
