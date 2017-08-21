@@ -372,14 +372,14 @@ p.thickness = 2
 
   * **`polygon.fill`**
 
-    The color of the text, e.g. `text.fill = '#007de0'`.
+    The color painted inside the shape, e.g. `polygon.fill = '#007de0'`.
 
     Leave out this setting, or set it to `null`, for no fill (just an outline).
 
   * **`polygon.outline`**
 
-    The outline color, e.g. `shape.outline = 'black'`.
-    
+    The outline color, e.g. `polygon.outline = 'black'`.
+
     Leave out this setting, or set it to `null`, for no outline. You must specify _either_ a fill or an outline (or both).
 
   * **`polygon.thickness`**
@@ -389,8 +389,25 @@ p.thickness = 2
   * **`polygon.closed`**
 
     Whether the last point should be joined to the first one, to make a closed shape.
-    
-    Defaults to `true` for filled polygons.
+
+    Defaults to `true` for filled polygons. **TODO:** saner default handling.
+
+
+## Rect
+
+A `Rect` is a special sort of [Polygon](#polygon) which, unsurprisingly, is shaped like a rectangle.
+
+Instead of a `costume`, `Rect`s have the following:
+
+  * **`rect.width`** / **`rect.height`**
+
+    The dimensions of the rectangle.
+
+  * **`rect.fill`** / **`rect.outline`** / **`rect.thickness`**
+
+    The fill color, outline color, and width of the outline.
+
+    See [Polygon](#polygon) for more details.
 
 
 ## Touch Events
