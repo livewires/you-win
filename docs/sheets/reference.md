@@ -132,13 +132,6 @@ World has the following methods:
 
   * **`world.stop()`**
 
-  
-### Detecting fingers held down
-
-  * **`world.getFingers()`**
-
-    **TODO**: document
-
 
 ## Sprite
 
@@ -400,7 +393,7 @@ p.thickness = 2
     Defaults to `true` for filled polygons.
 
 
-## Events
+## Touch Events
 
 An **event** tells you that something has happened. Both Worlds and Sprites will emit events when they are tapped or dragged.
 
@@ -467,6 +460,30 @@ ball.onDrag(e => {
     return true
 })
 ```
+
+## Touches list
+
+### Detecting fingers held down
+
+Sometimes you don't want to listen for events: you just want to know where fingers are touching the screen, **right now**. To do this, you can use `getFingers()`.
+
+  * **`world.getFingers()`**
+
+    Returns an `Array` containing a list of each finger currently touching the screen.
+
+    You can use a `for...of` loop to go through each finger in turn:
+
+    ```js
+    for (let e of world.getFingers()) {
+        if (e.fingerX < world.width / 2) {
+            // touching the left side of the screen
+        } else if (e.fingerX > world.width/ 2) {
+            // touching the right side of the screen
+        }
+    }
+    ```
+
+    Each finger is an _event_ object, just like the `e` argument passed to `onTap` or `onDrag`.
 
 
 ## Phone

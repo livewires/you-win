@@ -29,7 +29,8 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
                 <li class=page-heading><a href="#sprite-forever">Sprite::forever</a>
                 <li class=page-heading><a href="#text">Text</a>
                 <li class=page-heading><a href="#polygon">Polygon</a>
-                <li class=page-heading><a href="#events">Events</a>
+                <li class=page-heading><a href="#touch-events">Touch Events</a>
+                <li class=page-heading><a href="#touches-list">Touches list</a>
                 <li class=page-heading><a href="#phone">Phone</a>
                 <li class=page-heading><a href="#sound">Sound</a>
             </ul>
@@ -131,12 +132,6 @@ s.costume = &#39;<img class="emojione" alt="🙂" title=":slight_smile:" src="ht
 <p>World has the following methods:</p>
 <ul>
 <li><strong><code>world.stop()</code></strong></li>
-</ul>
-<h3 id="detecting-fingers-held-down">Detecting fingers held down</h3>
-<ul>
-<li><p><strong><code>world.getFingers()</code></strong></p>
-<p><strong>TODO</strong>: document</p>
-</li>
 </ul>
 <h2 id="sprite">Sprite</h2>
 <p>A <strong><code>Sprite</code></strong> is an image in the world that can be moved and rotated and so on.</p>
@@ -323,7 +318,7 @@ p.thickness = 2
 <p>Defaults to <code>true</code> for filled polygons.</p>
 </li>
 </ul>
-<h2 id="events">Events</h2>
+<h2 id="touch-events">Touch Events</h2>
 <p>An <strong>event</strong> tells you that something has happened. Both Worlds and Sprites will emit events when they are tapped or dragged.</p>
 <p>If a tap overlaps more than one sprite (because the sprites are overlapping), then the sprites are told about the events in order. The front-most one sees the event first.</p>
 <p>If a sprite wants to handle an event, it should <code>return true</code>. From then on, no other sprites (nor the <code>world</code>!) will see the event.</p>
@@ -377,6 +372,24 @@ ball.onDrag(e =&gt; {
     return true
 })
 </code></pre>
+<h2 id="touches-list">Touches list</h2>
+<h3 id="detecting-fingers-held-down">Detecting fingers held down</h3>
+<p>Sometimes you don’t want to listen for events: you just want to know where fingers are touching the screen, <strong>right now</strong>. To do this, you can use <code>getFingers()</code>.</p>
+<ul>
+<li><p><strong><code>world.getFingers()</code></strong></p>
+<p>Returns an <code>Array</code> containing a list of each finger currently touching the screen.</p>
+<p>You can use a <code>for...of</code> loop to go through each finger in turn:</p>
+<pre><code class="lang-js">for (let e of world.getFingers()) {
+    if (e.fingerX &lt; world.width / 2) {
+        // touching the left side of the screen
+    } else if (e.fingerX &gt; world.width/ 2) {
+        // touching the right side of the screen
+    }
+}
+</code></pre>
+<p>Each finger is an <em>event</em> object, just like the <code>e</code> argument passed to <code>onTap</code> or <code>onDrag</code>.</p>
+</li>
+</ul>
 <h2 id="phone">Phone</h2>
 <p><code>Phone</code> provides access to sensors on a smartphone, such as the accelerometer. You can use this to control your game depending on how the phone is held; for example tilting to steer in a racing game.</p>
 <p>You need to make a <code>Phone</code> object before you can access the readings:</p>
