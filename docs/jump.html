@@ -67,7 +67,7 @@ world.height = 460
 </code></pre>
 </li>
 <li><p>Add a <code>forever</code> loop for the player.</p>
-<pre><code class="lang-js">forever(() =&gt; { // player
+<pre><code class="lang-js">uw.forever(() =&gt; { // player
     player.y += velY
 })
 </code></pre>
@@ -82,7 +82,7 @@ world.height = 460
 <p></s></p>
 <pre><code class="lang-js">var velY = 0
 
-forever(() =&gt; { // player
+uw.forever(() =&gt; { // player
     player.y += velY
     velY -= 2               // &lt;-- add this line
 })
@@ -93,7 +93,7 @@ forever(() =&gt; { // player
 <p>Now our player falls down! Let’s add some platforms for him to bounce on. (We won’t do the bouncing part just yet; that’ll have to wait for later.)</p>
 <ul>
 <li><p>Create a <code>platform</code>. This is going to be a <code>Polygon</code> instead of a <code>Sprite</code>.</p>
-<pre><code class="lang-js">var platform = new Polygon
+<pre><code class="lang-js">var platform = new uw.Polygon
 platform.points = [[-30, 0], [30, 0], [30, 10], [-30, 10]]
 platform.y = 100
 </code></pre>
@@ -109,7 +109,7 @@ platform.y = 100
 <p>We can use <code>isTouching</code> to check for collisions between different objects. <code>isTouching</code> returns a Boolean value (<code>true</code> or <code>false</code>), which we can use inside an <code>if</code> condition.</p>
 <ul>
 <li><p>Check if the platform is touching the player.</p>
-<pre><code class="lang-js">forever(() =&gt; { // platform
+<pre><code class="lang-js">uw.forever(() =&gt; { // platform
     if (player.isTouching(platform)) {
         // ...jump...
     }
@@ -217,18 +217,18 @@ makePlatform()
 <li><p>Put this near the top of your program, after the <code>import</code> lines.</p>
 <p>You might find a commented out-line already, in which case just uncomment it!</p>
 <p><s></p>
-<pre><code class="lang-js">// var phone = new Phone
+<pre><code class="lang-js">// var phone = new uw.Phone
 </code></pre>
 <p></s></p>
-<pre><code class="lang-js">var phone = new Phone
+<pre><code class="lang-js">var phone = new uw.Phone
 </code></pre>
 </li>
 </ul>
 <p>Now we can use <code>phone.zAngle</code> to get the <strong>angle</strong> at which the phone is held. But to move the player horizontally, we need a <strong>difference in X</strong>.</p>
-<p>Think back to the bullets from chapter two: to turn an angle into a difference in X, we use trigonometry: specifically, <code>UW.sin</code>.</p>
+<p>Think back to the bullets from chapter two: to turn an angle into a difference in X, we use trigonometry: specifically, <code>uw.sin</code>.</p>
 <ul>
 <li><p>Move the player horizontally when the phone is tilted.</p>
-<pre><code class="lang-js">player.x += 5 * UW.sin(phone.zAngle)   // adjust `5` to taste
+<pre><code class="lang-js">player.x += 5 * uw.sin(phone.zAngle)   // adjust `5` to taste
 </code></pre>
 <p><em>Inside the <code>forever</code> for the player.</em></p>
 </li>
@@ -250,7 +250,7 @@ makePlatform()
 <h2 id="what-next-">What next?</h2>
 <ul>
 <li><p>Different kinds of platforms!</p>
-<p>Use <code>UW.randomChoice</code> to pick the kind of platform:</p>
+<p>Use <code>uw.randomChoice</code> to pick the kind of platform:</p>
 </li>
 <li><p>Trampolines which bounce you higher.</p>
 <p>Bonus: an animation which rotates the player after he jumps off a trampoline!</p>

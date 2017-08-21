@@ -68,16 +68,15 @@ Now open the `first.js` file you just created in your favourite text editor. Tex
 The template should look [like this](https://github.com/livewires/you-win/blob/master/template.js):
 
 ```js
-import * as UW from 'you-win'
-import {forever, Phone, World, Sprite, Text, Polygon, Rect, Sound} from 'you-win'
+const uw = require('you-win')
 
-// var phone = new Phone
+// var phone = new uw.Phone
 
-UW.init({
+uw.init({
 })
 .then(() => {
 
-    var world = new World
+    var world = new uw.World
     world.title = ''
     world.background = 'white'
 

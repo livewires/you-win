@@ -42,7 +42,7 @@ We can simulate gravity using a **constant acceleration**. As you should know fr
   * Add a `forever` loop for the player.
 
     ```js
-    forever(() => { // player
+    uw.forever(() => { // player
         player.y += velY
     })
     ```
@@ -60,7 +60,7 @@ Save. You'll notice the player falls at a constant speed, which isn't right at a
     ```js
     var velY = 0
 
-    forever(() => { // player
+    uw.forever(() => { // player
         player.y += velY
         velY -= 2               // <-- add this line
     })
@@ -74,7 +74,7 @@ Now our player falls down! Let's add some platforms for him to bounce on. (We wo
   * Create a `platform`. This is going to be a `Polygon` instead of a `Sprite`.
 
     ```js
-    var platform = new Polygon
+    var platform = new uw.Polygon
     platform.points = [[-30, 0], [30, 0], [30, 10], [-30, 10]]
     platform.y = 100
     ```
@@ -95,7 +95,7 @@ We can use `isTouching` to check for collisions between different objects. `isTo
   * Check if the platform is touching the player.
 
     ```js
-    forever(() => { // platform
+    uw.forever(() => { // platform
         if (player.isTouching(platform)) {
             // ...jump...
         }
@@ -242,22 +242,22 @@ Like last time, we need to initialise a `Phone` object, so that `you-win` knows 
 
     <s>
     ```js
-    // var phone = new Phone
+    // var phone = new uw.Phone
     ```
     </s>
 
     ```js
-    var phone = new Phone
+    var phone = new uw.Phone
     ```
 
 Now we can use `phone.zAngle` to get the **angle** at which the phone is held. But to move the player horizontally, we need a **difference in X**.
 
-Think back to the bullets from chapter two: to turn an angle into a difference in X, we use trigonometry: specifically, `UW.sin`.
+Think back to the bullets from chapter two: to turn an angle into a difference in X, we use trigonometry: specifically, `uw.sin`.
 
   * Move the player horizontally when the phone is tilted.
 
     ```js
-    player.x += 5 * UW.sin(phone.zAngle)   // adjust `5` to taste
+    player.x += 5 * uw.sin(phone.zAngle)   // adjust `5` to taste
     ```
     _Inside the `forever` for the player._
 
@@ -284,7 +284,7 @@ In _Doodle Jump_, the player can "wrap" from one side of the screen to the other
 
 * Different kinds of platforms!
 
-  Use `UW.randomChoice` to pick the kind of platform:
+  Use `uw.randomChoice` to pick the kind of platform:
 
 * Trampolines which bounce you higher.
 
