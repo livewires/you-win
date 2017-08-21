@@ -68,7 +68,7 @@ world.height = 460
 </li>
 <li><p>Add a <code>forever</code> loop for the player.</p>
 <pre><code class="lang-js">forever(() =&gt; { // player
-    player.y += velY
+    player.posY += velY
 })
 </code></pre>
 </li>
@@ -83,7 +83,7 @@ world.height = 460
 <pre><code class="lang-js">var velY = 0
 
 forever(() =&gt; { // player
-    player.y += velY
+    player.posY += velY
     velY -= 2               // &lt;-- add this line
 })
 </code></pre>
@@ -95,7 +95,7 @@ forever(() =&gt; { // player
 <li><p>Create a <code>platform</code>. This is going to be a <code>Polygon</code> instead of a <code>Sprite</code>.</p>
 <pre><code class="lang-js">var platform = new Polygon
 platform.points = [[-30, 0], [30, 0], [30, 10], [-30, 10]]
-platform.y = 100
+platform.posY = 100
 </code></pre>
 </li>
 <li><p>Set the <code>fill</code> and <code>outline</code> colors for your Polygon, to taste.</p>
@@ -165,7 +165,7 @@ makePlatform()
 <p>Now let’s use it.</p>
 <ul>
 <li><p>Use <code>lastY</code> inside <code>makePlatform</code>.</p>
-<pre><code class="lang-js">    platform.y = lastY
+<pre><code class="lang-js">    platform.posY = lastY
 </code></pre>
 </li>
 <li><p><strong>Challenge:</strong> increase <code>lastY</code> every time you make a platform.</p>
@@ -176,11 +176,11 @@ makePlatform()
 <p>Now we’ve got some platforms to climb, we need to add scrolling so we can move up the platforms.</p>
 <p>In <em>Doodle Jump</em>, the screen only ever scrolls up; never down. This is because the way for the game to end, is for the player to fall off the bottom of the screen!</p>
 <p>We can scroll by changing <code>world.scrollY</code>. The <code>.scrollX</code> and <code>.scrollY</code> values are an <strong>offset</strong> added to the position of everything in the world, so you can use them to scroll around.</p>
-<p>We only want to scroll up, never down. We can do this by comparing the player’s height, <code>player.y</code>, with the current scroll position, <code>world.scrollY</code>.</p>
+<p>We only want to scroll up, never down. We can do this by comparing the player’s height, <code>player.posY</code>, with the current scroll position, <code>world.scrollY</code>.</p>
 <ul>
 <li><p>Scroll up when the player is near the top of the screen.</p>
-<pre><code class="lang-js">if (world.scrollY &lt; player.y - 300) {
-    world.scrollY = player.y - 300
+<pre><code class="lang-js">if (world.scrollY &lt; player.posY - 300) {
+    world.scrollY = player.posY - 300
 }
 </code></pre>
 </li>
@@ -189,7 +189,7 @@ makePlatform()
 <h2 id="more-platforms-">More Platforms!</h2>
 <p>When we scroll up far enough, we run out of platforms.</p>
 <p>We could keep adding more by copy/pasting the <code>makePlatform()</code> line, but that doesn’t seem sensible; however many we’ll have, we’ll run out eventually! Let’s delete all but one of our <code>makePlatform()</code> calls, and have our game make ‘em automatically.</p>
-<p>To do this, we need to compare the current scroll position, <code>world.scrollY</code>, with the y position of the last platform we made: which we stored in the <code>lastY</code> variable.</p>
+<p>To do this, we need to compare the current scroll position, <code>world.scrollY</code>, with the Y position of the last platform we made: which we stored in the <code>lastY</code> variable.</p>
 <ul>
 <li><p><strong>Challenge:</strong> if the last platform is below the <em>top</em> of the screen, make a new platform.</p>
 <p><em>Write this inside the <code>forever</code> loop for the <strong>player</strong>.</em></p>
@@ -228,7 +228,7 @@ makePlatform()
 <p>Think back to the bullets from chapter two: to turn an angle into a difference in X, we use trigonometry: specifically, <code>UW.sin</code>.</p>
 <ul>
 <li><p>Move the player horizontally when the phone is tilted.</p>
-<pre><code class="lang-js">player.x += 5 * UW.sin(phone.zAngle)   // adjust `5` to taste
+<pre><code class="lang-js">player.posX += 5 * UW.sin(phone.zAngle)   // adjust `5` to taste
 </code></pre>
 <p><em>Inside the <code>forever</code> for the player.</em></p>
 </li>
@@ -238,8 +238,8 @@ makePlatform()
 <p>In <em>Doodle Jump</em>, the player can “wrap” from one side of the screen to the other: when you go off the right, you appear back on the left side, and vice-versa.</p>
 <ul>
 <li><p>Wrap when we go past the right-hand side of the screen.</p>
-<pre><code class="lang-js">if (player.x &gt; world.width) {
-  player.x = 0
+<pre><code class="lang-js">if (player.posX &gt; world.width) {
+  player.posX = 0
 }
 </code></pre>
 <p><em>Inside the <code>forever</code> for the player.</em></p>

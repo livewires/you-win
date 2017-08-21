@@ -121,7 +121,8 @@ s.costume = &#39;🙂&#39;
 </li>
 <li><p><strong><code>world.scrollX</code> / <code>world.scrollY</code></strong></p>
 <p>An offset applied to all of the objects on-screen.</p>
-<p>You can change these in order to move around the virtual “camera” to show different parts of the world, e.g. for writing a platformer. But be aware, the <code>x</code> and <code>y</code> positions of your sprites won’t change when you scroll; so a sprite at <code>x: 0, y: 0</code> may no longer be in the bottom-left corner of the screen!</p>
+<p>You can change these in order to move around the virtual “camera” to show different parts of the world, e.g. for writing a platformer.</p>
+<p>But be aware, the X and Y positions of your sprites won’t change when you scroll; so a sprite at <em>(0, 0)</em> will no longer be in the bottom-left corner of the screen!</p>
 </li>
 <li><p><strong><code>world.background</code></strong></p>
 <p>The background colour of the world. Uses HTML/CSS colours, such as <code>red</code> or <code>#007de0</code>.</p>
@@ -178,8 +179,8 @@ forever(() =&gt; {
 </code></pre>
 <p>Sprites have quite a few attributes which you can change. You can also set their initial values when you make the sprite.</p>
 <ul>
-<li><p><strong><code>sprite.x</code></strong> / <strong><code>sprite.y</code></strong></p>
-<p>The co-ordinates of the center of the sprite, starting from the bottom-left corner of the screen.</p>
+<li><p><strong><code>sprite.posX</code></strong> / <strong><code>sprite.posY</code></strong></p>
+<p>The X and Y co-ordinates of the center of the sprite, starting from the bottom-left corner of the screen.</p>
 </li>
 <li><p><strong><code>sprite.angle = 0</code></strong></p>
 <p>The rotation of the sprite, going clockwise.</p>
@@ -275,7 +276,7 @@ snowy.costume = &#39;⛄&#39;
 <p><code>Text</code> objects have all the same attributes as a <a href="#sprite">Sprite</a>–but instead of a <code>costume</code>, they have the following:</p>
 <ul>
 <li><p><strong><code>obj.text</code></strong></p>
-<p>The text to display. Note that the Text’s <code>x</code> / <code>y</code> position is measured from its bottom-left corner, unlike a Sprite (which is measured to the center of the image).</p>
+<p>The text to display.</p>
 </li>
 <li><p><strong><code>obj.fill</code></strong></p>
 <p>The color of the text, e.g. <code>text.fill = &#39;#007de0&#39;</code></p>
@@ -295,7 +296,7 @@ p.thickness = 2
 <p><code>Polygon</code>s have all the same attributes as a <a href="#sprite">Sprite</a>–but instead of a <code>costume</code>, they have the following:</p>
 <ul>
 <li><p><strong><code>polygon.points</code></strong></p>
-<p>A list of points. Each point is a 2-element list with the <code>x</code> and <code>y</code> coordinates (relative to the polygon’s center), like so:</p>
+<p>A list of points. Each point is a 2-element list with the X and Y coordinates (relative to the polygon’s center), like so:</p>
 <pre><code class="lang-js">p.points = [[0, 0], [-16, 20], [16, 20]]
 </code></pre>
 </li>
@@ -346,8 +347,8 @@ p.thickness = 2
     // make a ball where you clicked
     var ball = new Sprite
     ball.costume = &#39;beachball&#39;
-    ball.x = e.fingerX
-    ball.y = e.fingerY
+    ball.posX = e.fingerX
+    ball.posY = e.fingerY
 
     ball.onTap(e =&gt; {
         // flip
@@ -364,8 +365,8 @@ p.thickness = 2
 ball.costume = &#39;beachball&#39;
 ball.onDrag(e =&gt; {
     // move when dragged
-    ball.x += e.deltaX
-    ball.y += e.deltaY
+    ball.posX += e.deltaX
+    ball.posY += e.deltaY
     return true
 })
 </code></pre>

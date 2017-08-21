@@ -69,7 +69,7 @@ face.costume = &#39;🐮&#39;
 <p><em>Add this, <strong>inside</strong> the <code>forever</code>.</em></p>
 </li>
 </ul>
-<p>In JavaScript, <code>x += 1</code> is shorthand for <code>x = x + 1</code>. You can read it as <strong>“change by”</strong>.</p>
+<p>In JavaScript, <code>n += 1</code> is shorthand for <code>n = n + 1</code>. You can read it as <strong>“change by”</strong>.</p>
 <p>By increasing the angle of the sprite on every frame, our sprite will slowly rotate clockwise.</p>
 <ul>
 <li><strong>Challenge:</strong> make the sprite rotate anticlockwise.</li>
@@ -81,7 +81,7 @@ face.costume = &#39;🐮&#39;
 <pre><code class="lang-js">face.angle += 1
 </code></pre>
 <p></s></p>
-<pre><code class="lang-js">face.x += 2
+<pre><code class="lang-js">face.posX += 2
 </code></pre>
 </li>
 </ul>
@@ -150,8 +150,8 @@ face.costume = &#39;🐮&#39;
 <pre><code class="lang-js">world.onTap(e =&gt; {
     var bullet = new Sprite
     bullet.costume = &#39;👾&#39;
-    bullet.x = e.fingerX
-    bullet.y = e.fingerY
+    bullet.posX = e.fingerX
+    bullet.posY = e.fingerY
 
     // TODO: move the bullet ...
 })
@@ -167,8 +167,8 @@ face.costume = &#39;🐮&#39;
     // ... [make the bullet] ...
 
     forever(() =&gt; {
-        bullet.x += 3
-        bullet.y += 3
+        bullet.posX += 3
+        bullet.posY += 3
     })
 })
 </code></pre>
@@ -185,7 +185,7 @@ face.costume = &#39;🐮&#39;
 </ul>
 <p>I’m not going to explain all of trig here, since that would be boring. For the purposes, we only need to know two things:</p>
 <ol>
-<li>You can use <code>.x += UW.sin(angle)</code> and <code>.y += UW.cos(angle)</code> to move a sprite at an angle.</li>
+<li>You can use <code>.posX += UW.sin(angle)</code> and <code>.posY += UW.cos(angle)</code> to move a sprite at an angle.</li>
 <li>You can use <code>angle = UW.atan2(dx, dy)</code> to work out the angle you need to move something in a direction.</li>
 </ol>
 <p>Currently, our bullets all go at 45°, which is dull. Let’s fire them out at a random angle.</p>
@@ -198,8 +198,8 @@ face.costume = &#39;🐮&#39;
     // ... [make the bullet, with random angle] ...
 
     forever(() =&gt; {
-        bullet.x += 4 * UW.sin(bullet.angle)
-        bullet.y += 4 * UW.cos(bullet.angle)
+        bullet.posX += 4 * UW.sin(bullet.angle)
+        bullet.posY += 4 * UW.cos(bullet.angle)
     })
 })
 </code></pre>
@@ -207,13 +207,13 @@ face.costume = &#39;🐮&#39;
 </ul>
 <p>By multiplying <code>sin</code> and <code>cos</code> by 4, we increase the speed of movement.</p>
 <p>So we’ve done the first part – moving the bullets in a direction.</p>
-<p>Now to work out the correct angle! We need to use <code>atan2</code> for this. This is a special version of inverse <em>tan()</em> which takes two numbers–a difference in <code>x</code> and a difference in <code>y</code>–and returns the correct angle.</p>
+<p>Now to work out the correct angle! We need to use <code>atan2</code> for this. This is a special version of inverse <em>tan()</em> which takes two numbers–a difference in X and a difference in Y–and returns the correct angle.</p>
 <ul>
 <li><p>Use <code>atan2</code> to get the correct angle.</p>
 <pre><code class="lang-js">world.onTap(e =&gt; {
     var bullet = new Sprite
     // ... [go to face] ...
-    bullet.angle = UW.atan2(e.fingerX - face.x, e.fingerY - face.y)
+    bullet.angle = UW.atan2(e.fingerX - face.posX, e.fingerY - face.posY)
 
     // ... [move at an angle] ...
 })
@@ -250,7 +250,7 @@ face.costume = &#39;🐮&#39;
 <pre><code class="lang-js">var xVel = 2
 
 forever(() =&gt; {
-    face.x += xVel
+    face.posX += xVel
 })
 </code></pre>
 </li>
@@ -261,7 +261,7 @@ forever(() =&gt; {
 <ul>
 <li><p>Now, let’s have it bounce off the right edge.</p>
 <pre><code class="lang-js">forever(() =&gt; {
-    face.x += xVel
+    face.posX += xVel
     if (world.width &lt; face.right) {
         xVel = -2
     }
@@ -278,7 +278,7 @@ forever(() =&gt; {
 </li>
 <li><p><strong>Challenge:</strong> make it bounce off the left edge too.</p>
 <p>You’ll need to add a second <code>if</code> block.</p>
-<p>Hint: the left-hand side of the world is where <code>x = 0</code>…</p>
+<p>Hint: the left-hand side of the world is where <em>X = 0</em>…</p>
 </li>
 <li><p>Check that the bullets still come from the face, and head toward your finger!</p>
 </li>
@@ -294,17 +294,7 @@ forever(() =&gt; {
 <p><em>This should go inside the bullet’s <code>forever</code>, just after the code to move it.</em></p>
 </li>
 </ul>
-<p>The <code>destroy()</code> function attached to a Sprite removes it from the screen permanently.</p>
-<p>However, we haven’t quite cleaned up after ourselves–the forever block for the bullet will keep running, even though it’s no longer on screen! This isn’t super-important, but in larger games it might cause us to run out of memory. So let’s <code>return false</code> to stop the <code>forever</code> block from running:</p>
-<ul>
-<li><p>We should also <code>return false</code>, to make sure the <code>forever</code> block stops.</p>
-<pre><code class="lang-js">    if (!bullet.isOnScreen()) {
-        bullet.destroy()
-        return false // stop this forever block
-    }
-</code></pre>
-</li>
-</ul>
+<p>The <code>destroy()</code> function attached to a Sprite removes it from the screen permanently. This also stops any <code>forever</code> loops attached to it.</p>
 <h2 id="fin">Fin</h2>
 <p>Excellent work! You’ve learnt how to:</p>
 <ul>

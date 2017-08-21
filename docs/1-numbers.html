@@ -136,15 +136,15 @@ foo.text = &quot;potato&quot;
 <li><code>flipped</code> (a boolean, initially <code>false</code>)</li>
 </ul>
 <h2 id="coordinates">Coordinates</h2>
-<p>Let’s move our sprite about. We can do this using the attributes <code>poop.x</code> and <code>poop.y</code>.</p>
+<p>Let’s move our sprite about. We can do this using the attributes <code>poop.posX</code> and <code>poop.posY</code>.</p>
 <p>These are the co-ordinates of the center of the sprite, starting from the bottom-left corner of the screen.</p>
 <p>Here’s a quick diagram introducing coordinates:</p>
 <p><img src="static/sprite-xy.png" width=240>
 <img src="static/sprite-angle.png" width=180></p>
 <ul>
 <li><p>Move your poop to the position <code>(100, 100)</code>.</p>
-<pre><code class="lang-js">poop.x = 100
-poop.y = 100
+<pre><code class="lang-js">poop.posX = 100
+poop.posY = 100
 </code></pre>
 </li>
 </ul>
@@ -157,7 +157,7 @@ cow.costume = &#39;🐄&#39;
 </li>
 </ul>
 <h2 id="edges">Edges</h2>
-<p>So we use <code>.x</code> and <code>.y</code> to set the <strong>center</strong> of the sprite.</p>
+<p>So we use <code>.posX</code> and <code>.posY</code> to set the <strong>center</strong> of the sprite.</p>
 <p>As well as those, we can use <code>.top</code>, <code>.bottom</code>, <code>.left</code>, and <code>.right</code>–which are the co-ordinates of the <strong>edges</strong> of the sprite.</p>
 <ul>
 <li><p>Move the cow to touch the left side of the screen.</p>
@@ -166,7 +166,7 @@ cow.costume = &#39;🐄&#39;
 </li>
 <li><p>Move the poop to be to the right of the cow.</p>
 <p><s></p>
-<pre><code class="lang-js">poop.y = 100
+<pre><code class="lang-js">poop.posY = 100
 </code></pre>
 <p></s>
 <em>Delete this line.</em></p>
@@ -180,11 +180,11 @@ cow.costume = &#39;🐄&#39;
 <p>Let’s introduce some uncertainty into our creation.</p>
 <p>We can use <code>UW.randomInt(1, 10)</code> to pick a random number between <code>1</code> and <code>10</code>. (This is just like <code>pick random _ to _</code> from Scratch.)</p>
 <ul>
-<li><p>Move your poop to a random <code>x</code> position.</p>
-<pre><code class="lang-js">poop.x = UW.randomInt(0, world.width)
+<li><p>Move your poop to a random <code>posX</code> position.</p>
+<pre><code class="lang-js">poop.posX = UW.randomInt(0, world.width)
 </code></pre>
 </li>
-<li><p><strong>Challenge:</strong> Move your poop to a random <code>y</code> position.</p>
+<li><p><strong>Challenge:</strong> Move your poop to a random <code>posY</code> position.</p>
 </li>
 </ul>
 <p>Refresh the page; every time you refresh, the position of the poop should change!</p>
