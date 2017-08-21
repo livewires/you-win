@@ -132,44 +132,12 @@ World has the following methods:
 
   * **`world.stop()`**
 
+  
+### Detecting fingers held down
 
-### forever
+  * **`world.getFingers()`**
 
-`forever` is really useful function: it lets you do something on every "frame" or "tick" of your game. Usually ticks happen 60 times a second (60 FPS).
-
-Write a forever loop with a function just inside it, like so:
-
-```js
-forever(() => {
-    // do stuff
-})
-```
-
-Any code after the forever loop isn't affected:
-
-```js
-forever(() => {
-    // do stuff
-})
-
-forever(() => {
-    // do other stuff
-})
-
-// carry on setting up the game ...
-```
-
-If you want to **stop** a `forever` loop (so that it doesn't run forever!), you can `return false`:
-
-```js
-forever(() => {
-    if (player.isTouching(floor)) { // the floor is lava
-        // game over!
-        return false // stop this loop
-    }
-    // otherwise, move the player...
-})
-```
+    **TODO**: document
 
 
 ## Sprite
@@ -309,6 +277,47 @@ Sprites have some useful functions attached to them.
     Remove the sprite from the screen. Afterwards, the sprite is "dead" and you can't use it anymore.
 
     If you just want to hide the sprite for a moment, set its `opacity` to zero.
+
+
+## Sprite::forever
+
+`forever` is really useful function: it lets you do something on every "frame" or "tick" of your game. Usually ticks happen 60 times a second (60 FPS).
+
+Write a forever loop with a function just inside it, like so:
+
+```js
+sprite.forever(() => {
+    // do stuff
+})
+```
+
+Any code after the forever loop isn't affected:
+
+```js
+sprite.forever(() => {
+    // do stuff
+})
+
+sprite.forever(() => {
+    // do other stuff
+})
+
+// carry on setting up the game ...
+```
+
+If you want to **stop** a `forever` loop (so that it doesn't run forever!), you can `return false`:
+
+```js
+player.forever(() => {
+    if (player.isTouching(floor)) { // the floor is lava
+        // game over!
+        return false // stop this loop
+    }
+    // otherwise, move the player...
+})
+```
+
+A `forever` loop will automatically be stopped when the Sprite that it's attached to gets destroyed.
 
 
 ## Text
@@ -458,13 +467,6 @@ ball.onDrag(e => {
     return true
 })
 ```
-
-
-## Detecting fingers held down
-
-  * **`world.getFingers()`**
-
-    **TODO**: document
 
 
 ## Phone
