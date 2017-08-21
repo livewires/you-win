@@ -49,6 +49,12 @@ body {
 
 /*****************************************************************************/
 
+.emojione {
+  width: 1.25em;
+  height: 1.25em;
+  line-height: 0.8em;
+}
+
 .prose {
     font-size: 1rem;
     max-width: 36em;

@@ -7,6 +7,7 @@ const layouts = require('metalsmith-layouts')
 const paths = require('metalsmith-paths')
 const headings = require('metalsmith-headings')
 const pdf = require('./pdfs')
+const emoji = require('metalsmith-emoji')
 
 
 const Handlebars = require('handlebars')
@@ -66,6 +67,10 @@ m.use(docs([
 m.use(markdown({
     smartypants: true,
     gfm: true,
+}))
+m.use(emoji({
+    convertToImages: true,
+    processShortnames:  false,
 }))
 m.use(headings('h2'))
 m.use(layouts({
