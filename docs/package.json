@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "main": "make.js",
   "scripts": {
-    "make": "rm *.html; node make.js; rm docs.zip; zip docs.zip pdfs/*.pdf",
+    "make": "rm *.html; node make.js",
     "start": "http-server ."
   },
   "dependencies": {
