@@ -148,6 +148,13 @@ body {
     height: auto;
 }
 
+.prose blockquote {
+    margin: 1.5em 0;
+    border-left: 0.25em solid #555;
+    padding-left: 1em;
+    color: #222;
+}
+
 /*****************************************************************************/
 
 /* print */
@@ -249,7 +256,7 @@ nav a {
 
 .page-heading {
     display: block;
-    padding-left: 1em;
+    padding-left: 1.5em;
 }
 
 
