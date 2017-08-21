@@ -224,6 +224,7 @@ nav {
     margin: -0.5em -2em;
     border-bottom: 1px solid #aaa;
     margin-bottom: 1.5em;
+    color: #364149;
 }
 nav ul {
     padding: 0;
@@ -231,8 +232,8 @@ nav ul {
 }
 
 nav a {
+    color: inherit;
     text-decoration: none;
-    color: #364149;
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -249,7 +250,8 @@ nav a {
     display: block;
 }
 
-.page-title-active {
+.page-title-active,
+.page-heading-active {
     background: #3786e3;
     color: #fff;
 }
