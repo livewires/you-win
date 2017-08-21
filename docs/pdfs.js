@@ -1,4 +1,5 @@
 
+const fs = require('fs')
 const path = require('path')
 
 const chromeLauncher = require('chrome-launcher')
@@ -17,6 +18,10 @@ async function closeChrome(chrome) {
     await chrome.kill()
 }
 
+function sleep(ms) {
+  return new Promise(done => setTimeout(done, ms))
+}
+
 async function newPage(chrome, url) {
     const target = await CDP.New({port: chrome.port})
     const client = await CDP({target})
@@ -24,6 +29,7 @@ async function newPage(chrome, url) {
     await Page.enable()
     await Page.navigate({url, referrer: ''})
     await Page.loadEventFired()
+    await sleep(200)
     return {chrome, Page, client}
 }
 
@@ -67,8 +73,9 @@ async function renderPdfs(files, metalsmith) {
 
     // open a tab to render each PDF
     const promises = htmlPages.map(async (name, index) => {
-        const html = files[name].contents
-        const url = 'data:text/html;base64,' + html.toString('base64')
+        const tmp = '.tmp.' + name
+        await new Promise(done => fs.writeFile(tmp, files[name].contents, done))
+        const url = 'file://' + path.resolve(tmp)
 
         let tab, buffer
         try {
@@ -79,6 +86,8 @@ async function renderPdfs(files, metalsmith) {
             console.error(`Error rendering '${name}' to PDF:\n${err}`)
             throw err
         }
+
+        await new Promise(done => fs.unlink(tmp, done))
 
         files['pdfs/' + name.replace(/\.x?html?$/i, '.pdf')] = {
             contents: buffer,
