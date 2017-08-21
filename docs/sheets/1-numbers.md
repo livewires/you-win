@@ -41,17 +41,23 @@ UW.init({
 
 Look closely at these parts:
 
- 1. `// var phone = new Phone`
+ 1. ```js
+    // var phone = new Phone
+    ```
 
     This is a comment! Lines starting with `//` are ignored by JavaScript.
 
     You can use comments to write messages for yourself, to remind yourself what different bits of your code do.
 
- 2. `UW.init`.
+ 2. ```js
+    UW.init
+    ```
 
     This is where we can load in any extra sounds or images for our game.
 
- 3. `new World`
+ 3. ```js
+    new World
+    ```
 
     This is where we make the `World`. The world represents the screen. We can set its `width` and `height` to change the size of the screen. (It's like the _Stage_ in Scratch.)
 

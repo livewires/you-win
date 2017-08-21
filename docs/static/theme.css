@@ -11,7 +11,7 @@ h1, h2, h3, h4, h5, a, button, input {
 }
 
 strong {
-    font-weight: 700;
+    font-weight: 600;
 }
 em {
     font-style: italic;
@@ -82,7 +82,7 @@ body {
 .prose pre, .prose code {
     border-radius: 0.25em;
     background: #f8f8f8;
-    font-size: 0.8em;
+    font-size: 0.875em;
     line-height: 1.5em;
     font-family: Menlo, monospace;
 }
@@ -176,6 +176,7 @@ body {
     @page {
         margin: 20mm 15mm 20mm 15mm;
     }
+
     /*
     @page :left {
     margin: 15mm 20mm 15mm 10mm;
@@ -183,16 +184,23 @@ body {
     @page :right {
     margin: 15mm 10mm 15mm 20mm;
     }
-     */
+    */
 
-p, h2, h3 {
-    orphans: 3;
-    widows: 3;
-}
+    p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+    }
 
-h2, h3 {
-    page-break-after: avoid;
-}
+    h2, h3 {
+        page-break-after: avoid;
+    }
+
+    .prose pre {
+        border-left: 2px solid #ccc;
+        padding-left: 0.75em;
+        border-radius: 0;
+        page-break-after: avoid;
+    }
 }
 
 /*****************************************************************************/
@@ -295,3 +303,4 @@ nav a {
 /* highlight.js github gist theme */
 
 .hljs { display: block; background: white; padding: 0.5em; color: #333333; overflow-x: auto; } .hljs-comment, .hljs-meta { color: #969896; } .hljs-string, .hljs-variable, .hljs-template-variable, .hljs-strong, .hljs-emphasis, .hljs-quote { color: #df5000; } .hljs-keyword, .hljs-selector-tag, .hljs-type { color: #a71d5d; } .hljs-literal, .hljs-symbol, .hljs-bullet, .hljs-attribute { color: #0086b3; } .hljs-section, .hljs-name { color: #63a35c; } .hljs-tag { color: #333333; } .hljs-title, .hljs-attr, .hljs-selector-id, .hljs-selector-class, .hljs-selector-attr, .hljs-selector-pseudo { color: #795da3; } .hljs-addition { color: #55a532; background-color: #eaffea; } .hljs-deletion { color: #bd2c00; background-color: #ffecec; } .hljs-link { text-decoration: underline; }
+
