@@ -1,5 +1,5 @@
 
-import * as UW from 'you-win'
+import UW from 'you-win'
 import {forever, Phone, World, Sprite, Text, Polygon, Rect, Sound} from 'you-win'
 
 // var phone = new Phone

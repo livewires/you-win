@@ -21,7 +21,7 @@ Your Chrome window should have a white screen. This is a blank canvas in which w
 Have a look at the template that's open in your text editor. It should look like this:
 
 ```js
-import * as UW from 'you-win'
+import UW from 'you-win'
 import {forever, Phone, World, Sprite, Text, Polygon, Rect, Sound} from 'you-win'
 
 // var phone = new Phone

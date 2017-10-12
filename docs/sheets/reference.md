@@ -20,7 +20,7 @@ title: API Reference
 To import all these names so you can use them in your code, use the following line:
 
 ```js
-import * as UW from 'you-win'
+import UW from 'you-win'
 import {forever, Phone, World, Sprite, Text, Polygon} from 'you-win'
 ```
 
