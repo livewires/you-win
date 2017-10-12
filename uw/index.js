@@ -193,8 +193,8 @@ World.prototype.pause = function() {
 World.prototype.stop = function() {
     if (!this.isRunning) return
     this.pause()
-    for (var i=0; i<this.sprites.length; i++) {
-        this.sprites[i].destroy()
+    for (let s of this.sprites) {
+        s.destroy()
     }
 
     window.removeEventListener('blur', this.pause)
