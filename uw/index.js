@@ -193,8 +193,8 @@ World.prototype.pause = function() {
 World.prototype.stop = function() {
     if (!this.isRunning) return
     this.pause()
-    for (var i=0; i<sprites.length; i++) {
-        sprites[i].destroy()
+    for (var i=0; i<this.sprites.length; i++) {
+        this.sprites[i].destroy()
     }
 
     window.removeEventListener('blur', this.pause)
@@ -580,7 +580,6 @@ Base.prototype._setCostume = function(costume) {
 prop(Base, 'x', num, function(x, oldX) {
     throw new Error("Sprite.x is not an attribute. Did you mean posX?")
 })
-
 prop(Base, 'y', num, function(x, oldX) {
     throw new Error("Sprite.y is not an attribute. Did you mean posY?")
 })
