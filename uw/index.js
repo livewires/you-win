@@ -577,6 +577,14 @@ Base.prototype._setCostume = function(costume) {
     this._validBBox = false
 }
 
+prop(Base, 'x', num, function(x, oldX) {
+    throw new Error("Sprite.x is not an attribute. Did you mean posX?")
+})
+
+prop(Base, 'y', num, function(x, oldX) {
+    throw new Error("Sprite.y is not an attribute. Did you mean posY?")
+})
+
 prop(Base, 'posX', num, function(x, oldX) {
     if (this._validBBox) {
         const dx = x - oldX
