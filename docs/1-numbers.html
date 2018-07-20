@@ -115,21 +115,16 @@ poop.costume = &#39;<img class="emojione" alt="💩" title=":poop:" src="https:/
 <p>Here are some kinds of values: <em>(These are just examples, don’t type them in!)</em></p>
 <ul>
 <li><p><strong>Boolean</strong>: either <code>true</code> or <code>false</code>.</p>
-<pre><code class="lang-js">foo.flipped = true // face the other way
-</code></pre>
+<p>Example: the <code>poop.flipped</code> attibute is a Boolean. When set to true, it makes the Sprite face the other way.</p>
 </li>
 <li><p><strong>Number</strong>: e.g. <code>123</code> or <code>3.14</code>.</p>
 </li>
-<li><p><strong>String</strong>: some text, written in quotes: either single <code>&#39;</code> or double <code>&quot;</code>.</p>
-<pre><code class="lang-js">poop.costume = &#39;<img class="emojione" alt="⛄" title=":snowman:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/26c4.png"/>&#39;
-foo.text = &#39;birb&#39;
-foo.text = &quot;potato&quot;
-</code></pre>
+<li><p><strong>String</strong>: some text. Strings are written with quotes around them, e.g. <code>&#39;birb&#39;</code> or <code>&quot;potato&quot;</code>. You can use either single or double quotes.</p>
 </li>
 </ul>
 <p>Now try this.</p>
 <ul>
-<li><strong>Challenge</strong>: Set the <code>scale</code> property of your sprite (which is a number, starting at <code>1.0</code>).</li>
+<li><strong>Challenge</strong>: Set the <code>scale</code> attribute of your sprite to make it twice as big. (The scale is a number, starting at <code>1.0</code>).</li>
 </ul>
 <p>When we make a sprite, we get to specify its initial values. We can change any of them later, too (more on that in the next chapter).</p>
 <p>Here are some other properties you can try:</p>
@@ -160,8 +155,8 @@ cow.costume = &#39;<img class="emojione" alt="🐄" title=":cow2:" src="https://
 </li>
 </ul>
 <h2 id="edges">Edges</h2>
-<p>So we use <code>.posX</code> and <code>.posY</code> to set the <strong>center</strong> of the sprite.</p>
-<p>As well as those, we can use <code>.top</code>, <code>.bottom</code>, <code>.left</code>, and <code>.right</code>–which are the co-ordinates of the <strong>edges</strong> of the sprite.</p>
+<p>We just used the <code>.posX</code> and <code>.posY</code> attributes to set the <strong>center</strong> of the sprite.</p>
+<p>We can also set the <strong>edges</strong> of the sprite, using the attributes <code>.top</code>, <code>.bottom</code>, <code>.left</code>, and <code>.right</code>.</p>
 <ul>
 <li><p>Move the cow to touch the left side of the screen.</p>
 <pre><code class="lang-js">cow.left = 0
@@ -178,7 +173,15 @@ cow.costume = &#39;<img class="emojione" alt="🐄" title=":cow2:" src="https://
 <p><em>Add this line. Make sure it’s after <strong>both</strong> of the <code>poop</code> and <code>cow</code> variables have been created.</em></p>
 </li>
 </ul>
-<p>This moves the poop so that his left edge is the same as the right edge of the cow.</p>
+<p>Notice that you can’t use the name of a Sprite before you create it. If you write <code>cow</code> in your program above the <code>var cow = new Sprite</code> line, it won’t work.</p>
+<ul>
+<li><p>Now move the cow.</p>
+<pre><code class="lang-js">cow.left = 200
+</code></pre>
+<p><em>Add this line at the bottom of your program.</em></p>
+</li>
+</ul>
+<p>Notice that the poop doesn’t move, even though we’ve moved the cow. This is important: when you set an attribute using <code>=</code>, it only happens once.</p>
 <h2 id="randomness">Randomness</h2>
 <p>Let’s introduce some uncertainty into our creation.</p>
 <p>We can use <code>UW.randomInt(1, 10)</code> to pick a random number between <code>1</code> and <code>10</code>. (This is just like <code>pick random _ to _</code> from Scratch.)</p>
@@ -190,14 +193,14 @@ cow.costume = &#39;<img class="emojione" alt="🐄" title=":cow2:" src="https://
 <li><p><strong>Challenge:</strong> Move your poop to a random <code>posY</code> position.</p>
 </li>
 </ul>
-<p>Refresh the page; every time you refresh, the position of the poop should change!</p>
+<p>Refresh the page. Every time you refresh, the position of the poop should change!</p>
 <p>Now try copy/pasting the code for the poop, to make a couple more random ones.</p>
 <ul>
 <li>Make two more poops.</li>
 </ul>
 <h2 id="text">Text</h2>
 <p>We’ve seen how to do images; now let’s add some text to the screen.</p>
-<p>When you’re a beginner programmer, it’s traditional to introduce yourself by saying “Hello world!”, so let’s do that.</p>
+<p>When someone starts programming, it’s traditional to for them to introduce themselves by saying “Hello world!”. Let’s do that now.</p>
 <ul>
 <li><p>Create a <code>Text</code> object.</p>
 <pre><code class="lang-js">var label = new Text
@@ -210,13 +213,14 @@ label.fill = &#39;#007de0&#39; // whatever you fancy really
 </code></pre>
 </li>
 </ul>
+<p>The color <code>&#39;#007de0&#39;</code> is called a “hex code”, short for hexadecimal. You can choose your own hex code color with an online <a href="https://www.google.co.uk/search?q=color+picker">color picker</a>.</p>
 <h2 id="the-end">The End</h2>
 <p>Good job! Now you know how to:</p>
 <ul>
 <li>Make JavaScript objects with the <strong><code>new</code> keyword</strong></li>
 <li>Use <strong><code>var</code> to name them</strong>, so you can refer to them later</li>
 <li><strong>Set their attributes</strong>, using dot notation and <code>=</code></li>
-<li>Use <code>Sprite</code>s and <code>Text</code></li>
+<li>Create <code>Sprite</code>s and <code>Text</code></li>
 <li>Set the <strong>position</strong> of objects inside the world</li>
 <li>How to <strong>pick random numbers</strong> using <code>UW.randomInt</code></li>
 </ul>
