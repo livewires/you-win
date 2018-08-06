@@ -67,7 +67,7 @@ world.height = 460
 </code></pre>
 </li>
 <li><p>Add a <code>forever</code> loop for the player.</p>
-<pre><code class="lang-js">forever(() =&gt; { // player
+<pre><code class="lang-js">player.forever(() =&gt; { // player
     player.posY += velY
 })
 </code></pre>
@@ -82,7 +82,7 @@ world.height = 460
 <p></s></p>
 <pre><code class="lang-js">var velY = 0
 
-forever(() =&gt; { // player
+player.forever(() =&gt; { // player
     player.posY += velY
     velY -= 2               // &lt;-- add this line
 })
@@ -109,7 +109,7 @@ platform.posY = 100
 <p>We can use <code>isTouching</code> to check for collisions between different objects. <code>isTouching</code> returns a Boolean value (<code>true</code> or <code>false</code>), which we can use inside an <code>if</code> condition.</p>
 <ul>
 <li><p>Check if the platform is touching the player.</p>
-<pre><code class="lang-js">forever(() =&gt; { // platform
+<pre><code class="lang-js">platform.forever(() =&gt; {
     if (player.isTouching(platform)) {
         // ...jump...
     }

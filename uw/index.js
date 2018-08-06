@@ -101,6 +101,10 @@ const Phone = function() {
     this.zAngle = 0
     this.zForce = 0
 
+    if (!this.hasMultiTouch) {
+        console.warn("This doesn't seem to be a phone: no multi-touch")
+    }
+
     var gn = new GyroNorm()
     gn.init().then(() => {
         gn.start(data => {

@@ -109,23 +109,15 @@ Here are some kinds of values: _(These are just examples, don't type them in!)_
 
   * **Boolean**: either `true` or `false`.
 
-    ```js
-    foo.flipped = true // face the other way
-    ```
+    Example: the `poop.flipped` attibute is a Boolean. When set to true, it makes the Sprite face the other way.
 
   * **Number**: e.g. `123` or `3.14`.
 
-  * **String**: some text, written in quotes: either single `'` or double `"`.
-
-    ```js
-    poop.costume = '⛄'
-    foo.text = 'birb'
-    foo.text = "potato"
-    ```
+  * **String**: some text. Strings are written with quotes around them, e.g. `'birb'` or `"potato"`. You can use either single or double quotes.
 
 Now try this.
 
-  * **Challenge**: Set the `scale` property of your sprite (which is a number, starting at `1.0`).
+  * **Challenge**: Set the `scale` attribute of your sprite to make it twice as big. (The scale is a number, starting at `1.0`).
 
 When we make a sprite, we get to specify its initial values. We can change any of them later, too (more on that in the next chapter).
 
@@ -166,9 +158,9 @@ We can add other Sprites, too!
 
 ## Edges
 
-So we use `.posX` and `.posY` to set the **center** of the sprite.
+We just used the `.posX` and `.posY` attributes to set the **center** of the sprite.
 
-As well as those, we can use `.top`, `.bottom`, `.left`, and `.right`--which are the co-ordinates of the **edges** of the sprite.
+We can also set the **edges** of the sprite, using the attributes `.top`, `.bottom`, `.left`, and `.right`.
  
   * Move the cow to touch the left side of the screen.
 
@@ -190,7 +182,16 @@ As well as those, we can use `.top`, `.bottom`, `.left`, and `.right`--which are
     ```
     _Add this line. Make sure it's after **both** of the `poop` and `cow` variables have been created._
 
-This moves the poop so that his left edge is the same as the right edge of the cow.
+Notice that you can't use the name of a Sprite before you create it. If you write `cow` in your program above the `var cow = new Sprite` line, it won't work.
+
+  * Now move the cow.
+
+  ```js
+    cow.left = 200
+  ```
+  _Add this line at the bottom of your program._
+
+Notice that the poop doesn't move, even though we've moved the cow. This is important: when you set an attribute using `=`, it only happens once.
 
 
 ## Randomness
@@ -207,7 +208,7 @@ We can use `UW.randomInt(1, 10)` to pick a random number between `1` and `10`. (
 
   * **Challenge:** Move your poop to a random `posY` position.
 
-Refresh the page; every time you refresh, the position of the poop should change!
+Refresh the page. Every time you refresh, the position of the poop should change!
 
 Now try copy/pasting the code for the poop, to make a couple more random ones.
 
@@ -218,7 +219,7 @@ Now try copy/pasting the code for the poop, to make a couple more random ones.
 
 We've seen how to do images; now let's add some text to the screen.
 
-When you're a beginner programmer, it's traditional to introduce yourself by saying "Hello world!", so let's do that.
+When someone starts programming, it's traditional to for them to introduce themselves by saying "Hello world!". Let's do that now.
 
   * Create a `Text` object.
   
@@ -234,6 +235,7 @@ When you're a beginner programmer, it's traditional to introduce yourself by say
     label.fill = '#007de0' // whatever you fancy really
     ```
 
+The color `'#007de0'` is called a "hex code", short for hexadecimal. You can choose your own hex code color with an online [color picker](https://www.google.co.uk/search?q=color+picker).
 
 ## The End
 
@@ -242,7 +244,7 @@ Good job! Now you know how to:
   * Make JavaScript objects with the **`new` keyword**
   * Use **`var` to name them**, so you can refer to them later
   * **Set their attributes**, using dot notation and `=`
-  * Use `Sprite`s and `Text`
+  * Create `Sprite`s and `Text`
   * Set the **position** of objects inside the world
   * How to **pick random numbers** using `UW.randomInt`
 

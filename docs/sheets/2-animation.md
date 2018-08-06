@@ -24,10 +24,11 @@ So far, we've only set up static scenes. We've learnt how to position different 
 We need a way to react to time passing. We do this by using **`forever`** to run code on every _frame_.
 
 ```js
-forever(() => {
+face.forever(() => {
     // do stuff
 })
 ```
+_These are fiddly to type; sorry about that._ 
 
 An app draws a new frame on the screen roughly 60 times a second (or 60 **FPS**, frames per second).
 
@@ -35,17 +36,12 @@ We can use `forever` to make our sprite spin!
 
   * Add a `forever` block, right after you create your `Sprite`.
 
-    <s>
-    ```js
-    face.angle += 1
-    ```
-    </s>
-    _Delete this._
+  * Rotate your Sprite a small amount every frame.
 
     ```js
-    face.angle += 1
+        face.angle += 1
     ```
-    _Add this, **inside** the `forever`._
+    _Add this, **inside** the `forever` block._
 
 In JavaScript, `n += 1` is shorthand for `n = n + 1`. You can read it as **"change by"**.
 
@@ -55,19 +51,22 @@ By increasing the angle of the sprite on every frame, our sprite will slowly rot
 
 Now we know the basics of animation, lets try some simple movement.
 
-  * **Instead** of rotating, move the Sprite right.
+  * **Instead** of rotating, make the Sprite move right.
 
     <s>
     ```js
-    face.angle += 1
+        face.angle += 1
     ```
     </s>
+    _Delete this line._
 
     ```js
-    face.posX += 2
+        face.posX += 2
     ```
 
-You can make the sprite move faster by increasing the number `2`, since the sprite will move further on each frame.
+The numbers inside the forever are how much to move on each frame, so they control **how fast** the animation happens.
+
+  * Make your sprite move a bit faster.
 
   * **Challenge**: experiment with animating other properties, like gradually increasing scale:
 
@@ -75,10 +74,12 @@ You can make the sprite move faster by increasing the number `2`, since the spri
         face.scale *= 1.05
     ```
 
+Note that multiplying the scale by the fraction `1.05` is the same as increasing it by 5%.
+
 
 ## Orientation
 
-We can read the phone's accelerometer to get the angle the phone's being held at, compared to gravity.
+📱 We can read the phone's accelerometer to get the angle the phone's being held at, compared to gravity.
 
 First, we need to initialise a `Phone` object, so that `you-win` knows to start reading the phone's orientation sensors.
 
@@ -100,21 +101,21 @@ First, we need to initialise a `Phone` object, so that `you-win` knows to start 
 
     <s>
     ```js
-    forever(() => {
+    face.forever(() => {
         // whatever you had before
     })
     ```
     </s>
 
     ```js
-    forever(() => {
+    face.forever(() => {
         face.angle = phone.zAngle
     })
     ```
 
   * **Challenge**: what happens if you use negative `zAngle`?
 
-    (This might not make sense, depending on whether you're using an iPhone. THe idea is that the face always stays upright while you rotate the phone! Feel free to skip this if it doesn't make sense.)
+Depending on whether or not you're using an iPhone, one of the last two -- either positive or negative `zAngle` -- should make the sprite always stay the same way up as you rotate the phone around it!
 
 
 ## Events
@@ -125,7 +126,7 @@ Let's have our face shoot out a projectile toward our finger when we tap.
   
     <s>
     ```js
-    forever(() => {
+    face.forever(() => {
         face.angle = phone.zAngle
     })
     ```
@@ -143,23 +144,22 @@ The code inside the `on(...` block runs whenever the screen is tapped.  So whene
 
 That gets boring quickly, so let's make a projectile.
 
-  * When the screen is tapped, make a bullet under your finger.
+  * When the screen is tapped, create a bullet under your finger.
 
     <s>
     ```js
         alert("dont touch this")
     ```
     </s>
+    _Delete this._
 
     ```js
-    world.onTap(e => {
         var bullet = new Sprite
         bullet.costume = '👾'
         bullet.posX = e.fingerX
         bullet.posY = e.fingerY
 
         // TODO: move the bullet ...
-    })
     ```
     _Add this **inside** the `world.onTap` block._
 
@@ -169,18 +169,21 @@ Now let's try moving our projectile!
 
   * Add a `forever` block to move the Sprite we created after the tap.
 
+    <s>
     ```js
-    world.onTap(e => {
-        // ... [make the bullet] ...
+        // TODO: move the bullet ...
+    ```
+    </s>
 
-        forever(() => {
+    ```js
+        bullet.forever(() => {
             bullet.posX += 3
             bullet.posY += 3
         })
-    })
     ```
+    _Make sure this is **inside** the `world.onTap` block still._
 
-Since the `forever` block is inside the `on`, it too runs on every `tap`; and the `bullet` variable that it refers to is the one we just created. (This phenomenon is called "scope"; more about that in [Intro #4: Functions](4-Functions.md).
+Notice that the `forever` block has to be inside the `world.onTap` block. Just as we can't use a name like `cow` before it's been created, we can't use the name `bullet` **outside** the block that it was created inside. This phenomenon is called "scope"; more about that in [Intro #4: Functions](4-Functions.md).
 
 
 ## Trig
@@ -193,10 +196,11 @@ It'd be really neat if our bullets started at the face, and travelled outward to
 
     _Make sure you do this! If you don't, then the bullets won't move in the right direction later :-)_
 
-I'm not going to explain all of trig here, since that would be boring. For the purposes, we only need to know two things:
+To move our bullets, we only need to know two things from trigonometry:
 
-1. You can use `.posX += UW.sin(angle)` and `.posY += UW.cos(angle)` to move a sprite at an angle.
-2. You can use `angle = UW.atan2(dx, dy)` to work out the angle you need to move something in a direction.
+  1. You can use `.posX += UW.sin(angle)` and `.posY += UW.cos(angle)` to move a sprite at an angle.
+
+  2. You can use `angle = UW.atan2(dx, dy)` to work out the angle you need to move something in a direction.
 
 Currently, our bullets all go at 45°, which is dull. Let's fire them out at a random angle.
 
@@ -210,7 +214,7 @@ Currently, our bullets all go at 45°, which is dull. Let's fire them out at a r
     world.onTap(e => {
         // ... [make the bullet, with random angle] ...
 
-        forever(() => {
+        bullet.forever(() => {
             bullet.posX += 4 * UW.sin(bullet.angle)
             bullet.posY += 4 * UW.cos(bullet.angle)
         })
@@ -223,17 +227,23 @@ So we've done the first part -- moving the bullets in a direction.
 
 Now to work out the correct angle! We need to use `atan2` for this. This is a special version of inverse _tan()_ which takes two numbers--a difference in X and a difference in Y--and returns the correct angle.
 
+We'll call the difference in X `dx`, and the difference in Y will be `dy`.
+
   * Use `atan2` to get the correct angle.
 
     ```js
     world.onTap(e => {
         var bullet = new Sprite
         // ... [go to face] ...
-        bullet.angle = UW.atan2(e.fingerX - face.posX, e.fingerY - face.posY)
+        
+        var dx = e.fingerX - face.posX
+        var dy = e.fingerY - face.posY
+        bullet.angle = UW.atan2(dx, dy)
 
         // ... [move at an angle] ...
     })
     ```
+    _Replace your code for setting the bullet to a random angle._
 
 Congrats! We've just made a... face-cannon... thing.
 
@@ -242,15 +252,21 @@ Congrats! We've just made a... face-cannon... thing.
 
 Animation is all very well, and we've learnt how to react to _events_. But how can we react to other things changing?
 
-A **condition** is an expression that's either `true` or `false`. They look like this:
+A **condition** returns a Boolean value: either `true` or `false`. They look like this:
 
-1. `x === y` means _x is equal to y_
-1. `x !== y` means _x is not equal to y_
-2. `x < y` means _x is less than y_
-2. `x <= y` means _x is less than or equal to y_
-3. `!p` means **not** _`true` if p is `false`, and vice-versa_
-4. `p && q` means **and** _`true` only if both p and q are `true`_
-5. `p || q` means **or** _`true` if either of p or q is `true`_
+  1. `x === y` means _x is equal to y_
+
+  2. `x !== y` means _x is not equal to y_
+
+  3. `x < y` means _x is less than y_
+
+  4. `x <= y` means _x is less than or equal to y_
+
+  5. `!p` means **not** -- _`true` if p is `false`, and vice-versa_
+
+  6. `p && q` means **and** -- _`true` only if both p and q are `true`_
+
+  7. `p || q` means **or** -- _`true` if either of p or q is `true`_
 
 Here are some examples. These are all `true`:
 
@@ -262,7 +278,7 @@ Here are some examples. These are all `true`:
 6. `true && true`
 7. `false || true`
 
-Finally, there's a really important condition built-in to moo. It's a function attached to a Sprite, and it's called `.isTouching(otherSprite)`. More about that later!
+Finally, there's a really important condition built-in to you-win, called **`.isTouching(otherSprite)`**. More about that later!
 
 Let's see what we can do with conditions.
 
@@ -271,42 +287,41 @@ Let's see what we can do with conditions.
     ```js
     var xVel = 2
 
-    forever(() => {
+    face.forever(() => {
         face.posX += xVel
     })
     ```
+    _Add this at the bottom of your program, just before the end `})`._
 
-This time, we're using a variable to store its speed. We'll need this to be a variable so we can change it later.
+This time, we're giving its speed a name: `xVel`. We're doing this so we can change it later.
 
-Just as you can store objects (such as `Sprite`s) in a variable, you can store a number in a variable to "remember" it for later. You can change it later, too.
+Just as you can give a name to Sprites, you can give a number a name to "remember" it for later. You can change it later, too.
 
-We're moving him to the right (increasing x).
+Currently, our face moves to the right (increasing X).
 
-  * Now, let's have it bounce off the right edge.
+  * Make it bounce off the right edge.
 
     ```js
-    forever(() => {
-        face.posX += xVel
         if (world.width < face.right) {
             xVel = -2
         }
-    })
     ```
+    _Make sure the `if` block is **inside** the `forever`._
 
 We do this by comparing his `right` edge to the width of the world. If his right edge is greater than the width of the world, then he's gone off the right-hand side of the screen; so we set his velocity negative, so he starts moving left instead.
 
   * Flip the costume, for good measure...
 
     ```js
-        // ...
-        face.flipped = !face.flipped
+            face.flipped = true
     ```
+    _Add this **inside** the `if` block._
 
   * **Challenge:** make it bounce off the left edge too.
 
-    You'll need to add a second `if` block.
+    You'll need to add a second `if` block inside the `forever`.
 
-    Hint: the left-hand side of the world is where _X = 0_...
+    **Hint:** the left-hand side of the world is where _X = 0_...
 
   * Check that the bullets still come from the face, and head toward your finger!
 
@@ -314,12 +329,10 @@ Finally, if we don't destroy the bullets, eventually the game will get really sl
 
   * Destroy the bullets once they're completely off-screen.
 
-    **Challenge**: where should this go?
-
     ```js
-        if (!bullet.isOnScreen()) {
-            bullet.destroy()
-        }
+            if (!bullet.isOnScreen()) {
+                bullet.destroy()
+            }
     ```
     _This should go inside the bullet's `forever`, just after the code to move it._
 
@@ -330,7 +343,7 @@ The `destroy()` function attached to a Sprite removes it from the screen permane
 
 Excellent work! You've learnt how to:
 
-  * do something over time with **`forever`**
+  * Do something over time with **`forever`**
   * **Change attributes** using `+=`
   * _Move_ things over time (**animation**!)
   * React to the **orientation** of the phone
@@ -352,5 +365,4 @@ If you want something else to try, here are some extensions to try! Why not:
 
   * Generally have a play around with the thing you just made, or more generally, everything you've learnt in chapters 1 and 2.
 
-    Come back when you're ready for the [next thing](Jump) 🙃
-
+  * Continue on to the [next thing](Jump) once you're ready! 🙃

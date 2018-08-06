@@ -51,22 +51,20 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 </ul>
 <h3 id="forever">Forever</h3>
 <p>We need a way to react to time passing. We do this by using <strong><code>forever</code></strong> to run code on every <em>frame</em>.</p>
-<pre><code class="lang-js">forever(() =&gt; {
+<pre><code class="lang-js">face.forever(() =&gt; {
     // do stuff
 })
 </code></pre>
+<p><em>These are fiddly to type; sorry about that.</em> </p>
 <p>An app draws a new frame on the screen roughly 60 times a second (or 60 <strong>FPS</strong>, frames per second).</p>
 <p>We can use <code>forever</code> to make our sprite spin!</p>
 <ul>
 <li><p>Add a <code>forever</code> block, right after you create your <code>Sprite</code>.</p>
-<p><s></p>
-<pre><code class="lang-js">face.angle += 1
+</li>
+<li><p>Rotate your Sprite a small amount every frame.</p>
+<pre><code class="lang-js">    face.angle += 1
 </code></pre>
-<p></s>
-<em>Delete this.</em></p>
-<pre><code class="lang-js">face.angle += 1
-</code></pre>
-<p><em>Add this, <strong>inside</strong> the <code>forever</code>.</em></p>
+<p><em>Add this, <strong>inside</strong> the <code>forever</code> block.</em></p>
 </li>
 </ul>
 <p>In JavaScript, <code>n += 1</code> is shorthand for <code>n = n + 1</code>. You can read it as <strong>“change by”</strong>.</p>
@@ -76,24 +74,28 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 </ul>
 <p>Now we know the basics of animation, lets try some simple movement.</p>
 <ul>
-<li><p><strong>Instead</strong> of rotating, move the Sprite right.</p>
+<li><p><strong>Instead</strong> of rotating, make the Sprite move right.</p>
 <p><s></p>
-<pre><code class="lang-js">face.angle += 1
+<pre><code class="lang-js">    face.angle += 1
 </code></pre>
-<p></s></p>
-<pre><code class="lang-js">face.posX += 2
+<p></s>
+<em>Delete this line.</em></p>
+<pre><code class="lang-js">    face.posX += 2
 </code></pre>
 </li>
 </ul>
-<p>You can make the sprite move faster by increasing the number <code>2</code>, since the sprite will move further on each frame.</p>
+<p>The numbers inside the forever are how much to move on each frame, so they control <strong>how fast</strong> the animation happens.</p>
 <ul>
+<li><p>Make your sprite move a bit faster.</p>
+</li>
 <li><p><strong>Challenge</strong>: experiment with animating other properties, like gradually increasing scale:</p>
 <pre><code class="lang-js">    face.scale *= 1.05
 </code></pre>
 </li>
 </ul>
+<p>Note that multiplying the scale by the fraction <code>1.05</code> is the same as increasing it by 5%.</p>
 <h2 id="orientation">Orientation</h2>
-<p>We can read the phone’s accelerometer to get the angle the phone’s being held at, compared to gravity.</p>
+<p><img class="emojione" alt="📱" title=":iphone:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f4f1.png"/> We can read the phone’s accelerometer to get the angle the phone’s being held at, compared to gravity.</p>
 <p>First, we need to initialise a <code>Phone</code> object, so that <code>you-win</code> knows to start reading the phone’s orientation sensors.</p>
 <ul>
 <li><p>Put this near the top of your program, after the <code>import</code> lines.</p>
@@ -107,26 +109,26 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 </li>
 <li><p>Rotate the sprite when the phone rotates.</p>
 <p><s></p>
-<pre><code class="lang-js">forever(() =&gt; {
+<pre><code class="lang-js">face.forever(() =&gt; {
     // whatever you had before
 })
 </code></pre>
 <p></s></p>
-<pre><code class="lang-js">forever(() =&gt; {
+<pre><code class="lang-js">face.forever(() =&gt; {
     face.angle = phone.zAngle
 })
 </code></pre>
 </li>
 <li><p><strong>Challenge</strong>: what happens if you use negative <code>zAngle</code>?</p>
-<p>(This might not make sense, depending on whether you’re using an iPhone. THe idea is that the face always stays upright while you rotate the phone! Feel free to skip this if it doesn’t make sense.)</p>
 </li>
 </ul>
+<p>Depending on whether or not you’re using an iPhone, one of the last two – either positive or negative <code>zAngle</code> – should make the sprite always stay the same way up as you rotate the phone around it!</p>
 <h2 id="events">Events</h2>
 <p>Let’s have our face shoot out a projectile toward our finger when we tap.</p>
 <ul>
 <li><p>Delete (or comment out) the <code>forever</code> block for now – we won’t need it until later.</p>
 <p><s></p>
-<pre><code class="lang-js">forever(() =&gt; {
+<pre><code class="lang-js">face.forever(() =&gt; {
     face.angle = phone.zAngle
 })
 </code></pre>
@@ -142,19 +144,18 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <p>The code inside the <code>on(...</code> block runs whenever the screen is tapped.  So whenever you tap (or click) the screen, the message “don’t touch this” should appear.</p>
 <p>That gets boring quickly, so let’s make a projectile.</p>
 <ul>
-<li><p>When the screen is tapped, make a bullet under your finger.</p>
+<li><p>When the screen is tapped, create a bullet under your finger.</p>
 <p><s></p>
 <pre><code class="lang-js">    alert(&quot;dont touch this&quot;)
 </code></pre>
-<p></s></p>
-<pre><code class="lang-js">world.onTap(e =&gt; {
-    var bullet = new Sprite
+<p></s>
+<em>Delete this.</em></p>
+<pre><code class="lang-js">    var bullet = new Sprite
     bullet.costume = &#39;<img class="emojione" alt="👾" title=":space_invader:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f47e.png"/>&#39;
     bullet.posX = e.fingerX
     bullet.posY = e.fingerY
 
     // TODO: move the bullet ...
-})
 </code></pre>
 <p><em>Add this <strong>inside</strong> the <code>world.onTap</code> block.</em></p>
 </li>
@@ -163,18 +164,19 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <p>Now let’s try moving our projectile!</p>
 <ul>
 <li><p>Add a <code>forever</code> block to move the Sprite we created after the tap.</p>
-<pre><code class="lang-js">world.onTap(e =&gt; {
-    // ... [make the bullet] ...
-
-    forever(() =&gt; {
+<p><s></p>
+<pre><code class="lang-js">    // TODO: move the bullet ...
+</code></pre>
+<p></s></p>
+<pre><code class="lang-js">    bullet.forever(() =&gt; {
         bullet.posX += 3
         bullet.posY += 3
     })
-})
 </code></pre>
+<p><em>Make sure this is <strong>inside</strong> the <code>world.onTap</code> block still.</em></p>
 </li>
 </ul>
-<p>Since the <code>forever</code> block is inside the <code>on</code>, it too runs on every <code>tap</code>; and the <code>bullet</code> variable that it refers to is the one we just created. (This phenomenon is called “scope”; more about that in <a href="4-Functions.md">Intro #4: Functions</a>.</p>
+<p>Notice that the <code>forever</code> block has to be inside the <code>world.onTap</code> block. Just as we can’t use a name like <code>cow</code> before it’s been created, we can’t use the name <code>bullet</code> <strong>outside</strong> the block that it was created inside. This phenomenon is called “scope”; more about that in <a href="4-Functions.md">Intro #4: Functions</a>.</p>
 <h2 id="trig">Trig</h2>
 <p>Sometimes we want to move things at an angle–and to do this, we need <strong>trigonometry</strong>!</p>
 <p>It’d be really neat if our bullets started at the face, and travelled outward toward the point where we tapped. Then it would feel more like a “cannon” sort-of game.</p>
@@ -183,10 +185,12 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <p><em>Make sure you do this! If you don’t, then the bullets won’t move in the right direction later :-)</em></p>
 </li>
 </ul>
-<p>I’m not going to explain all of trig here, since that would be boring. For the purposes, we only need to know two things:</p>
+<p>To move our bullets, we only need to know two things from trigonometry:</p>
 <ol>
-<li>You can use <code>.posX += UW.sin(angle)</code> and <code>.posY += UW.cos(angle)</code> to move a sprite at an angle.</li>
-<li>You can use <code>angle = UW.atan2(dx, dy)</code> to work out the angle you need to move something in a direction.</li>
+<li><p>You can use <code>.posX += UW.sin(angle)</code> and <code>.posY += UW.cos(angle)</code> to move a sprite at an angle.</p>
+</li>
+<li><p>You can use <code>angle = UW.atan2(dx, dy)</code> to work out the angle you need to move something in a direction.</p>
+</li>
 </ol>
 <p>Currently, our bullets all go at 45°, which is dull. Let’s fire them out at a random angle.</p>
 <ul>
@@ -197,7 +201,7 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <pre><code class="lang-js">world.onTap(e =&gt; {
     // ... [make the bullet, with random angle] ...
 
-    forever(() =&gt; {
+    bullet.forever(() =&gt; {
         bullet.posX += 4 * UW.sin(bullet.angle)
         bullet.posY += 4 * UW.cos(bullet.angle)
     })
@@ -208,30 +212,42 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <p>By multiplying <code>sin</code> and <code>cos</code> by 4, we increase the speed of movement.</p>
 <p>So we’ve done the first part – moving the bullets in a direction.</p>
 <p>Now to work out the correct angle! We need to use <code>atan2</code> for this. This is a special version of inverse <em>tan()</em> which takes two numbers–a difference in X and a difference in Y–and returns the correct angle.</p>
+<p>We’ll call the difference in X <code>dx</code>, and the difference in Y will be <code>dy</code>.</p>
 <ul>
 <li><p>Use <code>atan2</code> to get the correct angle.</p>
 <pre><code class="lang-js">world.onTap(e =&gt; {
     var bullet = new Sprite
     // ... [go to face] ...
-    bullet.angle = UW.atan2(e.fingerX - face.posX, e.fingerY - face.posY)
+
+    var dx = e.fingerX - face.posX
+    var dy = e.fingerY - face.posY
+    bullet.angle = UW.atan2(dx, dy)
 
     // ... [move at an angle] ...
 })
 </code></pre>
+<p><em>Replace your code for setting the bullet to a random angle.</em></p>
 </li>
 </ul>
 <p>Congrats! We’ve just made a… face-cannon… thing.</p>
 <h2 id="conditions">Conditions</h2>
 <p>Animation is all very well, and we’ve learnt how to react to <em>events</em>. But how can we react to other things changing?</p>
-<p>A <strong>condition</strong> is an expression that’s either <code>true</code> or <code>false</code>. They look like this:</p>
+<p>A <strong>condition</strong> returns a Boolean value: either <code>true</code> or <code>false</code>. They look like this:</p>
 <ol>
-<li><code>x === y</code> means <em>x is equal to y</em></li>
-<li><code>x !== y</code> means <em>x is not equal to y</em></li>
-<li><code>x &lt; y</code> means <em>x is less than y</em></li>
-<li><code>x &lt;= y</code> means <em>x is less than or equal to y</em></li>
-<li><code>!p</code> means <strong>not</strong> <em><code>true</code> if p is <code>false</code>, and vice-versa</em></li>
-<li><code>p &amp;&amp; q</code> means <strong>and</strong> <em><code>true</code> only if both p and q are <code>true</code></em></li>
-<li><code>p || q</code> means <strong>or</strong> <em><code>true</code> if either of p or q is <code>true</code></em></li>
+<li><p><code>x === y</code> means <em>x is equal to y</em></p>
+</li>
+<li><p><code>x !== y</code> means <em>x is not equal to y</em></p>
+</li>
+<li><p><code>x &lt; y</code> means <em>x is less than y</em></p>
+</li>
+<li><p><code>x &lt;= y</code> means <em>x is less than or equal to y</em></p>
+</li>
+<li><p><code>!p</code> means <strong>not</strong> – <em><code>true</code> if p is <code>false</code>, and vice-versa</em></p>
+</li>
+<li><p><code>p &amp;&amp; q</code> means <strong>and</strong> – <em><code>true</code> only if both p and q are <code>true</code></em></p>
+</li>
+<li><p><code>p || q</code> means <strong>or</strong> – <em><code>true</code> if either of p or q is <code>true</code></em></p>
+</li>
 </ol>
 <p>Here are some examples. These are all <code>true</code>:</p>
 <ol>
@@ -243,42 +259,41 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <li><code>true &amp;&amp; true</code></li>
 <li><code>false || true</code></li>
 </ol>
-<p>Finally, there’s a really important condition built-in to moo. It’s a function attached to a Sprite, and it’s called <code>.isTouching(otherSprite)</code>. More about that later!</p>
+<p>Finally, there’s a really important condition built-in to you-win, called <strong><code>.isTouching(otherSprite)</code></strong>. More about that later!</p>
 <p>Let’s see what we can do with conditions.</p>
 <ul>
 <li><p>First, make our cannon-face move.</p>
 <pre><code class="lang-js">var xVel = 2
 
-forever(() =&gt; {
+face.forever(() =&gt; {
     face.posX += xVel
 })
 </code></pre>
+<p><em>Add this at the bottom of your program, just before the end <code>})</code>.</em></p>
 </li>
 </ul>
-<p>This time, we’re using a variable to store its speed. We’ll need this to be a variable so we can change it later.</p>
-<p>Just as you can store objects (such as <code>Sprite</code>s) in a variable, you can store a number in a variable to “remember” it for later. You can change it later, too.</p>
-<p>We’re moving him to the right (increasing x).</p>
+<p>This time, we’re giving its speed a name: <code>xVel</code>. We’re doing this so we can change it later.</p>
+<p>Just as you can give a name to Sprites, you can give a number a name to “remember” it for later. You can change it later, too.</p>
+<p>Currently, our face moves to the right (increasing X).</p>
 <ul>
-<li><p>Now, let’s have it bounce off the right edge.</p>
-<pre><code class="lang-js">forever(() =&gt; {
-    face.posX += xVel
-    if (world.width &lt; face.right) {
+<li><p>Make it bounce off the right edge.</p>
+<pre><code class="lang-js">    if (world.width &lt; face.right) {
         xVel = -2
     }
-})
 </code></pre>
+<p><em>Make sure the <code>if</code> block is <strong>inside</strong> the <code>forever</code>.</em></p>
 </li>
 </ul>
 <p>We do this by comparing his <code>right</code> edge to the width of the world. If his right edge is greater than the width of the world, then he’s gone off the right-hand side of the screen; so we set his velocity negative, so he starts moving left instead.</p>
 <ul>
 <li><p>Flip the costume, for good measure…</p>
-<pre><code class="lang-js">    // ...
-    face.flipped = !face.flipped
+<pre><code class="lang-js">        face.flipped = true
 </code></pre>
+<p><em>Add this <strong>inside</strong> the <code>if</code> block.</em></p>
 </li>
 <li><p><strong>Challenge:</strong> make it bounce off the left edge too.</p>
-<p>You’ll need to add a second <code>if</code> block.</p>
-<p>Hint: the left-hand side of the world is where <em>X = 0</em>…</p>
+<p>You’ll need to add a second <code>if</code> block inside the <code>forever</code>.</p>
+<p><strong>Hint:</strong> the left-hand side of the world is where <em>X = 0</em>…</p>
 </li>
 <li><p>Check that the bullets still come from the face, and head toward your finger!</p>
 </li>
@@ -286,10 +301,9 @@ forever(() =&gt; {
 <p>Finally, if we don’t destroy the bullets, eventually the game will get really slow! Let’s fix that, by destroying them once they’re completely off the screen:</p>
 <ul>
 <li><p>Destroy the bullets once they’re completely off-screen.</p>
-<p><strong>Challenge</strong>: where should this go?</p>
-<pre><code class="lang-js">    if (!bullet.isOnScreen()) {
-        bullet.destroy()
-    }
+<pre><code class="lang-js">        if (!bullet.isOnScreen()) {
+            bullet.destroy()
+        }
 </code></pre>
 <p><em>This should go inside the bullet’s <code>forever</code>, just after the code to move it.</em></p>
 </li>
@@ -298,7 +312,7 @@ forever(() =&gt; {
 <h2 id="fin">Fin</h2>
 <p>Excellent work! You’ve learnt how to:</p>
 <ul>
-<li>do something over time with <strong><code>forever</code></strong></li>
+<li>Do something over time with <strong><code>forever</code></strong></li>
 <li><strong>Change attributes</strong> using <code>+=</code></li>
 <li><em>Move</em> things over time (<strong>animation</strong>!)</li>
 <li>React to the <strong>orientation</strong> of the phone</li>
@@ -315,7 +329,8 @@ forever(() =&gt; {
 <p><em>Hint #2: the relevant phenomenon here is called “scope”, and it’s hard to understand, so ask someone to explain it to you!</em></p>
 </li>
 <li><p>Generally have a play around with the thing you just made, or more generally, everything you’ve learnt in chapters 1 and 2.</p>
-<p>Come back when you’re ready for the <a href="Jump">next thing</a> <img class="emojione" alt="🙃" title=":upside_down:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f643.png"/></p>
+</li>
+<li><p>Continue on to the <a href="Jump">next thing</a> once you’re ready! <img class="emojione" alt="🙃" title=":upside_down:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f643.png"/></p>
 </li>
 </ul>
 

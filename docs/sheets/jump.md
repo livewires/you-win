@@ -42,7 +42,7 @@ We can simulate gravity using a **constant acceleration**. As you should know fr
   * Add a `forever` loop for the player.
 
     ```js
-    forever(() => { // player
+    player.forever(() => { // player
         player.posY += velY
     })
     ```
@@ -60,7 +60,7 @@ Save. You'll notice the player falls at a constant speed, which isn't right at a
     ```js
     var velY = 0
 
-    forever(() => { // player
+    player.forever(() => { // player
         player.posY += velY
         velY -= 2               // <-- add this line
     })
@@ -95,7 +95,7 @@ We can use `isTouching` to check for collisions between different objects. `isTo
   * Check if the platform is touching the player.
 
     ```js
-    forever(() => { // platform
+    platform.forever(() => {
         if (player.isTouching(platform)) {
             // ...jump...
         }
