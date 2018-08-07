@@ -980,7 +980,7 @@ Costume._polygon = function(props) {
         if (-y > maxY) maxY = -y
     }
 
-    var margin = props.outline ? props.thickness : 0
+    var margin = props.outline ? (props.thickness || 2) : 0
     minX -= round(margin)
     minY -= round(margin)
     maxX += round(margin)
