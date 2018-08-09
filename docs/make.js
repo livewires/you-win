@@ -77,10 +77,10 @@ m.use(layouts({
     engine: 'handlebars',
     default: 'default.html',
 }))
-m.use(pdf({
-    format: 'A4',
-    printBackground: true,
-}))
+//m.use(pdf({
+    //format: 'A4',
+    //printBackground: true,
+//}))
 m.build(function(err) {
     if (err) throw err
 })

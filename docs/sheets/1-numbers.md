@@ -119,6 +119,8 @@ Now try this.
 
   * **Challenge**: Set the `scale` attribute of your sprite to make it twice as big. (The scale is a number, starting at `1.0`).
 
+  Remember that you have to include the name of your Sprite, so it should be `poop.scale` rather than `scale`. It won't work to write `scale` by itself, since the computer won't know which sprite you're talking about.
+
 When we make a sprite, we get to specify its initial values. We can change any of them later, too (more on that in the next chapter).
 
 Here are some other properties you can try:
@@ -139,11 +141,11 @@ Here's a quick diagram introducing coordinates:
 <img src="static/sprite-xy.png" width=240>
 <img src="static/sprite-angle.png" width=180>
 
-  * Move your poop to the position `(100, 100)`.
+  * Move your poop to the position `(100, 200)`.
 
     ```js
     poop.posX = 100
-    poop.posY = 100
+    poop.posY = 200
     ```
 
 We can add other Sprites, too!
@@ -228,14 +230,21 @@ When someone starts programming, it's traditional to for them to introduce thems
     label.text = "Hello world!"
     ```
 
-  * Change its color.
+  * Change it to red.
 
     ```js
     label.fill = 'red'
+
+You can use any of the color names which are supported by HTML. If you give a color name that it doesn't recognise, you'll proabably just get black. 
+
+If you want other colors, instead of named colors you can use colors like `'#007de0'`. There are called a "hex code", short for hexadecimal. You can choose your own hex code color with an online [color picker](https://www.google.co.uk/search?q=color+picker).
+
+  * Change it to your favourite color.
+
+    ```js
     label.fill = '#007de0' // whatever you fancy really
     ```
 
-The color `'#007de0'` is called a "hex code", short for hexadecimal. You can choose your own hex code color with an online [color picker](https://www.google.co.uk/search?q=color+picker).
 
 ## The End
 

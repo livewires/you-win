@@ -49,18 +49,21 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 </code></pre>
 </li>
 </ul>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and check your Sprite appears!</p>
 <h3 id="forever">Forever</h3>
 <p>We need a way to react to time passing. We do this by using <strong><code>forever</code></strong> to run code on every <em>frame</em>.</p>
-<pre><code class="lang-js">face.forever(() =&gt; {
-    // do stuff
-})
-</code></pre>
-<p><em>These are fiddly to type; sorry about that.</em> </p>
 <p>An app draws a new frame on the screen roughly 60 times a second (or 60 <strong>FPS</strong>, frames per second).</p>
 <p>We can use <code>forever</code> to make our sprite spin!</p>
 <ul>
 <li><p>Add a <code>forever</code> block, right after you create your <code>Sprite</code>.</p>
+<pre><code class="lang-js">face.forever(() =&gt; {
+
+})
+</code></pre>
 </li>
+</ul>
+<p>The <code>forever</code> blocks are fiddly to type; sorry about that. Make sure you get the brackets exactly right!</p>
+<ul>
 <li><p>Rotate your Sprite a small amount every frame.</p>
 <pre><code class="lang-js">    face.angle += 1
 </code></pre>
@@ -68,10 +71,12 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 </li>
 </ul>
 <p>In JavaScript, <code>n += 1</code> is shorthand for <code>n = n + 1</code>. You can read it as <strong>“change by”</strong>.</p>
-<p>By increasing the angle of the sprite on every frame, our sprite will slowly rotate clockwise.</p>
+<p>We’re increasing the angle of the sprite a little bit on every frame, so our sprite will slowly rotate clockwise.</p>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and you should see your Sprite start to spin!</p>
 <ul>
 <li><strong>Challenge:</strong> make the sprite rotate anticlockwise.</li>
 </ul>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make sure you can get your Sprite to spin the other way.</p>
 <p>Now we know the basics of animation, lets try some simple movement.</p>
 <ul>
 <li><p><strong>Instead</strong> of rotating, make the Sprite move right.</p>
@@ -84,16 +89,20 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 </code></pre>
 </li>
 </ul>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and the Sprite should move to the right instead of rotating.</p>
 <p>The numbers inside the forever are how much to move on each frame, so they control <strong>how fast</strong> the animation happens.</p>
 <ul>
-<li><p>Make your sprite move a bit faster.</p>
-</li>
+<li>Make your sprite move a bit faster.</li>
+</ul>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make sure you can get your Sprite to move faster.</p>
+<ul>
 <li><p><strong>Challenge</strong>: experiment with animating other properties, like gradually increasing scale:</p>
 <pre><code class="lang-js">    face.scale *= 1.05
 </code></pre>
 </li>
 </ul>
 <p>Note that multiplying the scale by the fraction <code>1.05</code> is the same as increasing it by 5%.</p>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make sure you can get your Sprite to get bigger.</p>
 <h2 id="orientation">Orientation</h2>
 <p><img class="emojione" alt="📱" title=":iphone:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f4f1.png"/> We can read the phone’s accelerometer to get the angle the phone’s being held at, compared to gravity.</p>
 <p>First, we need to initialise a <code>Phone</code> object, so that <code>you-win</code> knows to start reading the phone’s orientation sensors.</p>
@@ -119,10 +128,12 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 })
 </code></pre>
 </li>
-<li><p><strong>Challenge</strong>: what happens if you use negative <code>zAngle</code>?</p>
-</li>
 </ul>
-<p>Depending on whether or not you’re using an iPhone, one of the last two – either positive or negative <code>zAngle</code> – should make the sprite always stay the same way up as you rotate the phone around it!</p>
+<p>Depending on whether or not you’re using an iPhone, you might need to use negative <code>zAngle</code> insteadone of the last two – either positive or negative <code>zAngle</code> – should make the sprite always stay the same way up as you rotate the phone around it!</p>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make sure your Sprite rotates </p>
+<ul>
+<li><strong>Challenge</strong>: what happens if you use negative <code>zAngle</code>?</li>
+</ul>
 <h2 id="events">Events</h2>
 <p>Let’s have our face shoot out a projectile toward our finger when we tap.</p>
 <ul>
@@ -134,6 +145,9 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 </code></pre>
 <p></s></p>
 </li>
+</ul>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make sure your sprite stops moving.</p>
+<ul>
 <li><p>Use <code>on(&#39;tap&#39;)</code> to detect when the screen is tapped.</p>
 <pre><code class="lang-js">world.onTap(e =&gt; {
     alert(&quot;dont touch this&quot;)
@@ -142,6 +156,7 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 </li>
 </ul>
 <p>The code inside the <code>on(...</code> block runs whenever the screen is tapped.  So whenever you tap (or click) the screen, the message “don’t touch this” should appear.</p>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and check that the message appears when you tap the screen.</p>
 <p>That gets boring quickly, so let’s make a projectile.</p>
 <ul>
 <li><p>When the screen is tapped, create a bullet under your finger.</p>
@@ -197,40 +212,49 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <li><p><strong>Challenge</strong>: create the bullets with a random initial direction.</p>
 <p><em>Hint: you want to set their <code>angle</code> to a random number between <code>1</code> and <code>360</code>.</em></p>
 </li>
+</ul>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Check the bullets are created pointing in a random direction.</p>
+<ul>
 <li><p>Now move them at that angle by replacing your <code>forever</code> block.</p>
-<pre><code class="lang-js">world.onTap(e =&gt; {
-    // ... [make the bullet, with random angle] ...
-
-    bullet.forever(() =&gt; {
-        bullet.posX += 4 * UW.sin(bullet.angle)
-        bullet.posY += 4 * UW.cos(bullet.angle)
-    })
-})
+<p><s></p>
+<pre><code class="lang-js">bullet.posX += 3
+bullet.posY += 3
 </code></pre>
+<p></s>
+<em>We don’t want this anymore.</em></p>
+<pre><code class="lang-js">bullet.posX += 4 * UW.sin(bullet.angle)
+bullet.posY += 4 * UW.cos(bullet.angle)
+</code></pre>
+<p><em>Type this instead, inside the <code>bullet.forever</code> block.</em></p>
 </li>
 </ul>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Check the bullets move in the same direction as they’re facing.</p>
 <p>By multiplying <code>sin</code> and <code>cos</code> by 4, we increase the speed of movement.</p>
 <p>So we’ve done the first part – moving the bullets in a direction.</p>
 <p>Now to work out the correct angle! We need to use <code>atan2</code> for this. This is a special version of inverse <em>tan()</em> which takes two numbers–a difference in X and a difference in Y–and returns the correct angle.</p>
 <p>We’ll call the difference in X <code>dx</code>, and the difference in Y will be <code>dy</code>.</p>
 <ul>
-<li><p>Use <code>atan2</code> to get the correct angle.</p>
-<pre><code class="lang-js">world.onTap(e =&gt; {
-    var bullet = new Sprite
-    // ... [go to face] ...
-
-    var dx = e.fingerX - face.posX
-    var dy = e.fingerY - face.posY
-    bullet.angle = UW.atan2(dx, dy)
-
-    // ... [move at an angle] ...
-})
+<li><p>Delete your code for setting the bullet to a random angle.</p>
+<p><s></p>
+<pre><code class="lang-js">bullet.angle = ...
 </code></pre>
-<p><em>Replace your code for setting the bullet to a random angle.</em></p>
+<p></s>
+<em>Delete your existing line of code for setting <code>bullet.angle</code>.</em></p>
+</li>
+<li><p>Work out the difference in X and Y between the face and your finger.</p>
+<pre><code class="lang-js">var dx = e.fingerX - face.posX
+var dy = e.fingerY - face.posY
+</code></pre>
+</li>
+<li><p>Use <code>atan2</code> to get the correct angle.</p>
+<pre><code class="lang-js">bullet.angle = UW.atan2(dx, dy)
+</code></pre>
 </li>
 </ul>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Check the bullets move toward your mouse.</p>
 <p>Congrats! We’ve just made a… face-cannon… thing.</p>
 <h2 id="conditions">Conditions</h2>
+<!-- TODO move this into the API reference; no-one reads this -->
 <p>Animation is all very well, and we’ve learnt how to react to <em>events</em>. But how can we react to other things changing?</p>
 <p>A <strong>condition</strong> returns a Boolean value: either <code>true</code> or <code>false</code>. They look like this:</p>
 <ol>
@@ -281,7 +305,7 @@ face.forever(() =&gt; {
         xVel = -2
     }
 </code></pre>
-<p><em>Make sure the <code>if</code> block is <strong>inside</strong> the <code>forever</code>.</em></p>
+<p><em>Make sure the <code>if</code> block is <strong>inside</strong> the <code>face.forever</code> block.</em></p>
 </li>
 </ul>
 <p>We do this by comparing his <code>right</code> edge to the width of the world. If his right edge is greater than the width of the world, then he’s gone off the right-hand side of the screen; so we set his velocity negative, so he starts moving left instead.</p>
@@ -292,7 +316,7 @@ face.forever(() =&gt; {
 <p><em>Add this <strong>inside</strong> the <code>if</code> block.</em></p>
 </li>
 <li><p><strong>Challenge:</strong> make it bounce off the left edge too.</p>
-<p>You’ll need to add a second <code>if</code> block inside the <code>forever</code>.</p>
+<p>You’ll need to add a second <code>if</code> block inside the <code>face.forever</code>.</p>
 <p><strong>Hint:</strong> the left-hand side of the world is where <em>X = 0</em>…</p>
 </li>
 <li><p>Check that the bullets still come from the face, and head toward your finger!</p>

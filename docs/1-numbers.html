@@ -124,7 +124,9 @@ poop.costume = &#39;<img class="emojione" alt="💩" title=":poop:" src="https:/
 </ul>
 <p>Now try this.</p>
 <ul>
-<li><strong>Challenge</strong>: Set the <code>scale</code> attribute of your sprite to make it twice as big. (The scale is a number, starting at <code>1.0</code>).</li>
+<li><p><strong>Challenge</strong>: Set the <code>scale</code> attribute of your sprite to make it twice as big. (The scale is a number, starting at <code>1.0</code>).</p>
+<p>Remember that you have to include the name of your Sprite, so it should be <code>poop.scale</code> rather than <code>scale</code>. It won’t work to write <code>scale</code> by itself, since the computer won’t know which sprite you’re talking about.</p>
+</li>
 </ul>
 <p>When we make a sprite, we get to specify its initial values. We can change any of them later, too (more on that in the next chapter).</p>
 <p>Here are some other properties you can try:</p>
@@ -207,13 +209,19 @@ cow.costume = &#39;<img class="emojione" alt="🐄" title=":cow2:" src="https://
 label.text = &quot;Hello world!&quot;
 </code></pre>
 </li>
-<li><p>Change its color.</p>
-<pre><code class="lang-js">label.fill = &#39;red&#39;
-label.fill = &#39;#007de0&#39; // whatever you fancy really
+<li><p>Change it to red.</p>
+<p><code>`</code>js
+label.fill = ‘red’</p>
+</li>
+</ul>
+<p>You can use any of the color names which are supported by HTML. If you give a color name that it doesn’t recognise, you’ll proabably just get black. </p>
+<p>If you want other colors, instead of named colors you can use colors like <code>&#39;#007de0&#39;</code>. There are called a “hex code”, short for hexadecimal. You can choose your own hex code color with an online <a href="https://www.google.co.uk/search?q=color+picker">color picker</a>.</p>
+<ul>
+<li><p>Change it to your favourite color.</p>
+<pre><code class="lang-js">label.fill = &#39;#007de0&#39; // whatever you fancy really
 </code></pre>
 </li>
 </ul>
-<p>The color <code>&#39;#007de0&#39;</code> is called a “hex code”, short for hexadecimal. You can choose your own hex code color with an online <a href="https://www.google.co.uk/search?q=color+picker">color picker</a>.</p>
 <h2 id="the-end">The End</h2>
 <p>Good job! Now you know how to:</p>
 <ul>
