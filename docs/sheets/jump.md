@@ -85,6 +85,8 @@ Now our player falls down! Let's add some platforms for him to bounce on. (We wo
 
 Save. Check the platform appears below the player!
 
+  * But wait, the outline doesn't go all the way around! That's because we've only given it four points to connect so it doesn't know to connect the last one to the first one. We could add the first point again to the end of the set of points or we could use the handy `platform.closed`.
+
 
 ## Bouncing
 

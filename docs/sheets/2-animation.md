@@ -11,7 +11,9 @@ So far, we've only set up static scenes. We've learnt how to position different 
 
 **Animation** means to give an appearance of movement. We do this by **changing values over time**.
 
-  * First, start a **new project**, and make a Sprite with your favourite emoji.
+  * First, let's start a **new project**. You can do this by saving your last file with a different name (game1.js would be sensible), then reopen game.js. In here delete everything inside the `then(() => {...})` except for the first three lines that create the world and give it a title and background.
+  
+  * Then in this new file, make a Sprite with your favourite emoji. (You can search for emojis [here](http://emoji.tjvr.org), once you search you can click on the one you want and it will be copied to your clipboard.)
 
     ```js
     var face = new Sprite
