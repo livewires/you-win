@@ -106,6 +106,7 @@ We use the `var` keyword so we have a name to refer to our Sprite with.
 As before, we can set object attributes using "dot notation", and giving it the new value.
 
 Here are some kinds of values: _(These are just examples, don't type them in!)_
+<!-- This section is wordy -->
 
   * **Boolean**: either `true` or `false`.
 

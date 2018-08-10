@@ -205,6 +205,7 @@ Notice that the `forever` block has to be inside the `world.onTap` block. Just a
 
 
 ## Trig
+<!-- "Trigonometry is the the one bit I didn't get" -->
 
 Sometimes we want to move things at an angle--and to do this, we need **trigonometry**!
 

@@ -42,7 +42,7 @@ We can simulate gravity using a **constant acceleration**. As you should know fr
   * Add a `forever` loop for the player.
 
     ```js
-    player.forever(() => { // player
+    player.forever(() => {
         player.posY += velY
     })
     ```
@@ -188,6 +188,7 @@ We only want to scroll up, never down. We can do this by comparing the player's 
         world.scrollY = player.posY - 300
     }
     ```
+    _Make sure this goes in the **`player.forever`** block._
 
 You can tweak the number `300` to taste, to control how far up the screen the player has to go for the game to start scrolling. 
 
