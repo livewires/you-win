@@ -6,13 +6,15 @@ title: Install
 
 You need Chrome or Chromium running on a desktop.
 
+  * **On Windows**:
+  If you don't already have it, download from [Google](https://www.google.com/chrome/)
   * **On Ubuntu**:
 
     ```bash
     apt install chromium-browser
     ```
 
-You need Chrome running on an Android.
+You need Chrome running on an Android. (If you want to debug on a phone - not essential)
 
   * Either install Chrome from [APK Mirror](https://www.apkmirror.com/apk/google-inc/chrome/);
   * or install Chrome from the Play Store, which requires a Google account.
@@ -29,7 +31,9 @@ Open our [you-win template](https://glitch.com/edit/#!/you-win-template?path=app
 
 If you prefer, you can **install** `you-win` to your computer.
 
- 1. **Install [Node.js](https://nodejs.org/en/download/)**, which includes NPM.
+ 1. **On Windows**
+
+    * **Install [Node.js](https://nodejs.org/en/download/)**, which includes NPM.
 
     **On Ubuntu**, run the following in a Terminal:
 
@@ -47,9 +51,9 @@ If you prefer, you can **install** `you-win` to your computer.
     npm install -g you-win
     ```
 
- 3. **Start a new project!**
+ 3. **Start a new project** or **run your existing one!**
  
-    In your shell, use the `cd` command to move into your Documents folder.
+    In your shell, use the `cd` command to move into your Documents folder (or whichever directory your files are already in).
 
     ```sh
     cd Documents
@@ -61,9 +65,11 @@ If you prefer, you can **install** `you-win` to your computer.
     you-win first.js
     ```
 
-This will create a new game from the `you-win` template, which should save you a bit of typing.
+**If you are trying to start an existing project**, replace `first.js` with your filename (maybe it is `game.js`). You can now skip directly to the section below that says "To run your game".
 
-Now open the `first.js` file you just created in your favourite text editor. Text editors include **Gedit** (Ubuntu only), **VSCode**, **Brackets**, or **Sublime Text**.
+**If you're starting a new project**, this will create a new game from the `you-win` template, which should save you a bit of typing.
+
+Now open the `first.js` file you just created in your favourite text editor. Text editors include **Gedit** (Ubuntu only), **VSCode**, **Brackets**, or **Sublime Text** (search these online to find them, at Livewires we use VSCode).
 
 The template should look [like this](https://github.com/livewires/you-win/blob/master/template.js):
 
@@ -89,8 +95,11 @@ UW.init({
 To run your game:
 
 * Open <http://localhost:8000> in Chrome on your computer.
-* In your Terminal, you should see a web address output to the console, eg `http://192.168.1.10:8000/`. Open that address on your Android.
+* In your Terminal, you should see a web address output to the console, eg `http://192.168.1.10:8000/`. Open that address on your Android. If you don't want or need remote debugging you can open it on any phone that's on your network (wifi) to see what it looks like.
 
+## Problems?
+
+If you were at LiveWires and are having trouble getting your program to run, come find us on the [forums](http://forums.livewires.org.uk) and we'll try and help you.
 
 ## Remote Debugging
 
