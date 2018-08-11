@@ -104,7 +104,7 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 </li>
 </ul>
 <p>Note that multiplying the scale by the fraction <code>1.05</code> is the same as increasing it by 5%.</p>
-<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make sure you can get your Sprite to get bigger.</p>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> See if you can get your Sprite to get bigger.</p>
 <h2 id="orientation">Orientation</h2>
 <p><img class="emojione" alt="📱" title=":iphone:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f4f1.png"/> We can read the phone’s accelerometer to get the angle the phone’s being held at, compared to gravity.</p>
 <p>First, we need to initialise a <code>Phone</code> object, so that <code>you-win</code> knows to start reading the phone’s orientation sensors.</p>
@@ -114,28 +114,32 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <p><s></p>
 <pre><code class="lang-js">// var phone = new Phone
 </code></pre>
-<p></s></p>
+<p></s>
+<em>If you see a line like this already, you can just delete the slashes.</em></p>
 <pre><code class="lang-js">var phone = new Phone
 </code></pre>
 </li>
-<li><p>Rotate the sprite when the phone rotates.</p>
-<p><s></p>
-<pre><code class="lang-js">face.forever(() =&gt; {
-    // whatever you had before
-})
+<li><p>Delete what you had before.
+<s></p>
+<pre><code class="lang-js">    face.angle += ...
+    face.posX += ...
+    face.scale += ...
 </code></pre>
-<p></s></p>
-<pre><code class="lang-js">face.forever(() =&gt; {
-    face.angle = phone.zAngle
-})
-</code></pre>
+<p></s>
+<em>Delete anything inside the forever.</em></p>
 </li>
 </ul>
-<p>Depending on whether or not you’re using an iPhone, you might need to use negative <code>zAngle</code> insteadone of the last two – either positive or negative <code>zAngle</code> – should make the sprite always stay the same way up as you rotate the phone around it!</p>
-<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make sure your Sprite rotates </p>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make sure your sprite stops moving.</p>
 <ul>
-<li><strong>Challenge</strong>: what happens if you use negative <code>zAngle</code>?</li>
+<li><p>Rotate the sprite when the phone rotates.</p>
+<pre><code class="lang-js">    face.angle = phone.zAngle
+</code></pre>
+<p><em>Add this <em>inside</em> the <code>face.forever</code>.</em></p>
+</li>
 </ul>
+<p>Depending on whether or not you’re using an iPhone, you might need to use negative <code>zAngle</code> instead. The Sprite should always stay the same way up as you rotate the phone around it!</p>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make sure your Sprite stays upright. </p>
+<p>If the Sprite is always upside-down, you might need to add an angle to <code>phone.zAngle</code>…</p>
 <h2 id="events">Events</h2>
 <p>Let’s have our face shoot out a projectile toward our finger when we tap.</p>
 <ul>
@@ -171,20 +175,15 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
     bullet.costume = &#39;<img class="emojione" alt="👾" title=":space_invader:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f47e.png"/>&#39;
     bullet.posX = e.fingerX
     bullet.posY = e.fingerY
-
-    // TODO: move the bullet ...
 </code></pre>
 <p><em>Add this <strong>inside</strong> the <code>world.onTap</code> block.</em></p>
 </li>
 </ul>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and check that a bullet appears wherever you tap.</p>
 <p>What’s going on here? <code>e</code> is an <strong>event</strong> object, telling us the details of the <strong>tap</strong> event. The <code>e.fingerX</code> and <code>e.fingerY</code> attributes tell us the coordinates of the tap.</p>
 <p>Now let’s try moving our projectile!</p>
 <ul>
 <li><p>Add a <code>forever</code> block to move the Sprite we created after the tap.</p>
-<p><s></p>
-<pre><code class="lang-js">    // TODO: move the bullet ...
-</code></pre>
-<p></s></p>
 <pre><code class="lang-js">    bullet.forever(() =&gt; {
         bullet.posX += 3
         bullet.posY += 3
@@ -194,7 +193,9 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 </li>
 </ul>
 <p>Notice that the <code>forever</code> block has to be inside the <code>world.onTap</code> block. Just as we can’t use a name like <code>cow</code> before it’s been created, we can’t use the name <code>bullet</code> <strong>outside</strong> the block that it was created inside. This phenomenon is called “scope”; more about that in <a href="4-Functions.md">Intro #4: Functions</a>.</p>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and check that a bullet appears and starts moving, wherever you tap.</p>
 <h2 id="trig">Trig</h2>
+<!-- "Trigonometry is the the one bit I didn't get" -->
 <p>Sometimes we want to move things at an angle–and to do this, we need <strong>trigonometry</strong>!</p>
 <p>It’d be really neat if our bullets started at the face, and travelled outward toward the point where we tapped. Then it would feel more like a “cannon” sort-of game.</p>
 <ul>
@@ -202,6 +203,7 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <p><em>Make sure you do this! If you don’t, then the bullets won’t move in the right direction later :-)</em></p>
 </li>
 </ul>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make sure the bullets w</p>
 <p>To move our bullets, we only need to know two things from trigonometry:</p>
 <ol>
 <li><p>You can use <code>.posX += UW.sin(angle)</code> and <code>.posY += UW.cos(angle)</code> to move a sprite at an angle.</p>

@@ -67,7 +67,7 @@ world.height = 460
 </code></pre>
 </li>
 <li><p>Add a <code>forever</code> loop for the player.</p>
-<pre><code class="lang-js">player.forever(() =&gt; { // player
+<pre><code class="lang-js">player.forever(() =&gt; {
     player.posY += velY
 })
 </code></pre>
@@ -186,7 +186,7 @@ makePlatform()
     world.scrollY = player.posY - 300
 }
 </code></pre>
-<p><em>You should put this somewhere that will keep checking whether it is true with every change to the player - maybe inside the <code>player.forever()</code></em></p>
+<p><em>Make sure this goes in the <strong><code>player.forever</code></strong> block.</em></p>
 </li>
 </ul>
 <p>You can tweak the number <code>300</code> to taste, to control how far up the screen the player has to go for the game to start scrolling. </p>
