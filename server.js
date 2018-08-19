@@ -10,7 +10,6 @@ const ecstatic = require('ecstatic')
 const WebSocket = require('ws')
 const browserify = require('browserify')
 const watchify = require('watchify')
-const babelify = require('babelify')
 
 if (process.argv.length !== 3) {
     console.error('usage: you-win app.js')
@@ -53,10 +52,6 @@ const game = browserify({
     debug: true, // source maps
 })
 .transform(topLevelAwait)
-.transform(babelify, {
-    plugins: [require('babel-plugin-transform-es2015-modules-commonjs')],
-    sourceType: 'module',
-})
 .external(uw)
 .plugin(watchify, {
     ignoreWatch: ['**/node_modules/**'],
