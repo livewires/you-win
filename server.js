@@ -4,6 +4,7 @@ const fs = require('fs')
 const os = require('os')
 const path = require('path')
 const http = require('http')
+const stream = require("stream")
 
 const ecstatic = require('ecstatic')
 const WebSocket = require('ws')
@@ -21,6 +22,23 @@ if (!fs.existsSync(gamePath)) {
     console.log('CREATED `' + process.argv[2] + '` from template!')
 }
 
+const topLevelAwait = (b, opts) => {
+  return new stream.Transform({
+    transform: function(chunk, encoding, next) {
+      if (!this._prefixed) {
+        this.push('(async () => {')
+        this._prefixed = true
+      }
+      this.push(chunk)
+      next()
+    },
+    flush: function() {
+      this.push('})()')
+      this.push(null)
+    },
+  })
+}
+
 const uw = browserify({
     //detectGlobals: false, // faster
     debug: true, // source maps
@@ -34,6 +52,7 @@ const game = browserify({
     //detectGlobals: false, // faster
     debug: true, // source maps
 })
+.transform(topLevelAwait)
 .transform(babelify, {
     plugins: [require('babel-plugin-transform-es2015-modules-commonjs')],
     sourceType: 'module',

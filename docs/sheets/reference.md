@@ -17,11 +17,11 @@ title: API Reference
 * [Phone](#phone)
 * [Sound](#sound)
 
-To import all these names so you can use them in your code, use the following line:
+To import all these names so you can use them in your code, use the following lines:
 
 ```js
-import uw from 'you-win'
-import {forever, Phone, World, Sprite, Text, Polygon} from 'you-win'
+const uw = require('you-win')
+const {Phone, World, Sprite, Text, Polygon} = uw
 ```
 
 

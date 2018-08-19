@@ -1,17 +1,13 @@
 
-import UW from 'you-win'
-import {forever, Phone, World, Sprite, Text, Polygon, Rect, Sound} from 'you-win'
+const uw = require('you-win')
+const {Phone, World, Sprite, Text, Polygon} = uw
 
-// var phone = new Phone
+var phone = new Phone
 
-UW.init({
+await uw.init({
 })
-.then(() => {
 
-    var world = new World
-    world.title = ''
-    world.background = 'white'
+var world = new World
+world.title = ''
+world.background = 'white'
 
-    // ...
-
-})
