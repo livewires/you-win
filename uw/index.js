@@ -56,6 +56,18 @@ function bboxProp(O, name, set) {
 
 /* init */
 
+const globalPromiseMap = {}
+
+// load adds the name/path to a global; all costumes are then loaded in
+// parallel when init() is called
+function loadCostume(name, path) {
+    globalPromiseMap[name] = Costume.load(path)
+}
+
+function loadSound(name, path) {
+    globalPromiseMap[name] = Sound.load(path)
+}
+
 var world
 var assets
 function init(promiseMap) {
@@ -65,7 +77,7 @@ function init(promiseMap) {
         console.clear()
     }
 
-    const map = Object.assign({}, promiseMap, {
+    const map = Object.assign({}, globalPromiseMap, promiseMap, {
         _text: Costume.load('munro.png'),
         _emoji: emojiList && Costume.load('emoji.png'),
     })
@@ -1188,6 +1200,10 @@ const maths = {
 
 module.exports = {
     init,
+    begin: init,
+    loadCostume,
+    loadSound,
+
     Phone,
     World,
     Costume,

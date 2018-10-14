@@ -4,12 +4,12 @@ const fs = require('fs')
 const os = require('os')
 const path = require('path')
 const http = require('http')
+const stream = require("stream")
 
 const ecstatic = require('ecstatic')
 const WebSocket = require('ws')
 const browserify = require('browserify')
 const watchify = require('watchify')
-const babelify = require('babelify')
 
 if (process.argv.length !== 3) {
     console.error('usage: you-win app.js')
@@ -19,6 +19,23 @@ const gamePath = path.join(process.cwd(), process.argv[2])
 if (!fs.existsSync(gamePath)) {
     fs.writeFileSync(gamePath, fs.readFileSync(path.join(__dirname, 'template.js')))
     console.log('CREATED `' + process.argv[2] + '` from template!')
+}
+
+const topLevelAwait = (b, opts) => {
+  return new stream.Transform({
+    transform: function(chunk, encoding, next) {
+      if (!this._prefixed) {
+        this.push('(async () => {')
+        this._prefixed = true
+      }
+      this.push(chunk)
+      next()
+    },
+    flush: function() {
+      this.push('})()')
+      this.push(null)
+    },
+  })
 }
 
 const uw = browserify({
@@ -34,10 +51,7 @@ const game = browserify({
     //detectGlobals: false, // faster
     debug: true, // source maps
 })
-.transform(babelify, {
-    plugins: [require('babel-plugin-transform-es2015-modules-commonjs')],
-    sourceType: 'module',
-})
+.transform(topLevelAwait)
 .external(uw)
 .plugin(watchify, {
     ignoreWatch: ['**/node_modules/**'],

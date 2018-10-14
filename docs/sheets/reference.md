@@ -17,56 +17,62 @@ title: API Reference
 * [Phone](#phone)
 * [Sound](#sound)
 
-To import all these names so you can use them in your code, use the following line:
+To import all these names so you can use them in your code, use the following lines:
 
 ```js
-import UW from 'you-win'
-import {forever, Phone, World, Sprite, Text, Polygon} from 'you-win'
+const uw = require('you-win')
+const {Phone, World, Sprite, Text, Polygon} = uw
 ```
 
 
 ## Assets
 
-Before you can do anything, you need initialise `you-win`. You do this by calling `UW.init`.
+Before you can do anything, you need initialise `you-win`. You do this by calling **`uw.begin()`**, which downloads **all the files your game needs**. We display a progress bar while your files are downloading.
 
 ```js
-UW.init({
-    // the images you need
-})
-.then(() => {
-    // make your world and game
-})
+await uw.begin()
 ```
 
-  * **`UW.init(images)`**
+The special **`await`** keyword is important here: it tells the computer not to carry on with your program until everything has finished loading.
 
-    Pulls in the media files you need for your game. The code **after `then`** will run once they're all ready.
-    
-    Displays a progress bar while the media files are downloading.
+You should call begin() **exactly once**.
 
 
 ### Costumes
 
-A **costume** is an image that controls how a `Sprite` looks.
+A costume is an image that controls how a `Sprite` looks.
 
-You create costumes inside `UW.init`, by giving their URL (web address).
+You download them by calling **`loadCostume()`** with a name and URL, **before** you call `begin()`.
+
+If you make a **`static` folder** in the same place as your game's `.js` file, you can put images inside it, and then use `'/<filename>'` to load them. For example, if you put `my-asteroid.png` in the `static` folder:
 
 ```js
-UW.init({
-    asteroid: '/asteroid.jpg',
-})
+uw.loadCostume('asteroid', '/my-asteroid.png')
+await uw.begin()
 ```
-  
-> ⚠ Because of security restrictions, you can't use just any image URL from any website. Assets stored in your [Glitch](https://glitch.com) project will work fine; copy their URL here.
 
-If you make a `static` folder in the same place as your game's `.js` file, you can put images inside it, and then load them here using the URL `'/my-image.jpg'`.
+You can also use assets from a **[Glitch](https://glitch.com)** project. Copy their URL into your program:
 
 ```js
-UW.init({
-    // get asteroid.jpg from my `static` folder
-    asteroid: '/asteroid.jpg',
-    face: 'https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png',
-})
+uw.loadCostume('face', 'https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png')
+await uw.begin()
+```
+
+> ⚠ Because of security restrictions, you can't use just any image URL from any website.
+
+To use a costume later, give its **name**:
+
+```js
+var s = new Sprite
+s.costume = 'asteroid'
+```
+
+If you load more than one costumes, `you-win` won't wait until the first one finishes downloading before downloading the next one. It speeds things up by downloading them all at once (i.e. in **parallel**).
+
+```js
+uw.loadCostume('duck1', '/duck-frame1.png')
+uw.loadCostume('duck2', '/duck-frame2.png')
+await uw.begin() // waits for duck1 and duck2 to finish downloading
 ```
 
 
@@ -90,21 +96,18 @@ You can also use emoji inside [Text](#text).
 
 **`World`** sets up the screen, manages all the sprites, and emits events such as taps and drags on the background.
 
-Set up the world after [loading your assets](#assets).
+Set up the world after [calling `begin()`](#assets) to load your assets.
 
 ```js
-UW.init({
-    // ...
-})
-.then(world => {
-    
-    var world = new World
-    world.width = 300
-    world.height = 460
+// Load everything we need
+await uw.begin()
 
-    // make sprites...
+// Make the world
+var world = new World
+world.title = ''
+world.background = 'white'
 
-})
+// Now we can start making Sprites!
 ```
 
 It has the following attributes:
@@ -137,23 +140,20 @@ World has the following methods:
 
 A **`Sprite`** is an image in the world that can be moved and rotated and so on.
 
-To create a Sprite, you must give the name of one of your costumes.
-(For experts: you may also include an object with additional attributes.)
+To make your Sprite appear, you must set its `costume`.
 
 ```js
-UW.init({
-  'cat': 'https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png?1499126150626',
-})
-.then(() => {
+uw.loadCostume('cat', 'https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png?1499126150626')
+await uw.begin()
 
-    var cat = new Sprite
-    cat.costume = 'cat'
+var world = new World
 
-    var bigCat = new Sprite
-    bigCat.costume = 'cat'
-    bigCat.scale = 2 // twice as big
+var cat = new Sprite
+cat.costume = 'cat'
 
-})
+var bigCat = new Sprite
+bigCat.costume = 'cat'
+bigCat.scale = 2 // twice as big
 ```
 
 Sprites have quite a few attributes which you can change. You can also set their initial values when you make the sprite.
@@ -276,7 +276,7 @@ Sprites have some useful functions attached to them.
 
 `forever` is really useful function: it lets you do something on every "frame" or "tick" of your game. Usually ticks happen 60 times a second (60 FPS).
 
-Write a forever loop with a function just inside it, like so:
+Write a `forever` block like so:
 
 ```js
 sprite.forever(() => {
@@ -288,17 +288,17 @@ Any code after the forever loop isn't affected:
 
 ```js
 sprite.forever(() => {
-    // do stuff
+    // This code runs forever.
 })
 
-sprite.forever(() => {
-    // do other stuff
-})
-
-// carry on setting up the game ...
+// This code runs once.
+// Carry on setting up the game:
+var otherSprite = new Sprite
 ```
 
-If you want to **stop** a `forever` loop (so that it doesn't run forever!), you can `return false`:
+When the Sprite is **destroyed**, the `forever` loop will stop.
+
+If you want to **stop** a `forever` loop without destroying the Sprite (so that it doesn't run forever!), you can `return false`:
 
 ```js
 player.forever(() => {
@@ -310,14 +310,17 @@ player.forever(() => {
 })
 ```
 
-A `forever` loop will automatically be stopped when the Sprite that it's attached to gets destroyed.
-
 
 ## Text
 
 A **Text** object is like a Sprite, but instead of a costume, it's used to display _text_.
 
-The text has a retro aesthetic. It also supports emoji (using the same emoji set as Sprites can use). Which means that this:
+```
+var label = new Text
+label.text = 'SCORE: ' + 100
+```
+
+The text has a retro aesthetic. It also supports **emoji** (using the same emoji set as Sprites can use). Which means that this:
 
 ```js
 var snowy = new Text
@@ -329,7 +332,6 @@ snowy.text = '⛄'
 ```js
 var snowy = new Sprite
 snowy.costume = '⛄'
-})
 ```
 
 `Text` objects have all the same attributes as a [Sprite](#sprite)--but instead of a `costume`, they have the following:
@@ -357,7 +359,6 @@ p.points = [[0, 0], [0, 32], [32, 32], [32, 0]]
 p.fill = '#007de0'
 p.outline = 'black'
 p.thickness = 2
-})
 ```
 
 `Polygon`s have all the same attributes as a [Sprite](#sprite)--but instead of a `costume`, they have the following:
@@ -524,77 +525,73 @@ It has the following attributes which you can get:
 
 To use sounds, make sure to `import {Sound} from 'you-win'`.
 
-To load a sound , use `Sound.load`. See [Assets](#assets) for details on the `static/` folder and where to put your sound files.
+To load a sound , use `loadSound`. See [Assets](#assets) for details on the `static/` folder and where to put your sound files.
 
 ```js
-UW.init({
-  moo: Sound.load('/moo.wav'),
-})
-.then(() => {
-
-})
+uw.loadSound('moo', '/moo.wav')
+await uw.begin()
 ```
 
 Before you can play your sound, you must create a `Sound` object.
 
 ```js
-  var sound = new Sound('moo')
+var mooNoise = new Sound('moo')
 ```
 
 Finally, you can play your sound at the appropriate time.
 
 ```js
-    sound.play()
+mooNoise.play()
 ```
 
 ### Maths
 
 Some built-in maths utilities.
 
-  * **`UW.range([start], end, [step])`**
+  * **`uw.range([start], end, [step])`**
 
     Return a list of numbers starting at `start` (default `0`), and ending before `end`. Behaves identically to Python's `range()`.
     
     The optional `step` argument (default `1`) is how much to move between each item. 
 
     ```js
-    UW.range(5) // => [0, 1, 2, 3, 4]
-    UW.range(5, 10) // => [5, 6, 7, 8, 9]
-    UW.range(10, 20, 2) // => [10, 12, 14, 16, 18]
-    UW.range(0, -5, -1) // => [0, -1, -2, -3, -4]
+    uw.range(5) // => [0, 1, 2, 3, 4]
+    uw.range(5, 10) // => [5, 6, 7, 8, 9]
+    uw.range(10, 20, 2) // => [10, 12, 14, 16, 18]
+    uw.range(0, -5, -1) // => [0, -1, -2, -3, -4]
     ```
 
-  * **`UW.dist(dx, dy)`**
+  * **`uw.dist(dx, dy)`**
     
     The distance between (0, 0) and (dx, dy), calculated using Pythagoras' Theorem.
 
 Some trigonometric functions. These work in degrees, unlike the ones built-in to JavaScript which use radians.
 
-  * **`UW.sin(deg)`**
-  * **`UW.cos(deg)`**
-  * **`UW.atan2(x, y)`**
+  * **`uw.sin(deg)`**
+  * **`uw.cos(deg)`**
+  * **`uw.atan2(x, y)`**
 
 
 ### Random
 
 Some built-in ways of getting random things are included.
 
-  * **`UW.randomInt(from, to)`**
+  * **`uw.randomInt(from, to)`**
 
     Return a random integer (whole number) between `from` and `to`, inclusive.
 
     ```js
-    UW.randomInt(1, 3) // => 2
-    UW.randomInt(1, 3) // => 1
-    UW.randomInt(1, 3) // => 3
+    uw.randomInt(1, 3) // => 2
+    uw.randomInt(1, 3) // => 1
+    uw.randomInt(1, 3) // => 3
     ```
 
-  * **`UW.randomChoice(array)`**
+  * **`uw.randomChoice(array)`**
 
     Return a randomly-selected item of an array.
 
     ```js
-    UW.randomChoice(['🐄', '🐑', '🐎']) // => '🐑'
+    uw.randomChoice(['🐄', '🐑', '🐎']) // => '🐑'
     ```
 
 
