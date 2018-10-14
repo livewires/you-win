@@ -4,7 +4,7 @@
 <title>you-win: API Reference</title>
 
 <style>
-body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr, td, th,h1, h2, h3, h4, h5, a, button, input {margin: 0;padding: 0;border: 0;font: inherit;color: inherit;list-style: none;text-decoration: none;}strong {font-weight: 600;}em {font-style: italic;color: #555;}* {line-height: 1.5;}a {white-space: normal;cursor: pointer;}body {font-family: BlinkMacSystemFont, -apple-system, Helvetica Neue, Open Sans, Ubuntu, Arial, Helvetica, sans-serif;font-size: 1rem;background: #fff;color: #000;font-size: 16px;min-height: calc(100vh - 2em);}p {margin: 0.75em 0;}body {margin: 1.5em auto 6em;padding: 0 2em;max-width: 72em;position: relative;}.emojione {width: 1.25em;height: 1.25em;line-height: 0.8em;}.prose {font-size: 1rem;max-width: 36em;font-weight: normal;margin: 0 auto;}.prose a {color: #3786e3;text-decoration: none;border-bottom: 1px solid #3786e3;}.prose h1 {font-weight: 300;font-size: 2rem;}.prose h2 {font-weight: 500;font-size: 1.5em;margin: 1.333em 0 0;border-top: 2px solid #ddd;padding-top: 0.666em;}.prose h3 {font-weight: 600;font-size: 1.25em;margin: 2em 0 0;}.prose pre, .prose code {border-radius: 0.25em;background: #f8f8f8;font-size: 0.875em;line-height: 1.5em;font-family: Menlo, monospace;}.prose pre {max-width: 100%;white-space: pre-wrap;margin: 1.09375em 0; overflow: hidden;padding: 0.25em 0.5em;}.prose code {padding: 0.125em;}.prose pre code {display: block;white-space: pre-wrap;border: none;padding: 0;background-color: transparent;border-radius: 0;font-size: inherit;line-height: inherit;}.prose > p {margin: 1.5em 0;}.prose > ul, .prose ol {margin: 1.5em 0;}.prose ul, .prose ol {padding-left: 1.875em;position: relative;}.prose ul > li {list-style: square;}.prose ol > li {list-style: none;counter-increment: step-count;}.prose ol > li:before {content: counter(step-count);font-weight: 500;display: inline-block;position: absolute;left: 0.5em;}.prose img,.prose video {max-width: 100%;object-fit: scale-down;height: auto;}.prose blockquote {margin: 1.5em 0;border-left: 0.25em solid #555;padding-left: 1em;color: #222;}@media print {body {max-width: 100%;font-size: 12pt;}.prose a {border-bottom: none;}.prose {margin: 0 auto;}nav {display: none;}pre, blockquote {padding-right: 1em;page-break-inside: avoid;}tr, img {page-break-inside: avoid;}@page {margin: 20mm 15mm 20mm 15mm;}p, h2, h3 {orphans: 3;widows: 3;}h2, h3 {page-break-after: avoid;}.prose pre {border-left: 2px solid #ccc;padding-left: 0.75em;border-radius: 0;page-break-after: avoid;}}nav {margin: -0.5em -2em;border-bottom: 1px solid #aaa;margin-bottom: 1.5em;color: #364149;}nav ul {padding: 0;margin: 0;}nav a {color: inherit;text-decoration: none;display: block;overflow: hidden;text-overflow: ellipsis;padding: 0.375em 2em;white-space: nowrap;}.title a {font-size: 2rem;padding: 0 1em;font-weight: 300;}.page {display: block;}.page-title-active,.page-heading-active {color: #3786e3;}.page-heading {display: block;padding-left: 1.5em;}@media screen and (min-width: 36rem) {body.has-nav {margin-left: 12rem;}nav {margin: 0;position: fixed;width: 12rem;left: 0;top: 0;bottom: 0;overflow-y: auto;font-size: 0.875em;border-right: 1px solid #aaa;background: #fafafa;border-bottom: 0;}nav a {padding: 0.375em 1em;}.title a {padding: 0.75em 0.5em 0.625em;}nav > ul {position: relative;min-height: 100vh;padding-bottom: 6em;box-sizing: border-box;}.page-as-pdf {position: absolute;bottom: 3em;}.logo {position: absolute;bottom: 1em;display: block;background: url("data:image/svg+xml,<svg viewBox='10 0 38 7' xmlns='http://www.w3.org/2000/svg'><path fill='%233786e3' d='M17 3h-1V1h1zM18 5h-1V3h1zM20 5h-1V3h1zM21 3h-1V1h1zM11 5h2v1h-3V1h1zM25 2h-2v1h2v1h-2v1h2v1h-3V1h3zM14 6V1h1v5zM18 5h1v1h-1z'/><path d='M42 2h-2v1h2v1h-2v1h2v1h-3V1h3zM30 5V1h1v4zM28 5V2h1v3zM32 6V1h1v5zM43 2h1v1h-1zM44 3h2v1h-2zM43 5h3v1h-3zM44 1h3v1h-3zM46 4h1v1h-1zM26 5V1h1v4zM27 5h1v1h-1zM29 5h1v1h-1zM34 6V1h3v1h-2v1h2v2h-1V4h-1v2zM37 5h1v1h-1zM37 2h1v1h-1z'/></svg>") 100% 0 no-repeat;margin: 0.5em 1em 0;height: 14px;width: 76px;}.logo span {display: none;}}.hljs { display: block; background: white; padding: 0.5em; color: #333333; overflow-x: auto; } .hljs-comment, .hljs-meta { color: #969896; } .hljs-string, .hljs-variable, .hljs-template-variable, .hljs-strong, .hljs-emphasis, .hljs-quote { color: #df5000; } .hljs-keyword, .hljs-selector-tag, .hljs-type { color: #a71d5d; } .hljs-literal, .hljs-symbol, .hljs-bullet, .hljs-attribute { color: #0086b3; } .hljs-section, .hljs-name { color: #63a35c; } .hljs-tag { color: #333333; } .hljs-title, .hljs-attr, .hljs-selector-id, .hljs-selector-class, .hljs-selector-attr, .hljs-selector-pseudo { color: #795da3; } .hljs-addition { color: #55a532; background-color: #eaffea; } .hljs-deletion { color: #bd2c00; background-color: #ffecec; } .hljs-link { text-decoration: underline; }
+body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr, td, th,h1, h2, h3, h4, h5, a, button, input {margin: 0;padding: 0;border: 0;font: inherit;color: inherit;list-style: none;text-decoration: none;}strong {font-weight: 600;}em {font-style: italic;color: #555;}* {line-height: 1.5;}a {white-space: normal;cursor: pointer;}body {font-family: BlinkMacSystemFont, -apple-system, Helvetica Neue, Open Sans, Ubuntu, Arial, Helvetica, sans-serif;font-size: 1rem;background: #fff;color: #000;font-size: 16px;min-height: calc(100vh - 2em);}p {margin: 0.75em 0;}body {margin: 1.5em auto 6em;padding: 0 2em;max-width: 72em;position: relative;}.emojione {width: 1.25em;height: 1.25em;line-height: 0.8em;}.prose {font-size: 1rem;max-width: 36em;font-weight: normal;margin: 0 auto;}.prose a {color: #3786e3;text-decoration: none;border-bottom: 1px solid #3786e3;}.prose h1 {font-weight: 300;font-size: 2rem;}.prose h2 {font-weight: 500;font-size: 1.5em;margin: 1.333em 0 0;border-top: 2px solid #ddd;padding-top: 0.666em;}.prose h3 {font-weight: 600;font-size: 1.25em;margin: 2em 0 0;}.prose pre, .prose code {border-radius: 0.25em;background: #f8f8f8;font-size: 0.875em;line-height: 1.5em;font-family: Menlo, monospace;}.prose pre {max-width: 100%;white-space: pre-wrap;margin: 1.09375em 0;overflow: hidden;padding: 0.25em 0.5em;}.prose code {padding: 0.125em;}.prose pre code {display: block;white-space: pre-wrap;border: none;padding: 0;background-color: transparent;border-radius: 0;font-size: inherit;line-height: inherit;}.prose > p {margin: 1.5em 0;}.prose > ul, .prose ol {margin: 1.5em 0;}.prose ul, .prose ol {padding-left: 1.875em;position: relative;}.prose ul > li {list-style: square;}.prose ol > li {list-style: none;counter-increment: step-count;}.prose ol > li:before {content: counter(step-count);font-weight: 500;display: inline-block;position: absolute;left: 0.5em;}.prose img,.prose video {max-width: 100%;object-fit: scale-down;height: auto;}.prose blockquote {margin: 1.5em 0;border-left: 0.25em solid #555;padding-left: 1em;color: #222;}@media print {body {max-width: 100%;font-size: 12pt;}.prose a {border-bottom: none;}.prose {margin: 0 auto;}nav {display: none;}pre, blockquote {padding-right: 1em;page-break-inside: avoid;}tr, img {page-break-inside: avoid;}@page {margin: 20mm 15mm 20mm 15mm;}p, h2, h3 {orphans: 3;widows: 3;}h2, h3 {page-break-after: avoid;}.prose pre {border-left: 2px solid #ccc;padding-left: 0.75em;border-radius: 0;page-break-after: avoid;}}nav {margin: -0.5em -2em;border-bottom: 1px solid #aaa;margin-bottom: 1.5em;color: #364149;}nav ul {padding: 0;margin: 0;}nav a {color: inherit;text-decoration: none;display: block;overflow: hidden;text-overflow: ellipsis;padding: 0.375em 2em;white-space: nowrap;}.title a {font-size: 2rem;padding: 0 1em;font-weight: 300;}.page {display: block;}.page-title-active,.page-heading-active {color: #3786e3;}.page-heading {display: block;padding-left: 1.5em;}@media screen and (min-width: 36rem) {body.has-nav {margin-left: 12rem;}nav {margin: 0;position: fixed;width: 12rem;left: 0;top: 0;bottom: 0;overflow-y: auto;font-size: 0.875em;border-right: 1px solid #aaa;background: #fafafa;border-bottom: 0;}nav a {padding: 0.375em 1em;}.title a {padding: 0.75em 0.5em 0.625em;}nav > ul {position: relative;min-height: 100vh;padding-bottom: 6em;box-sizing: border-box;}.page-as-pdf {position: absolute;bottom: 3em;}.logo {position: absolute;bottom: 1em;display: block;background: url("data:image/svg+xml,<svg viewBox='10 0 38 7' xmlns='http://www.w3.org/2000/svg'><path fill='%233786e3' d='M17 3h-1V1h1zM18 5h-1V3h1zM20 5h-1V3h1zM21 3h-1V1h1zM11 5h2v1h-3V1h1zM25 2h-2v1h2v1h-2v1h2v1h-3V1h3zM14 6V1h1v5zM18 5h1v1h-1z'/><path d='M42 2h-2v1h2v1h-2v1h2v1h-3V1h3zM30 5V1h1v4zM28 5V2h1v3zM32 6V1h1v5zM43 2h1v1h-1zM44 3h2v1h-2zM43 5h3v1h-3zM44 1h3v1h-3zM46 4h1v1h-1zM26 5V1h1v4zM27 5h1v1h-1zM29 5h1v1h-1zM34 6V1h3v1h-2v1h2v2h-1V4h-1v2zM37 5h1v1h-1zM37 2h1v1h-1z'/></svg>") 100% 0 no-repeat;margin: 0.5em 1em 0;height: 14px;width: 76px;}.logo span {display: none;}}.hljs { display: block; background: white; padding: 0.5em; color: #333333; overflow-x: auto; } .hljs-comment, .hljs-meta { color: #969896; } .hljs-string, .hljs-variable, .hljs-template-variable, .hljs-strong, .hljs-emphasis, .hljs-quote { color: #df5000; } .hljs-keyword, .hljs-selector-tag, .hljs-type { color: #a71d5d; } .hljs-literal, .hljs-symbol, .hljs-bullet, .hljs-attribute { color: #0086b3; } .hljs-section, .hljs-name { color: #63a35c; } .hljs-tag { color: #333333; } .hljs-title, .hljs-attr, .hljs-selector-id, .hljs-selector-class, .hljs-selector-attr, .hljs-selector-pseudo { color: #795da3; } .hljs-addition { color: #55a532; background-color: #eaffea; } .hljs-deletion { color: #bd2c00; background-color: #ffecec; } .hljs-link { text-decoration: underline; }
 </style>
 
 <body class=has-nav>
@@ -55,41 +55,38 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr
 <li><a href="#phone">Phone</a></li>
 <li><a href="#sound">Sound</a></li>
 </ul>
-<p>To import all these names so you can use them in your code, use the following line:</p>
-<pre><code class="lang-js">import UW from &#39;you-win&#39;
-import {forever, Phone, World, Sprite, Text, Polygon} from &#39;you-win&#39;
+<p>To import all these names so you can use them in your code, use the following lines:</p>
+<pre><code class="lang-js">const uw = require(&#39;you-win&#39;)
+const {Phone, World, Sprite, Text, Polygon} = uw
 </code></pre>
 <h2 id="assets">Assets</h2>
-<p>Before you can do anything, you need initialise <code>you-win</code>. You do this by calling <code>UW.init</code>.</p>
-<pre><code class="lang-js">UW.init({
-    // the images you need
-})
-.then(() =&gt; {
-    // make your world and game
-})
+<p>Before you can do anything, you need initialise <code>you-win</code>. You do this by calling <strong><code>uw.begin()</code></strong>, which downloads <strong>all the files your game needs</strong>. We display a progress bar while your files are downloading.</p>
+<pre><code class="lang-js">await uw.begin()
 </code></pre>
-<ul>
-<li><p><strong><code>UW.init(images)</code></strong></p>
-<p>Pulls in the media files you need for your game. The code <strong>after <code>then</code></strong> will run once they’re all ready.</p>
-<p>Displays a progress bar while the media files are downloading.</p>
-</li>
-</ul>
+<p>The special <strong><code>await</code></strong> keyword is important here: it tells the computer not to carry on with your program until everything has finished loading.</p>
+<p>You should call begin() <strong>exactly once</strong>.</p>
 <h3 id="costumes">Costumes</h3>
-<p>A <strong>costume</strong> is an image that controls how a <code>Sprite</code> looks.</p>
-<p>You create costumes inside <code>UW.init</code>, by giving their URL (web address).</p>
-<pre><code class="lang-js">UW.init({
-    asteroid: &#39;/asteroid.jpg&#39;,
-})
+<p>A costume is an image that controls how a <code>Sprite</code> looks.</p>
+<p>You download them by calling <strong><code>loadCostume()</code></strong> with a name and URL, <strong>before</strong> you call <code>begin()</code>.</p>
+<p>If you make a <strong><code>static</code> folder</strong> in the same place as your game’s <code>.js</code> file, you can put images inside it, and then use <code>&#39;/&lt;filename&gt;&#39;</code> to load them. For example, if you put <code>my-asteroid.png</code> in the <code>static</code> folder:</p>
+<pre><code class="lang-js">uw.loadCostume(&#39;asteroid&#39;, &#39;/my-asteroid.png&#39;)
+await uw.begin()
+</code></pre>
+<p>You can also use assets from a <strong><a href="https://glitch.com">Glitch</a></strong> project. Copy their URL into your program:</p>
+<pre><code class="lang-js">uw.loadCostume(&#39;face&#39;, &#39;https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png&#39;)
+await uw.begin()
 </code></pre>
 <blockquote>
-<p>⚠ Because of security restrictions, you can’t use just any image URL from any website. Assets stored in your <a href="https://glitch.com">Glitch</a> project will work fine; copy their URL here.</p>
+<p>⚠ Because of security restrictions, you can’t use just any image URL from any website.</p>
 </blockquote>
-<p>If you make a <code>static</code> folder in the same place as your game’s <code>.js</code> file, you can put images inside it, and then load them here using the URL <code>&#39;/my-image.jpg&#39;</code>.</p>
-<pre><code class="lang-js">UW.init({
-    // get asteroid.jpg from my `static` folder
-    asteroid: &#39;/asteroid.jpg&#39;,
-    face: &#39;https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png&#39;,
-})
+<p>To use a costume later, give its <strong>name</strong>:</p>
+<pre><code class="lang-js">var s = new Sprite
+s.costume = &#39;asteroid&#39;
+</code></pre>
+<p>If you load more than one costumes, <code>you-win</code> won’t wait until the first one finishes downloading before downloading the next one. It speeds things up by downloading them all at once (i.e. in <strong>parallel</strong>).</p>
+<pre><code class="lang-js">uw.loadCostume(&#39;duck1&#39;, &#39;/duck-frame1.png&#39;)
+uw.loadCostume(&#39;duck2&#39;, &#39;/duck-frame2.png&#39;)
+await uw.begin() // waits for duck1 and duck2 to finish downloading
 </code></pre>
 <h3 id="emoji-costumes">Emoji costumes</h3>
 <p>Emoji costumes are loaded by default. To use them, just set your Sprite’s <code>.costume</code> attribute to an emoji string:</p>
@@ -101,19 +98,16 @@ s.costume = &#39;<img class="emojione" alt="🙂" title=":slight_smile:" src="ht
 <p>You can also use emoji inside <a href="#text">Text</a>.</p>
 <h2 id="world">World</h2>
 <p><strong><code>World</code></strong> sets up the screen, manages all the sprites, and emits events such as taps and drags on the background.</p>
-<p>Set up the world after <a href="#assets">loading your assets</a>.</p>
-<pre><code class="lang-js">UW.init({
-    // ...
-})
-.then(world =&gt; {
+<p>Set up the world after <a href="#assets">calling <code>begin()</code></a> to load your assets.</p>
+<pre><code class="lang-js">// Load everything we need
+await uw.begin()
 
-    var world = new World
-    world.width = 300
-    world.height = 460
+// Make the world
+var world = new World
+world.title = &#39;&#39;
+world.background = &#39;white&#39;
 
-    // make sprites...
-
-})
+// Now we can start making Sprites!
 </code></pre>
 <p>It has the following attributes:</p>
 <ul>
@@ -136,21 +130,18 @@ s.costume = &#39;<img class="emojione" alt="🙂" title=":slight_smile:" src="ht
 </ul>
 <h2 id="sprite">Sprite</h2>
 <p>A <strong><code>Sprite</code></strong> is an image in the world that can be moved and rotated and so on.</p>
-<p>To create a Sprite, you must give the name of one of your costumes.
-(For experts: you may also include an object with additional attributes.)</p>
-<pre><code class="lang-js">UW.init({
-  &#39;cat&#39;: &#39;https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png?1499126150626&#39;,
-})
-.then(() =&gt; {
+<p>To make your Sprite appear, you must set its <code>costume</code>.</p>
+<pre><code class="lang-js">uw.loadCostume(&#39;cat&#39;, &#39;https://cdn.glitch.com/f213ed6a-d103-4816-b60d-47c712a926e2%2Fcat_00.png?1499126150626&#39;)
+await uw.begin()
 
-    var cat = new Sprite
-    cat.costume = &#39;cat&#39;
+var world = new World
 
-    var bigCat = new Sprite
-    bigCat.costume = &#39;cat&#39;
-    bigCat.scale = 2 // twice as big
+var cat = new Sprite
+cat.costume = &#39;cat&#39;
 
-})
+var bigCat = new Sprite
+bigCat.costume = &#39;cat&#39;
+bigCat.scale = 2 // twice as big
 </code></pre>
 <p>Sprites have quite a few attributes which you can change. You can also set their initial values when you make the sprite.</p>
 <ul>
@@ -239,23 +230,22 @@ s.costume = &#39;<img class="emojione" alt="🙂" title=":slight_smile:" src="ht
 </ul>
 <h2 id="sprite-forever">Sprite::forever</h2>
 <p><code>forever</code> is really useful function: it lets you do something on every “frame” or “tick” of your game. Usually ticks happen 60 times a second (60 FPS).</p>
-<p>Write a forever loop with a function just inside it, like so:</p>
+<p>Write a <code>forever</code> block like so:</p>
 <pre><code class="lang-js">sprite.forever(() =&gt; {
     // do stuff
 })
 </code></pre>
 <p>Any code after the forever loop isn’t affected:</p>
 <pre><code class="lang-js">sprite.forever(() =&gt; {
-    // do stuff
+    // This code runs forever.
 })
 
-sprite.forever(() =&gt; {
-    // do other stuff
-})
-
-// carry on setting up the game ...
+// This code runs once.
+// Carry on setting up the game:
+var otherSprite = new Sprite
 </code></pre>
-<p>If you want to <strong>stop</strong> a <code>forever</code> loop (so that it doesn’t run forever!), you can <code>return false</code>:</p>
+<p>When the Sprite is <strong>destroyed</strong>, the <code>forever</code> loop will stop.</p>
+<p>If you want to <strong>stop</strong> a <code>forever</code> loop without destroying the Sprite (so that it doesn’t run forever!), you can <code>return false</code>:</p>
 <pre><code class="lang-js">player.forever(() =&gt; {
     if (player.isTouching(floor)) { // the floor is lava
         // game over!
@@ -264,17 +254,17 @@ sprite.forever(() =&gt; {
     // otherwise, move the player...
 })
 </code></pre>
-<p>A <code>forever</code> loop will automatically be stopped when the Sprite that it’s attached to gets destroyed.</p>
 <h2 id="text">Text</h2>
 <p>A <strong>Text</strong> object is like a Sprite, but instead of a costume, it’s used to display <em>text</em>.</p>
-<p>The text has a retro aesthetic. It also supports emoji (using the same emoji set as Sprites can use). Which means that this:</p>
+<pre><code>var label = new Text
+label.text = &#39;SCORE: &#39; + 100
+</code></pre><p>The text has a retro aesthetic. It also supports <strong>emoji</strong> (using the same emoji set as Sprites can use). Which means that this:</p>
 <pre><code class="lang-js">var snowy = new Text
 snowy.text = &#39;<img class="emojione" alt="⛄" title=":snowman:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/26c4.png"/>&#39;
 </code></pre>
 <p>…is quite similar to this:</p>
 <pre><code class="lang-js">var snowy = new Sprite
 snowy.costume = &#39;<img class="emojione" alt="⛄" title=":snowman:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/26c4.png"/>&#39;
-})
 </code></pre>
 <p><code>Text</code> objects have all the same attributes as a <a href="#sprite">Sprite</a>–but instead of a <code>costume</code>, they have the following:</p>
 <ul>
@@ -294,7 +284,6 @@ p.points = [[0, 0], [0, 32], [32, 32], [32, 0]]
 p.fill = &#39;#007de0&#39;
 p.outline = &#39;black&#39;
 p.thickness = 2
-})
 </code></pre>
 <p><code>Polygon</code>s have all the same attributes as a <a href="#sprite">Sprite</a>–but instead of a <code>costume</code>, they have the following:</p>
 <ul>
@@ -416,55 +405,51 @@ ball.onDrag(e =&gt; {
 </ul>
 <h2 id="sound">Sound</h2>
 <p>To use sounds, make sure to <code>import {Sound} from &#39;you-win&#39;</code>.</p>
-<p>To load a sound , use <code>Sound.load</code>. See <a href="#assets">Assets</a> for details on the <code>static/</code> folder and where to put your sound files.</p>
-<pre><code class="lang-js">UW.init({
-  moo: Sound.load(&#39;/moo.wav&#39;),
-})
-.then(() =&gt; {
-
-})
+<p>To load a sound , use <code>loadSound</code>. See <a href="#assets">Assets</a> for details on the <code>static/</code> folder and where to put your sound files.</p>
+<pre><code class="lang-js">uw.loadSound(&#39;moo&#39;, &#39;/moo.wav&#39;)
+await uw.begin()
 </code></pre>
 <p>Before you can play your sound, you must create a <code>Sound</code> object.</p>
-<pre><code class="lang-js">  var sound = new Sound(&#39;moo&#39;)
+<pre><code class="lang-js">var mooNoise = new Sound(&#39;moo&#39;)
 </code></pre>
 <p>Finally, you can play your sound at the appropriate time.</p>
-<pre><code class="lang-js">    sound.play()
+<pre><code class="lang-js">mooNoise.play()
 </code></pre>
 <h3 id="maths">Maths</h3>
 <p>Some built-in maths utilities.</p>
 <ul>
-<li><p><strong><code>UW.range([start], end, [step])</code></strong></p>
+<li><p><strong><code>uw.range([start], end, [step])</code></strong></p>
 <p>Return a list of numbers starting at <code>start</code> (default <code>0</code>), and ending before <code>end</code>. Behaves identically to Python’s <code>range()</code>.</p>
 <p>The optional <code>step</code> argument (default <code>1</code>) is how much to move between each item. </p>
-<pre><code class="lang-js">UW.range(5) // =&gt; [0, 1, 2, 3, 4]
-UW.range(5, 10) // =&gt; [5, 6, 7, 8, 9]
-UW.range(10, 20, 2) // =&gt; [10, 12, 14, 16, 18]
-UW.range(0, -5, -1) // =&gt; [0, -1, -2, -3, -4]
+<pre><code class="lang-js">uw.range(5) // =&gt; [0, 1, 2, 3, 4]
+uw.range(5, 10) // =&gt; [5, 6, 7, 8, 9]
+uw.range(10, 20, 2) // =&gt; [10, 12, 14, 16, 18]
+uw.range(0, -5, -1) // =&gt; [0, -1, -2, -3, -4]
 </code></pre>
 </li>
-<li><p><strong><code>UW.dist(dx, dy)</code></strong></p>
+<li><p><strong><code>uw.dist(dx, dy)</code></strong></p>
 <p>The distance between (0, 0) and (dx, dy), calculated using Pythagoras’ Theorem.</p>
 </li>
 </ul>
 <p>Some trigonometric functions. These work in degrees, unlike the ones built-in to JavaScript which use radians.</p>
 <ul>
-<li><strong><code>UW.sin(deg)</code></strong></li>
-<li><strong><code>UW.cos(deg)</code></strong></li>
-<li><strong><code>UW.atan2(x, y)</code></strong></li>
+<li><strong><code>uw.sin(deg)</code></strong></li>
+<li><strong><code>uw.cos(deg)</code></strong></li>
+<li><strong><code>uw.atan2(x, y)</code></strong></li>
 </ul>
 <h3 id="random">Random</h3>
 <p>Some built-in ways of getting random things are included.</p>
 <ul>
-<li><p><strong><code>UW.randomInt(from, to)</code></strong></p>
+<li><p><strong><code>uw.randomInt(from, to)</code></strong></p>
 <p>Return a random integer (whole number) between <code>from</code> and <code>to</code>, inclusive.</p>
-<pre><code class="lang-js">UW.randomInt(1, 3) // =&gt; 2
-UW.randomInt(1, 3) // =&gt; 1
-UW.randomInt(1, 3) // =&gt; 3
+<pre><code class="lang-js">uw.randomInt(1, 3) // =&gt; 2
+uw.randomInt(1, 3) // =&gt; 1
+uw.randomInt(1, 3) // =&gt; 3
 </code></pre>
 </li>
-<li><p><strong><code>UW.randomChoice(array)</code></strong></p>
+<li><p><strong><code>uw.randomChoice(array)</code></strong></p>
 <p>Return a randomly-selected item of an array.</p>
-<pre><code class="lang-js">UW.randomChoice([&#39;<img class="emojione" alt="🐄" title=":cow2:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f404.png"/>&#39;, &#39;<img class="emojione" alt="🐑" title=":sheep:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f411.png"/>&#39;, &#39;<img class="emojione" alt="🐎" title=":racehorse:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f40e.png"/>&#39;]) // =&gt; &#39;<img class="emojione" alt="🐑" title=":sheep:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f411.png"/>&#39;
+<pre><code class="lang-js">uw.randomChoice([&#39;<img class="emojione" alt="🐄" title=":cow2:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f404.png"/>&#39;, &#39;<img class="emojione" alt="🐑" title=":sheep:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f411.png"/>&#39;, &#39;<img class="emojione" alt="🐎" title=":racehorse:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f40e.png"/>&#39;]) // =&gt; &#39;<img class="emojione" alt="🐑" title=":sheep:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f411.png"/>&#39;
 </code></pre>
 </li>
 </ul>
