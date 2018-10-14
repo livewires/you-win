@@ -1083,7 +1083,6 @@ const Rect = function(props) {
         this._width = props.width
         this.height = props.height // draw shape
     })
-    console.log(this._surface)
 }
 Rect.prototype = Object.create(Base.prototype)
 
