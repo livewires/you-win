@@ -6,10 +6,10 @@
     "you-win": "server.js"
   },
   "dependencies": {
-    "browserify": "^14.4.0",
+    "browserify": "^14.5.0",
     "ecstatic": "^2.2.1",
     "watchify": "^3.11.0",
-    "ws": "^6.1.0"
+    "ws": "^6.1.2"
   },
   "main": "uw/index.js",
   "browser": "uw/index.js",
