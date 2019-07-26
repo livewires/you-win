@@ -23,7 +23,7 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
                 <li class=page-heading><a href="#moving-at-an-angle">Moving at an angle</a>
                 <li class=page-heading><a href="#conditions">Conditions</a>
                 <li class=page-heading><a href="#fin">Fin</a>
-                <li class=page-heading><a href="#what-next-">What next?</a>
+                <li class=page-heading><a href="#what-next">What next?</a>
             </ul>
         </li>
         <li class=page><a href="3-arrays">#3: Arrays</a>
@@ -46,9 +46,8 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
 <p>You can do this by saving your last file with a different name (game1.js would be sensible), then reopen game.js. If you do that you’ll need to delete everything after <code>await uw.begin()</code>, except for the first three lines that create the world and give it a title and background.</p>
 </li>
 <li><p>Then in this new file, make a Sprite with your favourite emoji. (You can search for emojis <a href="http://emoji.tjvr.org">here</a>: once you’ve found the one you want, click on it and it will be copied to your clipboard.)</p>
-<pre><code class="lang-js">var face = new Sprite
-face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f42e.png"/>&#39;
-</code></pre>
+<pre><code class="language-js">var face = new Sprite
+face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f42e.png"/>&#39;</code></pre>
 </li>
 </ul>
 <p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and check your Sprite appears!</p>
@@ -58,17 +57,15 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <p>We can use <code>forever</code> to make our sprite spin!</p>
 <ul>
 <li><p>Add a <code>forever</code> block, right after you create your <code>Sprite</code>.</p>
-<pre><code class="lang-js">face.forever(() =&gt; {
+<pre><code class="language-js">face.forever(() =&gt; {
 
-})
-</code></pre>
+})</code></pre>
 </li>
 </ul>
 <p>The <code>forever</code> blocks are fiddly to type; sorry about that. Make sure you get the brackets exactly right!</p>
 <ul>
 <li><p>Rotate your Sprite a small amount every frame.</p>
-<pre><code class="lang-js">    face.angle += 1
-</code></pre>
+<pre><code class="language-js">    face.angle += 1</code></pre>
 <p><em>Add this <strong>inside</strong> the <code>forever</code> block.</em></p>
 </li>
 </ul>
@@ -82,13 +79,14 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <p>Now we know the basics of animation, lets try some simple movement.</p>
 <ul>
 <li><p><strong>Instead</strong> of rotating, make the Sprite move right.</p>
-<p><s></p>
-<pre><code class="lang-js">    face.angle += 1
-</code></pre>
-<p></s>
-<em>Delete this line.</em></p>
-<pre><code class="lang-js">    face.posX += 2
-</code></pre>
+<s>
+```js
+    face.angle += 1
+```
+</s>
+_Delete this line._
+
+<pre><code class="language-js">    face.posX += 2</code></pre>
 </li>
 </ul>
 <p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and the Sprite should move to the right instead of rotating.</p>
@@ -99,8 +97,7 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make sure you can get your Sprite to move faster.</p>
 <ul>
 <li><p><strong>Challenge</strong>: experiment with animating other properties, like gradually increasing scale:</p>
-<pre><code class="lang-js">    face.scale *= 1.05
-</code></pre>
+<pre><code class="language-js">    face.scale *= 1.05</code></pre>
 </li>
 </ul>
 <p>Note that multiplying the scale by the fraction <code>1.05</code> is the same as increasing it by 5%.</p>
@@ -109,23 +106,24 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <p>Let’s have our face shoot out a projectile toward our finger when we tap.</p>
 <ul>
 <li><p>Delete (or comment out) the <code>forever</code> block for now – we won’t need it until later.</p>
-<p><s></p>
-<pre><code class="lang-js">face.forever(() =&gt; {
+<s>
+```js
+face.forever(() => {
     face.angle += ...
     face.posX += ...
     face.scale += ...
 })
-</code></pre>
-<p></s></p>
+```
+</s>
+
 </li>
 </ul>
 <p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make sure your sprite stops moving.</p>
 <ul>
 <li><p>Use <code>on(&#39;tap&#39;)</code> to detect when the screen is tapped.</p>
-<pre><code class="lang-js">world.onTap(e =&gt; {
+<pre><code class="language-js">world.onTap(e =&gt; {
     alert(&quot;dont touch this&quot;)
-})
-</code></pre>
+})</code></pre>
 <p><em>Make sure you get the brackets right!</em></p>
 </li>
 </ul>
@@ -134,16 +132,17 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <p>That gets boring quickly, so let’s make a projectile.</p>
 <ul>
 <li><p>When the screen is tapped, create a bullet under your finger.</p>
-<p><s></p>
-<pre><code class="lang-js">    alert(&quot;dont touch this&quot;)
-</code></pre>
-<p></s>
-<em>Delete this.</em></p>
-<pre><code class="lang-js">    var bullet = new Sprite
+<s>
+```js
+    alert("dont touch this")
+```
+</s>
+_Delete this._
+
+<pre><code class="language-js">    var bullet = new Sprite
     bullet.costume = &#39;<img class="emojione" alt="👾" title=":space_invader:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f47e.png"/>&#39;
     bullet.posX = e.fingerX
-    bullet.posY = e.fingerY
-</code></pre>
+    bullet.posY = e.fingerY</code></pre>
 <p><em>Add this <strong>inside</strong> the <code>world.onTap</code> block.</em></p>
 </li>
 </ul>
@@ -152,11 +151,10 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <p>Now let’s try moving our projectile!</p>
 <ul>
 <li><p>Add a <code>forever</code> block to move the Sprite we created after the tap.</p>
-<pre><code class="lang-js">    bullet.forever(() =&gt; {
+<pre><code class="language-js">    bullet.forever(() =&gt; {
         bullet.posX += 3
         bullet.posY += 3
-    })
-</code></pre>
+    })</code></pre>
 <p><em>Make sure this is <strong>inside</strong> the <code>world.onTap</code> block still.</em></p>
 </li>
 </ul>
@@ -164,6 +162,7 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and check that a bullet appears and starts moving, wherever you tap.</p>
 <h2 id="moving-at-an-angle">Moving at an angle</h2>
 <!-- "Trigonometry is the the one bit I didn't get" -->
+
 <p>Sometimes we want to move things at an angle – and to do this, we need <strong>trigonometry</strong>!</p>
 <p>It’d be really neat if our bullets started at the face, and travelled outward toward the point where we tapped. Then it would feel more like a “cannon” sort-of game.</p>
 <ul>
@@ -188,15 +187,16 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Check the bullets are created pointing in a random direction.</p>
 <ul>
 <li><p>Now move them at that angle by replacing your <code>forever</code> block.</p>
-<p><s></p>
-<pre><code class="lang-js">bullet.posX += 3
+<s>
+```js
+bullet.posX += 3
 bullet.posY += 3
-</code></pre>
-<p></s>
-<em>We don’t want this anymore.</em></p>
-<pre><code class="lang-js">bullet.posX += 4 * uw.sin(bullet.angle)
-bullet.posY += 4 * uw.cos(bullet.angle)
-</code></pre>
+```
+</s>
+_We don't want this anymore._
+
+<pre><code class="language-js">bullet.posX += 4 * uw.sin(bullet.angle)
+bullet.posY += 4 * uw.cos(bullet.angle)</code></pre>
 <p><em>Type this instead, inside the <code>bullet.forever</code> block.</em></p>
 </li>
 </ul>
@@ -207,26 +207,26 @@ bullet.posY += 4 * uw.cos(bullet.angle)
 <p>We’ll call the difference in X <code>dx</code>, and the difference in Y will be <code>dy</code>.</p>
 <ul>
 <li><p>Delete your code for setting the bullet to a random angle.</p>
-<p><s></p>
-<pre><code class="lang-js">bullet.angle = ...
-</code></pre>
-<p></s>
-<em>Delete your existing line of code for setting <code>bullet.angle</code>.</em></p>
+<s>
+```js
+bullet.angle = ...
+```
+</s>
+_Delete your existing line of code for setting `bullet.angle`._
 </li>
 <li><p>Work out the difference in X and Y between the face and your finger.</p>
-<pre><code class="lang-js">var dx = e.fingerX - face.posX
-var dy = e.fingerY - face.posY
-</code></pre>
+<pre><code class="language-js">var dx = e.fingerX - face.posX
+var dy = e.fingerY - face.posY</code></pre>
 </li>
 <li><p>Use <code>atan2</code> to get the correct angle.</p>
-<pre><code class="lang-js">bullet.angle = uw.atan2(dx, dy)
-</code></pre>
+<pre><code class="language-js">bullet.angle = uw.atan2(dx, dy)</code></pre>
 </li>
 </ul>
 <p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Check the bullets move toward your mouse.</p>
 <p>Congrats! We’ve just made a… face-cannon… thing.</p>
 <h2 id="conditions">Conditions</h2>
 <!-- TODO move this into the API reference; no-one reads this -->
+
 <p>Animation is all very well, and we’ve learnt how to react to <em>events</em>. But how can we react to other things changing?</p>
 <p>A <strong>condition</strong> returns a Boolean value: either <code>true</code> or <code>false</code>. They look like this:</p>
 <ol>
@@ -259,12 +259,11 @@ var dy = e.fingerY - face.posY
 <p>Let’s see what we can do with conditions.</p>
 <ul>
 <li><p>First, make our cannon-face move.</p>
-<pre><code class="lang-js">var xVel = 2
+<pre><code class="language-js">var xVel = 2
 
 face.forever(() =&gt; {
     face.posX += xVel
-})
-</code></pre>
+})</code></pre>
 <p><em>Add this at the bottom of your program, just before the end <code>})</code>.</em></p>
 </li>
 </ul>
@@ -273,18 +272,16 @@ face.forever(() =&gt; {
 <p>Currently, our face moves to the right (increasing X).</p>
 <ul>
 <li><p>Make it bounce off the right edge.</p>
-<pre><code class="lang-js">    if (world.width &lt; face.right) {
+<pre><code class="language-js">    if (world.width &lt; face.right) {
         xVel = -2
-    }
-</code></pre>
+    }</code></pre>
 <p><em>Make sure the <code>if</code> block is <strong>inside</strong> the <code>face.forever</code> block.</em></p>
 </li>
 </ul>
 <p>We do this by comparing his <code>right</code> edge to the width of the world. If his right edge is greater than the width of the world, then he’s gone off the right-hand side of the screen; so we set his velocity negative, so he starts moving left instead.</p>
 <ul>
 <li><p>Flip the costume, for good measure…</p>
-<pre><code class="lang-js">        face.flipped = true
-</code></pre>
+<pre><code class="language-js">        face.flipped = true</code></pre>
 <p><em>Add this <strong>inside</strong> the <code>if</code> block.</em></p>
 </li>
 <li><p><strong>Challenge:</strong> make it bounce off the left edge too.</p>
@@ -297,10 +294,9 @@ face.forever(() =&gt; {
 <p>Finally, if we don’t destroy the bullets, eventually the game will get really slow! Let’s fix that, by destroying them once they’re completely off the screen:</p>
 <ul>
 <li><p>Destroy the bullets once they’re completely off-screen.</p>
-<pre><code class="lang-js">        if (!bullet.isOnScreen()) {
+<pre><code class="language-js">        if (!bullet.isOnScreen()) {
             bullet.destroy()
-        }
-</code></pre>
+        }</code></pre>
 <p><em>This should go inside the bullet’s <code>forever</code>, just after the code to move it.</em></p>
 </li>
 </ul>
@@ -317,7 +313,7 @@ face.forever(() =&gt; {
 <li>Using <code>if</code> for <strong>conditions</strong></li>
 <li><code>destroy</code>-ing Sprites when you’re finished with them</li>
 </ul>
-<h2 id="what-next-">What next?</h2>
+<h2 id="what-next">What next?</h2>
 <p>If you want something else to try, here are some extensions to try! Why not:</p>
 <ul>
 <li><p>Carry on moving the bullets at an angle, but have their picture stay upright.</p>
