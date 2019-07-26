@@ -1,12 +1,10 @@
 ---
-title: "Game: Infinite Jump!"
+title: Game
 ---
 
 # The Infinite Jumping Game
 
-We're going to make a _Doodle Jump_ clone!
-
-The game is about bouncing on platforms to get higher and higher...forever. Your score is based on how high you can jump. You'll tilt the phone left and right to control the game.
+The game is about bouncing on platforms to get higher and higher...forever. Your score is based on how high you can jump.
 
 
 ## Starting out
@@ -232,7 +230,7 @@ Make sure the bouncing looks right now.
 
 
 ## Movement
-
+<!--
 In _Doodle Jump_, the player moves when you tilt the phone.
 
 We can read the phone's accelerometer to get the angle the phone's being held at, compared to gravity.
@@ -265,7 +263,7 @@ Think back to the bullets from chapter two: to turn an angle into a difference i
     _Inside the `forever` for the player._
 
 The number `5` is a multiplier controlling how **fast** the player moves when you tilt the phone. Adjust it until it feels right to you.
-
+-->
 
 ### Wrapping ###
 

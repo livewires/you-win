@@ -91,52 +91,6 @@ Note that multiplying the scale by the fraction `1.05` is the same as increasing
 
 👉 See if you can get your Sprite to get bigger.
 
-## Orientation
-
-📱 We can read the phone's accelerometer to get the angle the phone's being held at, compared to gravity.
-
-First, we need to initialise a `Phone` object, so that `you-win` knows to start reading the phone's orientation sensors.
-
-  * Put this near the top of your program, after the `import` lines.
-
-    You might find a commented out-line already, in which case just uncomment it!
-
-    <s>
-    ```js
-    // var phone = new Phone
-    ```
-    </s>
-    _If you see a line like this already, you can just delete the slashes._
-
-    ```js
-    var phone = new Phone
-    ```
-
-  * Delete what you had before.
-    <s>
-    ```js
-        face.angle += ...
-        face.posX += ...
-        face.scale += ...
-    ```
-    </s>
-    _Delete anything inside the forever._
-
-👉 Make sure your sprite stops moving.
-
-  * Rotate the sprite when the phone rotates.
-
-    ```js
-        face.angle = phone.zAngle
-    ```
-    _Add this *inside* the `face.forever`._
-
-Depending on whether or not you're using an iPhone, you might need to use negative `zAngle` instead. The Sprite should always stay the same way up as you rotate the phone around it!
-
-👉 Make sure your Sprite stays upright. 
-
-If the Sprite is always upside-down, you might need to add an angle to `phone.zAngle`...
-
 
 ## Events
 
@@ -147,7 +101,9 @@ Let's have our face shoot out a projectile toward our finger when we tap.
     <s>
     ```js
     face.forever(() => {
-        face.angle = phone.zAngle
+        face.angle += ...
+        face.posX += ...
+        face.scale += ...
     })
     ```
     </s>
@@ -405,3 +361,4 @@ If you want something else to try, here are some extensions to try! Why not:
   * Generally have a play around with the thing you just made, or more generally, everything you've learnt in chapters 1 and 2.
 
   * Continue on to the [next thing](Jump) once you're ready! 🙃
+
