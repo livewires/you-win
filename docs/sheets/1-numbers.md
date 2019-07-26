@@ -24,8 +24,6 @@ Have a look at the template that's open in your text editor. It should look like
 const uw = require('you-win')
 const {Phone, World, Sprite, Text, Polygon} = uw
 
-// var phone = new Phone
-
 // Load everything we need
 await uw.begin()
 
@@ -41,7 +39,7 @@ world.background = 'white'
 Look closely at these parts:
 
  1. ```js
-    // var phone = new Phone
+    // Load everything we need
     ```
 
     This is a comment! Lines starting with `//` are ignored by JavaScript.

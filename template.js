@@ -2,8 +2,6 @@
 const uw = require('you-win')
 const {Phone, World, Sprite, Text, Polygon} = uw
 
-var phone = new Phone
-
 // Load everything we need
 await uw.begin()
 
