@@ -20,7 +20,7 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
             <ul>
                 <li class=page-heading><a href="#animation">Animation</a>
                 <li class=page-heading><a href="#events">Events</a>
-                <li class=page-heading><a href="#trig">Trig</a>
+                <li class=page-heading><a href="#moving-at-an-angle">Moving at an angle</a>
                 <li class=page-heading><a href="#conditions">Conditions</a>
                 <li class=page-heading><a href="#fin">Fin</a>
                 <li class=page-heading><a href="#what-next-">What next?</a>
@@ -42,9 +42,10 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
 <p>So far, we’ve only set up static scenes. We’ve learnt how to position different kinds of objects on the screen, and change how they look; but we haven’t moved them or changed them after initialisation.</p>
 <p><strong>Animation</strong> means to give an appearance of movement. We do this by <strong>changing values over time</strong>.</p>
 <ul>
-<li><p>First, let’s start a <strong>new project</strong>. You can do this by saving your last file with a different name (game1.js would be sensible), then reopen game.js. In here delete everything inside the <code>then(() =&gt; {...})</code> except for the first three lines that create the world and give it a title and background.</p>
+<li><p>First, let’s start a <strong>new project</strong>.</p>
+<p>You can do this by saving your last file with a different name (game1.js would be sensible), then reopen game.js. If you do that you’ll need to delete everything after <code>await uw.begin()</code>, except for the first three lines that create the world and give it a title and background.</p>
 </li>
-<li><p>Then in this new file, make a Sprite with your favourite emoji. (You can search for emojis <a href="http://emoji.tjvr.org">here</a>, once you search you can click on the one you want and it will be copied to your clipboard.)</p>
+<li><p>Then in this new file, make a Sprite with your favourite emoji. (You can search for emojis <a href="http://emoji.tjvr.org">here</a>: once you’ve found the one you want, click on it and it will be copied to your clipboard.)</p>
 <pre><code class="lang-js">var face = new Sprite
 face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f42e.png"/>&#39;
 </code></pre>
@@ -68,7 +69,7 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <li><p>Rotate your Sprite a small amount every frame.</p>
 <pre><code class="lang-js">    face.angle += 1
 </code></pre>
-<p><em>Add this, <strong>inside</strong> the <code>forever</code> block.</em></p>
+<p><em>Add this <strong>inside</strong> the <code>forever</code> block.</em></p>
 </li>
 </ul>
 <p>In JavaScript, <code>n += 1</code> is shorthand for <code>n = n + 1</code>. You can read it as <strong>“change by”</strong>.</p>
@@ -125,6 +126,7 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
     alert(&quot;dont touch this&quot;)
 })
 </code></pre>
+<p><em>Make sure you get the brackets right!</em></p>
 </li>
 </ul>
 <p>The code inside the <code>on(...</code> block runs whenever the screen is tapped.  So whenever you tap (or click) the screen, the message “don’t touch this” should appear.</p>
@@ -146,7 +148,7 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 </li>
 </ul>
 <p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and check that a bullet appears wherever you tap.</p>
-<p>What’s going on here? <code>e</code> is an <strong>event</strong> object, telling us the details of the <strong>tap</strong> event. The <code>e.fingerX</code> and <code>e.fingerY</code> attributes tell us the coordinates of the tap.</p>
+<p>What’s going on here? <code>e</code> is an <strong>event</strong> object, telling us the details of the <strong>tap</strong> event. The <code>e.fingerX</code> and <code>e.fingerY</code> attributes tell us the X &amp; Y coordinates where the tap happened.</p>
 <p>Now let’s try moving our projectile!</p>
 <ul>
 <li><p>Add a <code>forever</code> block to move the Sprite we created after the tap.</p>
@@ -158,23 +160,23 @@ face.costume = &#39;<img class="emojione" alt="🐮" title=":cow:" src="https://
 <p><em>Make sure this is <strong>inside</strong> the <code>world.onTap</code> block still.</em></p>
 </li>
 </ul>
-<p>Notice that the <code>forever</code> block has to be inside the <code>world.onTap</code> block. Just as we can’t use a name like <code>cow</code> before it’s been created, we can’t use the name <code>bullet</code> <strong>outside</strong> the block that it was created inside. This phenomenon is called “scope”; more about that in <a href="4-Functions.md">Intro #4: Functions</a>.</p>
+<p>Notice that the <code>forever</code> block has to be inside the <code>world.onTap</code> block. Just as we can’t use a name like <code>cow</code> before it’s been created, we can’t use the name <code>bullet</code> <strong>outside</strong> the block that it was created inside. This phenomenon is called “scope”. <!--; more about that in [Intro #4: Functions](4-functions).--></p>
 <p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and check that a bullet appears and starts moving, wherever you tap.</p>
-<h2 id="trig">Trig</h2>
+<h2 id="moving-at-an-angle">Moving at an angle</h2>
 <!-- "Trigonometry is the the one bit I didn't get" -->
-<p>Sometimes we want to move things at an angle–and to do this, we need <strong>trigonometry</strong>!</p>
+<p>Sometimes we want to move things at an angle – and to do this, we need <strong>trigonometry</strong>!</p>
 <p>It’d be really neat if our bullets started at the face, and travelled outward toward the point where we tapped. Then it would feel more like a “cannon” sort-of game.</p>
 <ul>
 <li><p><strong>Challenge</strong>: make the bullets start at the same position as the <code>face</code>.</p>
 <p><em>Make sure you do this! If you don’t, then the bullets won’t move in the right direction later :-)</em></p>
 </li>
 </ul>
-<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make sure the bullets w</p>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make sure the bullets always start from the face.</p>
 <p>To move our bullets, we only need to know two things from trigonometry:</p>
 <ol>
-<li><p>You can use <code>.posX += UW.sin(angle)</code> and <code>.posY += UW.cos(angle)</code> to move a sprite at an angle.</p>
+<li><p>You can use <code>.posX += uw.sin(angle)</code> and <code>.posY += uw.cos(angle)</code> to move a sprite at an angle.</p>
 </li>
-<li><p>You can use <code>angle = UW.atan2(dx, dy)</code> to work out the angle you need to move something in a direction.</p>
+<li><p>You can use <code>angle = uw.atan2(dx, dy)</code> to work out the angle you need to move something in a direction.</p>
 </li>
 </ol>
 <p>Currently, our bullets all go at 45°, which is dull. Let’s fire them out at a random angle.</p>
@@ -192,8 +194,8 @@ bullet.posY += 3
 </code></pre>
 <p></s>
 <em>We don’t want this anymore.</em></p>
-<pre><code class="lang-js">bullet.posX += 4 * UW.sin(bullet.angle)
-bullet.posY += 4 * UW.cos(bullet.angle)
+<pre><code class="lang-js">bullet.posX += 4 * uw.sin(bullet.angle)
+bullet.posY += 4 * uw.cos(bullet.angle)
 </code></pre>
 <p><em>Type this instead, inside the <code>bullet.forever</code> block.</em></p>
 </li>
@@ -201,7 +203,7 @@ bullet.posY += 4 * UW.cos(bullet.angle)
 <p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Check the bullets move in the same direction as they’re facing.</p>
 <p>By multiplying <code>sin</code> and <code>cos</code> by 4, we increase the speed of movement.</p>
 <p>So we’ve done the first part – moving the bullets in a direction.</p>
-<p>Now to work out the correct angle! We need to use <code>atan2</code> for this. This is a special version of inverse <em>tan()</em> which takes two numbers–a difference in X and a difference in Y–and returns the correct angle.</p>
+<p>Now to work out the correct angle! We need to use <code>atan2</code> for this. This is a special version of inverse <em>tan()</em> which takes two numbers – a difference in X and a difference in Y – and returns the correct angle.</p>
 <p>We’ll call the difference in X <code>dx</code>, and the difference in Y will be <code>dy</code>.</p>
 <ul>
 <li><p>Delete your code for setting the bullet to a random angle.</p>
@@ -217,7 +219,7 @@ var dy = e.fingerY - face.posY
 </code></pre>
 </li>
 <li><p>Use <code>atan2</code> to get the correct angle.</p>
-<pre><code class="lang-js">bullet.angle = UW.atan2(dx, dy)
+<pre><code class="lang-js">bullet.angle = uw.atan2(dx, dy)
 </code></pre>
 </li>
 </ul>

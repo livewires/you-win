@@ -50,22 +50,21 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
 <p>Make sure you have line numbers turned on in your text editor.</p>
 <p>Your Chrome window should have a white screen. This is a blank canvas in which we can start making mobile games!</p>
 <p>Have a look at the template that’s open in your text editor. It should look like this:</p>
-<pre><code class="lang-js">import UW from &#39;you-win&#39;
-import {forever, Phone, World, Sprite, Text, Polygon, Rect, Sound} from &#39;you-win&#39;
+<pre><code class="lang-js">const uw = require(&#39;you-win&#39;)
+const {Phone, World, Sprite, Text, Polygon} = uw
 
 // var phone = new Phone
 
-UW.init({
-})
-.then(() =&gt; {
+// Load everything we need
+await uw.begin()
 
-    var world = new World
-    world.title = &#39;&#39;
-    world.background = &#39;white&#39;
+// Make the world
+var world = new World
+world.title = &#39;&#39;
+world.background = &#39;white&#39;
 
-    // ...
+// Now we can start making Sprites!
 
-})
 </code></pre>
 <p>Look closely at these parts:</p>
 <ol>
@@ -74,11 +73,11 @@ UW.init({
 <p>This is a comment! Lines starting with <code>//</code> are ignored by JavaScript.</p>
 <p>You can use comments to write messages for yourself, to remind yourself what different bits of your code do.</p>
 </li>
-<li><pre><code class="lang-js">UW.init
+<li><pre><code class="lang-js">await uw.begin()
 </code></pre>
 <p>This is where we can load in any extra sounds or images for our game.</p>
 </li>
-<li><pre><code class="lang-js">new World
+<li><pre><code class="lang-js">var world = new World
 </code></pre>
 <p>This is where we make the <code>World</code>. The world represents the screen. We can set its <code>width</code> and <code>height</code> to change the size of the screen. (It’s like the <em>Stage</em> in Scratch.)</p>
 </li>
@@ -86,14 +85,10 @@ UW.init({
 <p>Let’s do that now!</p>
 <ul>
 <li><p>Set the <code>width</code> and <code>height</code> of the world.</p>
-<p><s></p>
-<pre><code class="lang-js">// ...
-</code></pre>
-<p></s></p>
 <pre><code class="lang-js">world.width = 300
 world.height = 460
 </code></pre>
-<p><em>Add this where the comment with three dots ‘…’ is.</em></p>
+<p><em>Add this at the bottom of your program.</em></p>
 <p>To change the attributes of an object in JavaScript, we write the name of the object, followed by a dot, and then <code>=</code>, and then the new value.</p>
 </li>
 </ul>
@@ -187,10 +182,10 @@ cow.costume = &#39;<img class="emojione" alt="🐄" title=":cow2:" src="https://
 <p>Notice that the poop doesn’t move, even though we’ve moved the cow. This is important: when you set an attribute using <code>=</code>, it only happens once.</p>
 <h2 id="randomness">Randomness</h2>
 <p>Let’s introduce some uncertainty into our creation.</p>
-<p>We can use <code>UW.randomInt(1, 10)</code> to pick a random number between <code>1</code> and <code>10</code>. (This is just like <code>pick random _ to _</code> from Scratch.)</p>
+<p>We can use <code>uw.randomInt(1, 10)</code> to pick a random number between <code>1</code> and <code>10</code>. (This is just like <code>pick random _ to _</code> from Scratch.)</p>
 <ul>
 <li><p>Move your poop to a random <code>posX</code> position.</p>
-<pre><code class="lang-js">poop.posX = UW.randomInt(0, world.width)
+<pre><code class="lang-js">poop.posX = uw.randomInt(0, world.width)
 </code></pre>
 </li>
 <li><p><strong>Challenge:</strong> Move your poop to a random <code>posY</code> position.</p>
@@ -211,8 +206,8 @@ label.text = &quot;Hello world!&quot;
 </code></pre>
 </li>
 <li><p>Change it to red.</p>
-<p><code>`</code>js
-label.fill = ‘red’</p>
+<pre><code class="lang-js">label.fill = &#39;red&#39;
+</code></pre>
 </li>
 </ul>
 <p>You can use any of the color names which are supported by HTML. If you give a color name that it doesn’t recognise, you’ll proabably just get black. </p>
@@ -231,7 +226,7 @@ label.fill = ‘red’</p>
 <li><strong>Set their attributes</strong>, using dot notation and <code>=</code></li>
 <li>Create <code>Sprite</code>s and <code>Text</code></li>
 <li>Set the <strong>position</strong> of objects inside the world</li>
-<li>How to <strong>pick random numbers</strong> using <code>UW.randomInt</code></li>
+<li>How to <strong>pick random numbers</strong> using <code>uw.randomInt</code></li>
 </ul>
 <p>Let’s continue on to <a href="2-Animation">chapter two</a>!</p>
 

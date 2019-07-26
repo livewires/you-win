@@ -21,22 +21,21 @@ Your Chrome window should have a white screen. This is a blank canvas in which w
 Have a look at the template that's open in your text editor. It should look like this:
 
 ```js
-import UW from 'you-win'
-import {forever, Phone, World, Sprite, Text, Polygon, Rect, Sound} from 'you-win'
+const uw = require('you-win')
+const {Phone, World, Sprite, Text, Polygon} = uw
 
 // var phone = new Phone
 
-UW.init({
-})
-.then(() => {
+// Load everything we need
+await uw.begin()
 
-    var world = new World
-    world.title = ''
-    world.background = 'white'
+// Make the world
+var world = new World
+world.title = ''
+world.background = 'white'
 
-    // ...
+// Now we can start making Sprites!
 
-})
 ```
 
 Look closely at these parts:
@@ -50,13 +49,13 @@ Look closely at these parts:
     You can use comments to write messages for yourself, to remind yourself what different bits of your code do.
 
  2. ```js
-    UW.init
+    await uw.begin()
     ```
 
     This is where we can load in any extra sounds or images for our game.
 
  3. ```js
-    new World
+    var world = new World
     ```
 
     This is where we make the `World`. The world represents the screen. We can set its `width` and `height` to change the size of the screen. (It's like the _Stage_ in Scratch.)
@@ -66,17 +65,11 @@ Let's do that now!
 
   * Set the `width` and `height` of the world.
 
-    <s>
-    ```js
-    // ...
-    ```
-    </s>
-
     ```js
     world.width = 300
     world.height = 460
     ```
-    _Add this where the comment with three dots '...' is._
+    _Add this at the bottom of your program._
 
     To change the attributes of an object in JavaScript, we write the name of the object, followed by a dot, and then `=`, and then the new value.
 
@@ -201,12 +194,12 @@ Notice that the poop doesn't move, even though we've moved the cow. This is impo
 
 Let's introduce some uncertainty into our creation.
 
-We can use `UW.randomInt(1, 10)` to pick a random number between `1` and `10`. (This is just like `pick random _ to _` from Scratch.)
+We can use `uw.randomInt(1, 10)` to pick a random number between `1` and `10`. (This is just like `pick random _ to _` from Scratch.)
 
   * Move your poop to a random `posX` position.
 
     ```js
-    poop.posX = UW.randomInt(0, world.width)
+    poop.posX = uw.randomInt(0, world.width)
     ```
 
   * **Challenge:** Move your poop to a random `posY` position.
@@ -235,6 +228,7 @@ When someone starts programming, it's traditional to for them to introduce thems
 
     ```js
     label.fill = 'red'
+    ```
 
 You can use any of the color names which are supported by HTML. If you give a color name that it doesn't recognise, you'll proabably just get black. 
 
@@ -256,7 +250,7 @@ Good job! Now you know how to:
   * **Set their attributes**, using dot notation and `=`
   * Create `Sprite`s and `Text`
   * Set the **position** of objects inside the world
-  * How to **pick random numbers** using `UW.randomInt`
+  * How to **pick random numbers** using `uw.randomInt`
 
 Let's continue on to [chapter two](2-Animation)!
 

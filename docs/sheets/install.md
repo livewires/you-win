@@ -74,22 +74,21 @@ Now open the `first.js` file you just created in your favourite text editor. Tex
 The template should look [like this](https://github.com/livewires/you-win/blob/master/template.js):
 
 ```js
-import UW from 'you-win'
-import {forever, Phone, World, Sprite, Text, Polygon, Rect, Sound} from 'you-win'
+const uw = require('you-win')
+const {Phone, World, Sprite, Text, Polygon} = uw
 
-// var phone = new Phone
+var phone = new Phone
 
-UW.init({
-})
-.then(() => {
+// Load everything we need
+await uw.begin()
 
-    var world = new World
-    world.title = ''
-    world.background = 'white'
+// Make the world
+var world = new World
+world.title = ''
+world.background = 'white'
 
-    // ...
+// Now we can start making Sprites!
 
-})
 ```
 
 To run your game:

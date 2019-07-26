@@ -11,9 +11,11 @@ So far, we've only set up static scenes. We've learnt how to position different 
 
 **Animation** means to give an appearance of movement. We do this by **changing values over time**.
 
-  * First, let's start a **new project**. You can do this by saving your last file with a different name (game1.js would be sensible), then reopen game.js. In here delete everything inside the `then(() => {...})` except for the first three lines that create the world and give it a title and background.
+  * First, let's start a **new project**.
+
+  You can do this by saving your last file with a different name (game1.js would be sensible), then reopen game.js. If you do that you'll need to delete everything after `await uw.begin()`, except for the first three lines that create the world and give it a title and background.
   
-  * Then in this new file, make a Sprite with your favourite emoji. (You can search for emojis [here](http://emoji.tjvr.org), once you search you can click on the one you want and it will be copied to your clipboard.)
+  * Then in this new file, make a Sprite with your favourite emoji. (You can search for emojis [here](http://emoji.tjvr.org): once you've found the one you want, click on it and it will be copied to your clipboard.)
 
     ```js
     var face = new Sprite
@@ -46,7 +48,7 @@ The `forever` blocks are fiddly to type; sorry about that. Make sure you get the
     ```js
         face.angle += 1
     ```
-    _Add this, **inside** the `forever` block._
+    _Add this **inside** the `forever` block._
 
 In JavaScript, `n += 1` is shorthand for `n = n + 1`. You can read it as **"change by"**.
 
@@ -117,6 +119,7 @@ Let's have our face shoot out a projectile toward our finger when we tap.
         alert("dont touch this")
     })
     ```
+    _Make sure you get the brackets right!_
 
 The code inside the `on(...` block runs whenever the screen is tapped.  So whenever you tap (or click) the screen, the message "don't touch this" should appear.
 
@@ -143,7 +146,7 @@ That gets boring quickly, so let's make a projectile.
 
 👉 Save, and check that a bullet appears wherever you tap.
 
-What's going on here? `e` is an **event** object, telling us the details of the **tap** event. The `e.fingerX` and `e.fingerY` attributes tell us the coordinates of the tap.
+What's going on here? `e` is an **event** object, telling us the details of the **tap** event. The `e.fingerX` and `e.fingerY` attributes tell us the X & Y coordinates where the tap happened.
 
 Now let's try moving our projectile!
 
@@ -157,15 +160,15 @@ Now let's try moving our projectile!
     ```
     _Make sure this is **inside** the `world.onTap` block still._
 
-Notice that the `forever` block has to be inside the `world.onTap` block. Just as we can't use a name like `cow` before it's been created, we can't use the name `bullet` **outside** the block that it was created inside. This phenomenon is called "scope"; more about that in [Intro #4: Functions](4-Functions.md).
+Notice that the `forever` block has to be inside the `world.onTap` block. Just as we can't use a name like `cow` before it's been created, we can't use the name `bullet` **outside** the block that it was created inside. This phenomenon is called "scope". <!--; more about that in [Intro #4: Functions](4-functions).-->
 
 👉 Save, and check that a bullet appears and starts moving, wherever you tap.
 
 
-## Trig
+## Moving at an angle
 <!-- "Trigonometry is the the one bit I didn't get" -->
 
-Sometimes we want to move things at an angle--and to do this, we need **trigonometry**!
+Sometimes we want to move things at an angle -- and to do this, we need **trigonometry**!
 
 It'd be really neat if our bullets started at the face, and travelled outward toward the point where we tapped. Then it would feel more like a "cannon" sort-of game.
 
@@ -173,13 +176,13 @@ It'd be really neat if our bullets started at the face, and travelled outward to
 
     _Make sure you do this! If you don't, then the bullets won't move in the right direction later :-)_
 
-👉 Make sure the bullets w
+👉 Make sure the bullets always start from the face.
 
 To move our bullets, we only need to know two things from trigonometry:
 
-  1. You can use `.posX += UW.sin(angle)` and `.posY += UW.cos(angle)` to move a sprite at an angle.
+  1. You can use `.posX += uw.sin(angle)` and `.posY += uw.cos(angle)` to move a sprite at an angle.
 
-  2. You can use `angle = UW.atan2(dx, dy)` to work out the angle you need to move something in a direction.
+  2. You can use `angle = uw.atan2(dx, dy)` to work out the angle you need to move something in a direction.
 
 Currently, our bullets all go at 45°, which is dull. Let's fire them out at a random angle.
 
@@ -200,8 +203,8 @@ Currently, our bullets all go at 45°, which is dull. Let's fire them out at a r
     _We don't want this anymore._
 
     ```js
-    bullet.posX += 4 * UW.sin(bullet.angle)
-    bullet.posY += 4 * UW.cos(bullet.angle)
+    bullet.posX += 4 * uw.sin(bullet.angle)
+    bullet.posY += 4 * uw.cos(bullet.angle)
     ```
     _Type this instead, inside the `bullet.forever` block._
 
@@ -211,7 +214,7 @@ By multiplying `sin` and `cos` by 4, we increase the speed of movement.
 
 So we've done the first part -- moving the bullets in a direction.
 
-Now to work out the correct angle! We need to use `atan2` for this. This is a special version of inverse _tan()_ which takes two numbers--a difference in X and a difference in Y--and returns the correct angle.
+Now to work out the correct angle! We need to use `atan2` for this. This is a special version of inverse _tan()_ which takes two numbers -- a difference in X and a difference in Y -- and returns the correct angle.
 
 We'll call the difference in X `dx`, and the difference in Y will be `dy`.
 
@@ -234,7 +237,7 @@ We'll call the difference in X `dx`, and the difference in Y will be `dy`.
   * Use `atan2` to get the correct angle.
 
     ```js
-    bullet.angle = UW.atan2(dx, dy)
+    bullet.angle = uw.atan2(dx, dy)
     ```
 
 👉 Check the bullets move toward your mouse.
