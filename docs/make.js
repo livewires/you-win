@@ -13,6 +13,33 @@ const emoji = require('metalsmith-emoji')
 const Handlebars = require('handlebars')
 Handlebars.registerHelper('eq', (a, b) => a === b)
 
+const names = [
+
+    'install',
+
+    // Tutorial
+    '00-new-world',
+    '01-creating-sprites',
+    '02-position',
+    '03-random',
+    '04-forever',
+    '05-events',
+
+    // Recipes
+    'bouncing',
+
+    // Old tutorial
+    '2-animation',
+    //'3-arrays',
+    //'4-functions',
+
+    // games
+    'jump',
+
+    // api
+    'reference',
+]
+
 /*
 const debug = (files, metalsmith, done) => {
     setImmediate(done)
@@ -46,23 +73,7 @@ m.clean(false)
 m.use(paths({
     property: 'paths'
 }))
-m.use(docs([
-
-    'install',
-
-    // Tutorial
-    '1-numbers',
-    '2-animation',
-    '3-arrays',
-    '4-functions',
-
-    // games
-    'jump',
-
-    // api
-    'reference',
-
-]))
+m.use(docs(names))
 //m.use(debug)
 m.use(markdown({
     smartypants: true,
