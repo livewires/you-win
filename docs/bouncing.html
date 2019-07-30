@@ -52,14 +52,14 @@ ball.costume = &#39;<img class="emojione" alt="🏀" title=":basketball:" src="h
 <h2 id="moving-the-ball">Moving the ball</h2>
 <p>For our ball to bounce, we need to “remember” which edge of the screen we bounced off last. Otherwise the computer won’t know which way to move the ball.</p>
 <p>So we introduce two variables – one for the movement in the X direction (left or right), and one for the movement in the Y direction (up or down).</p>
-<pre><code class="lang-js">var velX = -2
-var velY = 0
+<pre><code class="lang-js">var speedX = -2
+var speedY = 0
 </code></pre>
-<p>We’ll call them <code>velX</code> and <code>velY</code>, short for “velocity” (which means speed). We’ve chosen <code>-2</code> and <code>0</code> to start the ball moving off to the left.</p>
+<p>We’ll call them <code>speedX</code> and <code>speedY</code>, short for “velocity” (which means speed). We’ve chosen <code>-2</code> and <code>0</code> to start the ball moving off to the left.</p>
 <p>Now, let’s move the ball a little bit each frame.</p>
 <pre><code class="lang-js">ball.forever(() =&gt; {
-    ball.posX += velX
-    ball.posY += velY
+    ball.posX += speedX
+    ball.posY += speedY
 })
 </code></pre>
 <p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and check your ball starts moving to the left.</p>
@@ -67,7 +67,7 @@ var velY = 0
 <p>When the ball hits the left edge, we want to switch back to moving to the right again. We know the left edge of the screen has an X coordinate of zero. So we can check if we’re touching the left edge by comparing the left edge of our sprite with zero. </p>
 <p>Add this <strong>inside the <code>ball.forever</code> block</strong>.</p>
 <pre><code class="lang-js">    if (ball.left &lt; 0) {
-      velX = -velX
+      speedX = -speedX
       ball.left = 0
     }
 </code></pre>
@@ -75,15 +75,15 @@ var velY = 0
 <p>When the ball hits the right edge, we want to start moving to the left instead. We know that the right edge of the screen has an X coordinate equal to the width of the world. So we can check if we’re touching the right edge by comparing the right edge of our sprite with the width of the world.</p>
 <p>Add this inside the forever block.</p>
 <pre><code class="lang-js">    if (ball.right &gt; world.width) {
-      velX = -velX
+      speedX = -speedX
       ball.right = world.width
     }
 </code></pre>
 <p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and check your ball bounces off the left and right edges.</p>
 <h2 id="bouncing-off-the-bottom-and-top-edges">Bouncing off the bottom and top edges</h2>
-<p>Change the initial value of <code>velY</code> to <code>-2</code>.</p>
+<p>Change the initial value of <code>speedY</code> to <code>-2</code>.</p>
 <p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and check the ball now moves to the bottom-left.</p>
-<p>To make the ball bounce off the bottom edge of the screen, you need to add another <code>if</code> block. Hint: you want to compare <code>ball.bottom</code> with something, and then update <code>velY</code>.</p>
+<p>To make the ball bounce off the bottom edge of the screen, you need to add another <code>if</code> block. Hint: you want to compare <code>ball.bottom</code> with something, and then update <code>speedY</code>.</p>
 <p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make the ball bounce off the bottom edge.</p>
 <p>Now add a final <code>if</code> block to make the ball bounce off the top edge of the screen. Hint: you want to compare <code>ball.top</code> with <code>world.height</code>.</p>
 <p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make the ball bounce off the top edge.</p>

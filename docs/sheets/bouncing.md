@@ -22,18 +22,18 @@ For our ball to bounce, we need to "remember" which edge of the screen we bounce
 So we introduce two variables -- one for the movement in the X direction (left or right), and one for the movement in the Y direction (up or down).
 
 ```js
-var velX = -2
-var velY = 0
+var speedX = -2
+var speedY = 0
 ```
 
-We'll call them `velX` and `velY`, short for "velocity" (which means speed). We've chosen `-2` and `0` to start the ball moving off to the left.
+We'll call them `speedX` and `speedY`, short for "velocity" (which means speed). We've chosen `-2` and `0` to start the ball moving off to the left.
 
 Now, let's move the ball a little bit each frame.
 
 ```js
 ball.forever(() => {
-    ball.posX += velX
-    ball.posY += velY
+    ball.posX += speedX
+    ball.posY += speedY
 })
 ```
 
@@ -46,7 +46,7 @@ When the ball hits the left edge, we want to switch back to moving to the right 
 Add this **inside the `ball.forever` block**.
 ```js
     if (ball.left < 0) {
-      velX = -velX
+      speedX = -speedX
       ball.left = 0
     }
 ```
@@ -58,7 +58,7 @@ When the ball hits the right edge, we want to start moving to the left instead. 
 Add this inside the forever block.
 ```js
     if (ball.right > world.width) {
-      velX = -velX
+      speedX = -speedX
       ball.right = world.width
     }
 ```
@@ -67,11 +67,11 @@ Add this inside the forever block.
 
 ## Bouncing off the bottom and top edges
 
-Change the initial value of `velY` to `-2`.
+Change the initial value of `speedY` to `-2`.
 
 👉 Save, and check the ball now moves to the bottom-left.
 
-To make the ball bounce off the bottom edge of the screen, you need to add another `if` block. Hint: you want to compare `ball.bottom` with something, and then update `velY`.
+To make the ball bounce off the bottom edge of the screen, you need to add another `if` block. Hint: you want to compare `ball.bottom` with something, and then update `speedY`.
 
 👉 Make the ball bounce off the bottom edge.
 
