@@ -29,15 +29,18 @@ For example, we can have our sprite fall down, but jump when you tap the screen.
 To do this we'll need a variable, let's call it `speedY`, which tells us which direction the sprite is moving in. We'll move the sprite by that amount each frame. 
 
 Let's make the player fall down due to gravity. Make sure this **replaces any existing `player.forever` blocks**.
+
 ```js
 var speedY = 0
 
 player.forever(() => {
     player.posY += speedY  // move the player
 
-    speedY -= 1  // fall down because of gravity
+    speedY -= 0.2  // fall down because of gravity
 })
 ```
+
+Now let's make the player jump when we tap the screen.
 
 ```
 world.onTap(e => {
