@@ -43,25 +43,25 @@ ball.forever(() => {
 
 When the ball hits the left edge, we want to switch back to moving to the right again. We know the left edge of the screen has an X coordinate of zero. So we can check if we're touching the left edge by comparing the left edge of our sprite with zero. 
 
+Add this **inside the `ball.forever` block**.
 ```js
     if (ball.left < 0) {
       velX = -velX
       ball.left = 0
     }
 ```
-_Add this inside the `ball.forever` block._
 
 👉 Save, and check your ball bounces off the left edge.
 
 When the ball hits the right edge, we want to start moving to the left instead. We know that the right edge of the screen has an X coordinate equal to the width of the world. So we can check if we're touching the right edge by comparing the right edge of our sprite with the width of the world.
 
+Add this inside the forever block.
 ```js
     if (ball.right > world.width) {
       velX = -velX
       ball.right = world.width
     }
 ```
-_Add this inside the `ball.forever` block._
 
 👉 Save, and check your ball bounces off the left and right edges.
 
