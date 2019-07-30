@@ -50,7 +50,7 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
 <p>Make sure you have line numbers turned on in your text editor.</p>
 <p>Your Chrome window should have a white screen. This is a blank canvas in which we can start making mobile games!</p>
 <p>Have a look at the template that’s open in your text editor. It should look like this:</p>
-<pre><code class="language-js">const uw = require(&#39;you-win&#39;)
+<pre><code class="lang-js">const uw = require(&#39;you-win&#39;)
 const {Phone, World, Sprite, Text, Polygon} = uw
 
 // Load everything we need
@@ -62,25 +62,30 @@ world.title = &#39;&#39;
 world.background = &#39;white&#39;
 
 // Now we can start making Sprites!
+
 </code></pre>
 <p>Look closely at these parts:</p>
 <ol>
-<li><pre><code class="language-js">// Load everything we need</code></pre>
+<li><pre><code class="lang-js">// Load everything we need
+</code></pre>
 <p>This is a comment! Lines starting with <code>//</code> are ignored by JavaScript.</p>
 <p>You can use comments to write messages for yourself, to remind yourself what different bits of your code do.</p>
 </li>
-<li><pre><code class="language-js">await uw.begin()</code></pre>
+<li><pre><code class="lang-js">await uw.begin()
+</code></pre>
 <p>This is where we can load in any extra sounds or images for our game.</p>
 </li>
-<li><pre><code class="language-js">var world = new World</code></pre>
+<li><pre><code class="lang-js">var world = new World
+</code></pre>
 <p>This is where we make the <code>World</code>. The world represents the screen. We can set its <code>width</code> and <code>height</code> to change the size of the screen. (It’s like the <em>Stage</em> in Scratch.)</p>
 </li>
 </ol>
 <p>Let’s do that now!</p>
 <ul>
 <li><p>Set the <code>width</code> and <code>height</code> of the world.</p>
-<pre><code class="language-js">world.width = 300
-world.height = 460</code></pre>
+<pre><code class="lang-js">world.width = 300
+world.height = 460
+</code></pre>
 <p><em>Add this at the bottom of your program.</em></p>
 <p>To change the attributes of an object in JavaScript, we write the name of the object, followed by a dot, and then <code>=</code>, and then the new value.</p>
 </li>
@@ -92,16 +97,16 @@ world.height = 460</code></pre>
 <p>We can add images to the World by creating <code>Sprites</code>. A Sprite is an image on the screen, which we can move about, rotate, flip, scale, make transparent, and so on. Let’s make our first sprite.</p>
 <ul>
 <li><p>Add this code, after the block which makes the World.</p>
-<pre><code class="language-js">var poop = new Sprite
-poop.costume = &#39;<img class="emojione" alt="💩" title=":poop:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f4a9.png"/>&#39;</code></pre>
+<pre><code class="lang-js">var poop = new Sprite
+poop.costume = &#39;<img class="emojione" alt="💩" title=":poop:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f4a9.png"/>&#39;
+</code></pre>
 </li>
 </ul>
 <p>Save. Have a look at Chrome—now there should be a tiny poop in the middle of the screen!</p>
 <p>We use the <code>var</code> keyword so we have a name to refer to our Sprite with.</p>
 <p>As before, we can set object attributes using “dot notation”, and giving it the new value.</p>
-<p>Here are some kinds of values: <em>(These are just examples, don’t type them in!)</em></p>
-<!-- This section is wordy -->
-
+<p>Here are some kinds of values: <em>(These are just examples, don’t type them in!)</em>
+<!-- This section is wordy --></p>
 <ul>
 <li><p><strong>Boolean</strong>: either <code>true</code> or <code>false</code>.</p>
 <p>Example: the <code>poop.flipped</code> attibute is a Boolean. When set to true, it makes the Sprite face the other way.</p>
@@ -128,20 +133,21 @@ poop.costume = &#39;<img class="emojione" alt="💩" title=":poop:" src="https:/
 <p>Let’s move our sprite about. We can do this using the attributes <code>poop.posX</code> and <code>poop.posY</code>.</p>
 <p>These are the co-ordinates of the center of the sprite, starting from the bottom-left corner of the screen.</p>
 <p>Here’s a quick diagram introducing coordinates:</p>
-<img src="static/sprite-xy.png" width=240>
-<img src="static/sprite-angle.png" width=180>
-
+<p><img src="static/sprite-xy.png" width=240>
+<img src="static/sprite-angle.png" width=180></p>
 <ul>
 <li><p>Move your poop to the position <code>(100, 200)</code>.</p>
-<pre><code class="language-js">poop.posX = 100
-poop.posY = 200</code></pre>
+<pre><code class="lang-js">poop.posX = 100
+poop.posY = 200
+</code></pre>
 </li>
 </ul>
 <p>We can add other Sprites, too!</p>
 <ul>
 <li><p>Add a second sprite, called <code>cow</code>.</p>
-<pre><code class="language-js">var cow = new Sprite
-cow.costume = &#39;<img class="emojione" alt="🐄" title=":cow2:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f404.png"/>&#39;</code></pre>
+<pre><code class="lang-js">var cow = new Sprite
+cow.costume = &#39;<img class="emojione" alt="🐄" title=":cow2:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f404.png"/>&#39;
+</code></pre>
 </li>
 </ul>
 <h2 id="edges">Edges</h2>
@@ -149,24 +155,25 @@ cow.costume = &#39;<img class="emojione" alt="🐄" title=":cow2:" src="https://
 <p>We can also set the <strong>edges</strong> of the sprite, using the attributes <code>.top</code>, <code>.bottom</code>, <code>.left</code>, and <code>.right</code>.</p>
 <ul>
 <li><p>Move the cow to touch the left side of the screen.</p>
-<pre><code class="language-js">cow.left = 0</code></pre>
+<pre><code class="lang-js">cow.left = 0
+</code></pre>
 </li>
 <li><p>Move the poop to be to the right of the cow.</p>
-<s>
-```js
-poop.posY = 100
-```
-</s>
-_Delete this line._
-
-<pre><code class="language-js">poop.left = cow.right</code></pre>
+<p><s></p>
+<pre><code class="lang-js">poop.posY = 100
+</code></pre>
+<p></s>
+<em>Delete this line.</em></p>
+<pre><code class="lang-js">poop.left = cow.right
+</code></pre>
 <p><em>Add this line. Make sure it’s after <strong>both</strong> of the <code>poop</code> and <code>cow</code> variables have been created.</em></p>
 </li>
 </ul>
 <p>Notice that you can’t use the name of a Sprite before you create it. If you write <code>cow</code> in your program above the <code>var cow = new Sprite</code> line, it won’t work.</p>
 <ul>
 <li><p>Now move the cow.</p>
-<pre><code class="language-js">cow.left = 200</code></pre>
+<pre><code class="lang-js">cow.left = 200
+</code></pre>
 <p><em>Add this line at the bottom of your program.</em></p>
 </li>
 </ul>
@@ -176,7 +183,8 @@ _Delete this line._
 <p>We can use <code>uw.randomInt(1, 10)</code> to pick a random number between <code>1</code> and <code>10</code>. (This is just like <code>pick random _ to _</code> from Scratch.)</p>
 <ul>
 <li><p>Move your poop to a random <code>posX</code> position.</p>
-<pre><code class="language-js">poop.posX = uw.randomInt(0, world.width)</code></pre>
+<pre><code class="lang-js">poop.posX = uw.randomInt(0, world.width)
+</code></pre>
 </li>
 <li><p><strong>Challenge:</strong> Move your poop to a random <code>posY</code> position.</p>
 </li>
@@ -191,18 +199,21 @@ _Delete this line._
 <p>When someone starts programming, it’s traditional to for them to introduce themselves by saying “Hello world!”. Let’s do that now.</p>
 <ul>
 <li><p>Create a <code>Text</code> object.</p>
-<pre><code class="language-js">var label = new Text
-label.text = &quot;Hello world!&quot;</code></pre>
+<pre><code class="lang-js">var label = new Text
+label.text = &quot;Hello world!&quot;
+</code></pre>
 </li>
 <li><p>Change it to red.</p>
-<pre><code class="language-js">label.fill = &#39;red&#39;</code></pre>
+<pre><code class="lang-js">label.fill = &#39;red&#39;
+</code></pre>
 </li>
 </ul>
 <p>You can use any of the color names which are supported by HTML. If you give a color name that it doesn’t recognise, you’ll proabably just get black. </p>
 <p>If you want other colors, instead of named colors you can use colors like <code>&#39;#007de0&#39;</code>. There are called a “hex code”, short for hexadecimal. You can choose your own hex code color with an online <a href="https://www.google.co.uk/search?q=color+picker">color picker</a>.</p>
 <ul>
 <li><p>Change it to your favourite color.</p>
-<pre><code class="language-js">label.fill = &#39;#007de0&#39; // whatever you fancy really</code></pre>
+<pre><code class="lang-js">label.fill = &#39;#007de0&#39; // whatever you fancy really
+</code></pre>
 </li>
 </ul>
 <h2 id="the-end">The End</h2>

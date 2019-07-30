@@ -27,10 +27,10 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
                 <li class=page-heading><a href="#bouncing">Bouncing</a>
                 <li class=page-heading><a href="#functions">Functions</a>
                 <li class=page-heading><a href="#scrolling">Scrolling</a>
-                <li class=page-heading><a href="#more-platforms">More Platforms!</a>
+                <li class=page-heading><a href="#more-platforms-">More Platforms!</a>
                 <li class=page-heading><a href="#bouncing-take-2">Bouncing, take 2</a>
                 <li class=page-heading><a href="#movement">Movement</a>
-                <li class=page-heading><a href="#what-next">What next?</a>
+                <li class=page-heading><a href="#what-next-">What next?</a>
             </ul>
         </li>
         <li class=page><a href="reference">API Reference</a>
@@ -46,8 +46,9 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
 <h2 id="starting-out">Starting out</h2>
 <ul>
 <li><p>Set the <code>width</code> and <code>height</code> of your world.</p>
-<pre><code class="language-js">world.width = 300
-world.height = 460</code></pre>
+<pre><code class="lang-js">world.width = 300
+world.height = 460
+</code></pre>
 </li>
 <li><p><strong>Challenge:</strong> create a sprite for your player character. Call it <code>player</code>.</p>
 <p><em>Have a look back at chapter one, if you’ve forgotten how to create sprites!</em></p>
@@ -61,38 +62,40 @@ world.height = 460</code></pre>
 <p>We can simulate gravity using a <strong>constant acceleration</strong>. As you should know from Maths or Physics class, that means we need to keep track of <strong>velocity</strong> (speed and direction). Let’s add a variable for just that.</p>
 <ul>
 <li><p>Add a variable called <code>velY</code>, which stores a number.</p>
-<pre><code class="language-js">var velY = -2</code></pre>
+<pre><code class="lang-js">var velY = -2
+</code></pre>
 </li>
 <li><p>Add a <code>forever</code> loop for the player.</p>
-<pre><code class="language-js">player.forever(() =&gt; {
+<pre><code class="lang-js">player.forever(() =&gt; {
     player.posY += velY
-})</code></pre>
+})
+</code></pre>
 </li>
 </ul>
 <p>Save. You’ll notice the player falls at a constant speed, which isn’t right at all! Let’s change velocity over time, to simulate gravity:</p>
 <ul>
 <li><p>Decrease velocity, so the player falls.</p>
-<s>
-```js
-var velY = -2
-```
-</s>
-
-<pre><code class="language-js">var velY = 0
+<p><s></p>
+<pre><code class="lang-js">var velY = -2
+</code></pre>
+<p></s></p>
+<pre><code class="lang-js">var velY = 0
 
 player.forever(() =&gt; { // player
     player.posY += velY
     velY -= 2               // &lt;-- add this line
-})</code></pre>
+})
+</code></pre>
 </li>
 </ul>
 <h2 id="platforms">Platforms</h2>
 <p>Now our player falls down! Let’s add some platforms for him to bounce on. (We won’t do the bouncing part just yet; that’ll have to wait for later.)</p>
 <ul>
 <li><p>Create a <code>platform</code>. This is going to be a <code>Polygon</code> instead of a <code>Sprite</code>.</p>
-<pre><code class="language-js">var platform = new Polygon
+<pre><code class="lang-js">var platform = new Polygon
 platform.points = [[-30, 0], [30, 0], [30, 10], [-30, 10]]
-platform.posY = 100</code></pre>
+platform.posY = 100
+</code></pre>
 </li>
 <li><p>Set the <code>fill</code> and <code>outline</code> colors for your Polygon, to taste.</p>
 </li>
@@ -108,14 +111,16 @@ platform.posY = 100</code></pre>
 <p>We can use <code>isTouching</code> to check for collisions between different objects. <code>isTouching</code> returns a Boolean value (<code>true</code> or <code>false</code>), which we can use inside an <code>if</code> condition.</p>
 <ul>
 <li><p>Check if the platform is touching the player.</p>
-<pre><code class="language-js">platform.forever(() =&gt; {
+<pre><code class="lang-js">platform.forever(() =&gt; {
     if (player.isTouching(platform)) {
         // ...jump...
     }
-})</code></pre>
+})
+</code></pre>
 </li>
 <li><p>To jump, we want to <strong>set</strong> the player’s Y velocity to be a large, positive number. Let’s try <code>10</code>.</p>
-<pre><code class="language-js">        velY = 10</code></pre>
+<pre><code class="lang-js">        velY = 10
+</code></pre>
 <p><em>Add this inside the <code>if</code> condition you just wrote.</em></p>
 </li>
 </ul>
@@ -124,9 +129,10 @@ platform.posY = 100</code></pre>
 <p>What we want to do is to move the code for making a platform into a <strong>function</strong>. A function (aka. procedure, aka. “custom block” from Scratch) lets you give a <strong>name</strong> to a piece of code, so you can refer to it by name.</p>
 <ul>
 <li><p>Move the platform code into a function, by adding <code>function makePlatform( ) {</code> at the beginning of that section, and <code>}</code> at the end.</p>
-<pre><code class="language-js">function makePlatform() {
+<pre><code class="lang-js">function makePlatform() {
   //...[all your platform code]...
-}</code></pre>
+}
+</code></pre>
 <p><em>Put the <code>function</code> bits <strong>around</strong> your existing code.</em></p>
 <p>You’ll want to re-indent your code at this point–try selecting the code inside the function, and pressing the <kbd>Tab</kbd> key.</p>
 </li>
@@ -134,23 +140,26 @@ platform.posY = 100</code></pre>
 <p>Save. You’ll notice the platform disappears. This is because we haven’t <strong>called</strong> our function; we’ve defined it, but not used it yet! Let’s do that now.</p>
 <ul>
 <li><p>Make a platform by calling your new function.</p>
-<pre><code class="language-js">makePlatform()</code></pre>
+<pre><code class="lang-js">makePlatform()
+</code></pre>
 <p><em>Add this at the end of your program, before the final <code>})</code>.</em></p>
 </li>
 </ul>
 <p>Now we can easily make more platforms!</p>
 <ul>
 <li><p>Add some more platforms.</p>
-<pre><code class="language-js">makePlatform()
+<pre><code class="lang-js">makePlatform()
 makePlatform()
 makePlatform()
-// ...</code></pre>
+// ...
+</code></pre>
 </li>
 </ul>
 <p>The platforms are all being made at the same height - we really want to make each platform higher than the last. Let’s make a variable at the beginning of our program, to keep track of the height of the last one…</p>
 <ul>
 <li><p>Create a <code>lastY</code> variable.</p>
-<pre><code class="language-js">var lastY = 100</code></pre>
+<pre><code class="lang-js">var lastY = 100
+</code></pre>
 <p><em>Add this before the <code>makePlatform</code> function.</em></p>
 </li>
 </ul>
@@ -158,7 +167,8 @@ makePlatform()
 <p>Now let’s use it.</p>
 <ul>
 <li><p>Use <code>lastY</code> inside <code>makePlatform</code>.</p>
-<pre><code class="language-js">    platform.posY = lastY</code></pre>
+<pre><code class="lang-js">    platform.posY = lastY
+</code></pre>
 </li>
 <li><p><strong>Challenge:</strong> increase <code>lastY</code> every time you make a platform.</p>
 <p><em>Make sure you do this <strong>inside</strong> <code>makePlatform</code>!</em></p>
@@ -171,14 +181,15 @@ makePlatform()
 <p>We only want to scroll up, never down. We can do this by comparing the player’s height, <code>player.posY</code>, with the current scroll position, <code>world.scrollY</code>.</p>
 <ul>
 <li><p>Scroll up when the player is near the top of the screen.</p>
-<pre><code class="language-js">if (world.scrollY &lt; player.posY - 300) {
+<pre><code class="lang-js">if (world.scrollY &lt; player.posY - 300) {
     world.scrollY = player.posY - 300
-}</code></pre>
+}
+</code></pre>
 <p><em>Make sure this goes in the <strong><code>player.forever</code></strong> block.</em></p>
 </li>
 </ul>
 <p>You can tweak the number <code>300</code> to taste, to control how far up the screen the player has to go for the game to start scrolling. </p>
-<h2 id="more-platforms">More Platforms!</h2>
+<h2 id="more-platforms-">More Platforms!</h2>
 <p>When we scroll up far enough, we run out of platforms.</p>
 <p>We could keep adding more by copy/pasting the <code>makePlatform()</code> line, but that doesn’t seem sensible; however many we’ll have, we’ll run out eventually! Let’s delete all but one of our <code>makePlatform()</code> calls, and have our game make ‘em automatically.</p>
 <p>To do this, we need to compare the current scroll position, <code>world.scrollY</code>, with the Y position of the last platform we made: which we stored in the <code>lastY</code> variable.</p>
@@ -196,7 +207,8 @@ makePlatform()
 <li><p><strong>Challenge</strong>: change the <code>if</code> so that we only bounce if both we’re touching a platform <strong>and</strong> we’re moving downwards.</p>
 <p>You learnt about conditions <a href="2-Animation.md#conditions">in chapter 2</a>.</p>
 <p><em>Make sure you get the brackets in the right place! The <strong>condition</strong> for an if always has to be written in brackets.</em> </p>
-<pre><code class="language-js">if ( … &amp;&amp; … ) {</code></pre>
+<pre><code class="lang-js">if ( … &amp;&amp; … ) {
+</code></pre>
 </li>
 </ul>
 <p>Make sure the bouncing looks right now.</p>
@@ -235,20 +247,20 @@ Think back to the bullets from chapter two: to turn an angle into a difference i
 
 The number `5` is a multiplier controlling how **fast** the player moves when you tilt the phone. Adjust it until it feels right to you.
 -->
-
 <h3 id="wrapping">Wrapping</h3>
 <p>In <em>Doodle Jump</em>, the player can “wrap” from one side of the screen to the other: when you go off the right, you appear back on the left side, and vice-versa.</p>
 <ul>
 <li><p>Wrap when we go past the right-hand side of the screen.</p>
-<pre><code class="language-js">if (player.posX &gt; world.width) {
+<pre><code class="lang-js">if (player.posX &gt; world.width) {
   player.posX = 0
-}</code></pre>
+}
+</code></pre>
 <p><em>Inside the <code>forever</code> for the player.</em></p>
 </li>
 <li><p>Challenge: wrap when you go past the left-hand side of the screen.</p>
 </li>
 </ul>
-<h2 id="what-next">What next?</h2>
+<h2 id="what-next-">What next?</h2>
 <ul>
 <li><p>Different kinds of platforms!</p>
 <p>Use <code>UW.randomChoice</code> to pick the kind of platform:</p>

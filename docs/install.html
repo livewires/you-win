@@ -18,8 +18,8 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
             <ul>
                 <li class=page-heading><a href="#install-chrome">Install Chrome</a>
                 <li class=page-heading><a href="#option-1-glitch">Option #1: Glitch</a>
-                <li class=page-heading><a href="#option-2-nodejs">Option #2: Node.js</a>
-                <li class=page-heading><a href="#problems">Problems?</a>
+                <li class=page-heading><a href="#option-2-node-js">Option #2: Node.js</a>
+                <li class=page-heading><a href="#problems-">Problems?</a>
                 <li class=page-heading><a href="#remote-debugging">Remote Debugging</a>
             </ul>
         </li>
@@ -39,11 +39,11 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
 <h2 id="install-chrome">Install Chrome</h2>
 <p>You need Chrome or Chromium running on a desktop.</p>
 <ul>
-<li><p><strong>On Windows</strong>:
-If you don’t already have it, download from <a href="https://www.google.com/chrome/">Google</a></p>
-</li>
+<li><strong>On Windows</strong>:
+If you don’t already have it, download from <a href="https://www.google.com/chrome/">Google</a></li>
 <li><p><strong>On Ubuntu</strong>:</p>
-<pre><code class="language-bash">apt install chromium-browser</code></pre>
+<pre><code class="lang-bash">apt install chromium-browser
+</code></pre>
 </li>
 </ul>
 <p>You need Chrome running on an Android. (If you want to debug on a phone - not essential)</p>
@@ -54,7 +54,7 @@ If you don’t already have it, download from <a href="https://www.google.com/ch
 <h2 id="option-1-glitch">Option #1: Glitch</h2>
 <p>You can use <strong><a href="https://glitch.com">Glitch</a></strong> to code a mobile game, without installing anything.</p>
 <p>Open our <a href="https://glitch.com/edit/#!/you-win-template?path=app.js:17:0">you-win template</a>, <strong>remix</strong> it, and start coding immediately!</p>
-<h2 id="option-2-nodejs">Option #2: Node.js</h2>
+<h2 id="option-2-node-js">Option #2: Node.js</h2>
 <p>If you prefer, you can <strong>install</strong> <code>you-win</code> to your computer.</p>
 <ol>
 <li><p><strong>On Windows</strong></p>
@@ -62,26 +62,30 @@ If you don’t already have it, download from <a href="https://www.google.com/ch
 <li><strong>Install <a href="https://nodejs.org/en/download/">Node.js</a></strong>, which includes NPM.</li>
 </ul>
 <p><strong>On Ubuntu</strong>, run the following in a Terminal:</p>
-<pre><code class="language-bash">curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+<pre><code class="lang-bash">curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get install -y nodejs
-sudo apt-get install -y build-essential</code></pre>
+sudo apt-get install -y build-essential
+</code></pre>
 </li>
 <li><p><strong>Install <code>you-win</code></strong> globally.</p>
 <p>Run the following in your shell (<strong>Command Prompt</strong> on Windows, <strong>Terminal</strong> on macOS/Linux):</p>
-<pre><code class="language-sh">npm install -g you-win</code></pre>
+<pre><code class="lang-sh">npm install -g you-win
+</code></pre>
 </li>
 <li><p><strong>Start a new project</strong> or <strong>run your existing one!</strong></p>
 <p>In your shell, use the <code>cd</code> command to move into your Documents folder (or whichever directory your files are already in).</p>
-<pre><code class="language-sh">cd Documents</code></pre>
+<pre><code class="lang-sh">cd Documents
+</code></pre>
 <p>Run the <code>you-win</code> command to make a new project:</p>
-<pre><code class="language-sh">you-win first.js</code></pre>
+<pre><code class="lang-sh">you-win first.js
+</code></pre>
 </li>
 </ol>
 <p><strong>If you are trying to start an existing project</strong>, replace <code>first.js</code> with your filename (maybe it is <code>game.js</code>). You can now skip directly to the section below that says “To run your game”.</p>
 <p><strong>If you’re starting a new project</strong>, this will create a new game from the <code>you-win</code> template, which should save you a bit of typing.</p>
 <p>Now open the <code>first.js</code> file you just created in your favourite text editor. Text editors include <strong>Gedit</strong> (Ubuntu only), <strong>VSCode</strong>, <strong>Brackets</strong>, or <strong>Sublime Text</strong> (search these online to find them, at Livewires we use VSCode).</p>
 <p>The template should look <a href="https://github.com/livewires/you-win/blob/master/template.js">like this</a>:</p>
-<pre><code class="language-js">const uw = require(&#39;you-win&#39;)
+<pre><code class="lang-js">const uw = require(&#39;you-win&#39;)
 const {Phone, World, Sprite, Text, Polygon} = uw
 
 // Load everything we need
@@ -93,22 +97,25 @@ world.title = &#39;&#39;
 world.background = &#39;white&#39;
 
 // Now we can start making Sprites!
+
 </code></pre>
 <p>To run your game:</p>
 <ul>
 <li>Open <a href="http://localhost:8000">http://localhost:8000</a> in Chrome on your computer.</li>
 <li>In your Terminal, you should see a web address output to the console, eg <code>http://192.168.1.10:8000/</code>. Open that address on your Android. If you don’t want or need remote debugging you can open it on any phone that’s on your network (wifi) to see what it looks like.</li>
 </ul>
-<h2 id="problems">Problems?</h2>
+<h2 id="problems-">Problems?</h2>
 <p>If you were at LiveWires and are having trouble getting your program to run, come find us on the <a href="http://forums.livewires.org.uk">forums</a> and we’ll try and help you.</p>
 <h2 id="remote-debugging">Remote Debugging</h2>
 <h3 id="adb-driver">ADB Driver</h3>
 <p>First, make sure you have the Android ADB driver installed.</p>
 <ul>
 <li><p><strong>On Ubuntu</strong>:</p>
-<pre><code class="language-sh">apt install android-tools-adb</code></pre>
+<pre><code class="lang-sh">apt install android-tools-adb
+</code></pre>
 <p>Make sure you’re in the <code>plugdev</code> group.</p>
-<pre><code class="language-sh">sudo usermod -aG plugdev $LOGNAME</code></pre>
+<pre><code class="lang-sh">sudo usermod -aG plugdev $LOGNAME
+</code></pre>
 </li>
 <li><p><strong>On Windows:</strong> <a href="https://developer.android.com/studio/run/oem-usb.html#InstallingDriver">Install the OEM driver</a> from your manufacturer.</p>
 </li>
