@@ -28,6 +28,11 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
             <a href="#" class=page-title-active>Scoring</a>
             <ul>
                 <li class=page-heading><a href="#text">Text</a>
+                <li class=page-heading><a href="#text-color">Text color</a>
+                <li class=page-heading><a href="#keeping-score">Keeping Score</a>
+                <li class=page-heading><a href="#updating-the-score">Updating the score</a>
+                <li class=page-heading><a href="#displaying-the-score">Displaying the score</a>
+                <li class=page-heading><a href="#high-score">High score</a>
             </ul>
         </li>
         <li class=page><a href="scrolling">Scrolling</a>
@@ -41,28 +46,48 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
 
 <div class=prose>
 <h1 id="scoring">Scoring</h1>
-<p>TODO</p>
+<p>This sheet explains how to add some text to the screen, and how to keep a score.</p>
 <h2 id="text">Text</h2>
-<p>We’ve seen how to do images; now let’s add some text to the screen.</p>
 <p>When someone starts programming, it’s traditional to for them to introduce themselves by saying “Hello world!”. Let’s do that now.</p>
-<ul>
-<li><p>Create a <code>Text</code> object.</p>
+<p>Create a <code>Text</code> object, and set its text.</p>
 <pre><code class="lang-js">var label = new Text
 label.text = &quot;Hello world!&quot;
 </code></pre>
-</li>
-<li><p>Change it to red.</p>
-<pre><code class="lang-js">label.fill = &#39;red&#39;
+<h2 id="text-color">Text color</h2>
+<p>You can change the colour of text. The sort of colors you can use are the same ones we used to <a href="change the background colour">00-new-world#change-the-background-colour</a> of the world. Instead of <code>world.background</code>, we use <code>label.fill</code>.</p>
+<pre><code class="lang-js">label.fill = &#39;#007de0&#39;
 </code></pre>
-</li>
-</ul>
-<p>You can use any of the color names which are supported by HTML. If you give a color name that it doesn’t recognise, you’ll proabably just get black. </p>
-<p>If you want other colors, instead of named colors you can use colors like <code>&#39;#007de0&#39;</code>. There are called a “hex code”, short for hexadecimal. You can choose your own hex code color with an online <a href="https://www.google.co.uk/search?q=color+picker">color picker</a>.</p>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Change it to your favourite color.</p>
+<h2 id="keeping-score">Keeping Score</h2>
+<p>Our label has a <code>text</code> attribute, but we can’t use that to keep score, because it’s a <code>String</code> (a piece of text), rather than a number. If we try and add two strings together, they will be joined rather than mathematically summed!</p>
+<p>You can try typing <code>&#39;10&#39; + &#39;1&#39;</code> in the Console to see what happens when you add two Strings. Compare it with <code>10 + 1</code> (adding two numbers).</p>
+<p>So, let’s make a separate variable which stores our score as a number.</p>
+<pre><code class="lang-js">var score = 0
+</code></pre>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Add a score variable to the top of your program.</p>
+<h2 id="updating-the-score">Updating the score</h2>
+<p>You can update the score like you update any other number.</p>
+<pre><code class="lang-js">  score += 1
+</code></pre>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Put this wherever you want to give the player a point.</p>
+<h2 id="displaying-the-score">Displaying the score</h2>
+<p>We need to take what’s in our score variable and display it on the screen. Let’s create a Text object to show it.</p>
+<pre><code class="lang-js">var scoreLabel = new Text
+scoreLabel.text = &quot;score: &quot; + score
+</code></pre>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Put this at the top of your program, right after where you made the <code>score</code> variable.</p>
+<p>You may notice the text doesn’t update, even when you update the <code>score</code> variable. You’ll need to write another line of code to update the text whenever the score changes:</p>
+<pre><code class="lang-js">  score += 1
+  scoreLabel.text = &quot;score: &quot; + score
+</code></pre>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Update the text whenever you give the player a point.</p>
+<h2 id="high-score">High score</h2>
+<p>You can easily extend this to keep a high score as well:</p>
 <ul>
-<li><p>Change it to your favourite color.</p>
-<p><code>`</code>js
-label.fill = ‘#007de0’ // whatever you fancy really</p>
-</li>
+<li>Create a <code>highScore</code> variable</li>
+<li>Use an <code>if</code> condition to update the <code>highScore</code> variable after you update the score</li>
+<li>Create a <code>highScoreLabel</code> to display it on the screen</li>
+<li>Use <code>localStorage</code> to save the high score, so it doesn’t get forgotten when you refresh the page</li>
 </ul>
 
 </div>
