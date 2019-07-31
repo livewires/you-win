@@ -4,81 +4,121 @@ title: "Cloning"
 
 # Cloning
 
-TODO
+This sheet explains how to create lots of copies of a sprite, without copy-pasting code. For example, making a bullet every time you tap, or making a new enemy every second.
 
-## TODO
 
-A game with just one platform isn't very impressive, so we need to add some more. But we don't want to copy/paste the code every time we make a platform--that would be no good at all!
+## Functions
 
-What we want to do is to move the code for making a platform into a **function**. A function (aka. procedure, aka. "custom block" from Scratch) lets you give a **name** to a piece of code, so you can refer to it by name.
+We can create more than one copy of a sprite by copying its code. But we don't want to copy/paste the code every time we make a sprite!
 
-  * Move the platform code into a function, by adding `function makePlatform( ) {` at the beginning of that section, and `}` at the end.
+We can write a **function** to make this easier. (This is just like a custom block in Scratch.) A function lets you give a name to a piece of code. When we want to run that code, we can refer to it by name, rather than copy/pasting the code again.
 
-    ```js
-    function makePlatform() {
-      //...[all your platform code]...
-    }
-    ```
-    _Put the `function` bits **around** your existing code._
+A function looks something like this:
 
-    You'll want to re-indent your code at this point--try selecting the code inside the function, and pressing the <kbd>Tab</kbd> key.
+```js
+function makeCow() {
+    ...
+}
+```
 
-Save. You'll notice the platform disappears. This is because we haven't **called** our function; we've defined it, but not used it yet! Let's do that now.
+Let's start writing our function. We're going to create a new sprite:
 
-  * Make a platform by calling your new function.
-  
-    ```js
-    makePlatform()
-    ```
-    _Add this at the end of your program, before the final `})`._
+```js
+function makeCow() {
+    var cow = new Sprite
+    cow.costume = '🐄'
+    ...
+}
+```
 
-Now we can easily make more platforms!
+Let's make one copy of our sprite, by "calling" our function. Add this at the **end** of your program. The brackets are important -- they tell JavaScript that this is a function.
 
-  * Add some more platforms.
+```js
+makeCow()
+```
 
-    ```js
-    makePlatform()
-    makePlatform()
-    makePlatform()
-    // ...
-    ```
+👉 Save, and check that the new sprite appears.
 
-The platforms are all being made at the same height - we really want to make each platform higher than the last. Let's make a variable at the beginning of our program, to keep track of the height of the last one...
 
-  * Create a `lastY` variable.
+## Copying a sprite
 
-    ```js
-    var lastY = 100
-    ```
-    _Add this before the `makePlatform` function._
+Now we can easily create 100 copies of our sprite:
 
-Make sure not to put this _inside_ `makePlatform`, or you'll get a **different** version of the `lastY` variable each time. We need to remember it between calls to our function, so it has to go outside.
+```js
+for (let num of uw.range(100)) {
+    makeCow()
+}
+```
 
-Now let's use it.
+👉 Make sure there are 100 sprites created. You'll need to randomize their positions (or something) or they'll all be overlapping each other in the middle!
 
-  * Use `lastY` inside `makePlatform`.
-    
-    ```js
-        platform.posY = lastY
-    ```
 
-  * **Challenge:** increase `lastY` every time you make a platform.
+## On tap
 
-    _Make sure you do this **inside** `makePlatform`!_
+We can use our new function to create a sprite when you [tap the screen](05-events#taps). 
+
+```js
+world.onTap(e => {
+    makeCow()
+})
+```
+
+
+## Moving clones
+
+It's important to note that the `cow` variable can only be used inside our `makeCow` function. **Variables in a function can only be used in that function.**
+
+This means we can make variables specific to a clone by putting them inside the function. For example, we might decide to give our sprites gravity.
+
+We'll start them off with a random amount of upward force. Put this **at the top of your function**.
+
+```js
+function makeCow() {
+    var speedY = uw.randomInt(0, 10)
+    ...
+```
+
+Now let's make them fall due to gravity. Add this `forever` block **at the bottom of your function**, just before the final `}`.
+
+```js
+    cow.forever(() => {
+        cow.posY += speedY
+        speedY -= 0.5
+    })
+```
+
+Your final function should look something like this:
+
+```js
+function makeCow() {
+    var speedY = uw.randomInt(0, 10)
+
+    var cow = new Sprite
+    cow.costume = '🐄'
+
+    cow.forever(() => {
+        cow.posY += speedY
+        speedY -= 0.5
+    })
+}
+```
+
+👉 Save, and check the sprites fall down independently. 
+
+Each sprite made by our function gets its own `speedY`.
 
 
 ## Destroying clones
 
-Finally, if we don't destroy the bullets, eventually the game will get really slow! Let's fix that, by destroying them once they're completely off the screen:
+If we keep creating sprites, but never destroy them, then the number of sprites in our world will grow and eventually our game will get really slow! We can fix that by destroying sprites once they're no longer needed.
 
-  * Destroy the bullets once they're completely off-screen.
+For example, we can destroy sprites when they go off-screen. Add this **inside your sprite's `forever` block**.
 
-    ```js
-            if (!bullet.isOnScreen()) {
-                bullet.destroy()
-            }
-    ```
-    _This should go inside the bullet's `forever`, just after the code to move it._
+```js
+    if (!cow.isOnScreen()) {
+        cow.destroy()
+    }
+```
 
-The `destroy()` function attached to a Sprite removes it from the screen permanently. This also stops any `forever` loops attached to it.
+Destroying a sprite removes it from the screen permanently. This also stops any `forever` loops attached to it.
 

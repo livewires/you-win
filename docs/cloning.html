@@ -26,7 +26,10 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
         <li class=page>
             <a href="#" class=page-title-active>Cloning</a>
             <ul>
-                <li class=page-heading><a href="#todo">TODO</a>
+                <li class=page-heading><a href="#functions">Functions</a>
+                <li class=page-heading><a href="#copying-a-sprite">Copying a sprite</a>
+                <li class=page-heading><a href="#on-tap">On tap</a>
+                <li class=page-heading><a href="#moving-clones">Moving clones</a>
                 <li class=page-heading><a href="#destroying-clones">Destroying clones</a>
             </ul>
         </li>
@@ -43,69 +46,76 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
 
 <div class=prose>
 <h1 id="cloning">Cloning</h1>
-<p>TODO</p>
-<h2 id="todo">TODO</h2>
-<p>A game with just one platform isn’t very impressive, so we need to add some more. But we don’t want to copy/paste the code every time we make a platform–that would be no good at all!</p>
-<p>What we want to do is to move the code for making a platform into a <strong>function</strong>. A function (aka. procedure, aka. “custom block” from Scratch) lets you give a <strong>name</strong> to a piece of code, so you can refer to it by name.</p>
-<ul>
-<li><p>Move the platform code into a function, by adding <code>function makePlatform( ) {</code> at the beginning of that section, and <code>}</code> at the end.</p>
-<pre><code class="lang-js">function makePlatform() {
-  //...[all your platform code]...
+<p>This sheet explains how to create lots of copies of a sprite, without copy-pasting code. For example, making a bullet every time you tap, or making a new enemy every second.</p>
+<h2 id="functions">Functions</h2>
+<p>We can create more than one copy of a sprite by copying its code. But we don’t want to copy/paste the code every time we make a sprite!</p>
+<p>We can write a <strong>function</strong> to make this easier. (This is just like a custom block in Scratch.) A function lets you give a name to a piece of code. When we want to run that code, we can refer to it by name, rather than copy/pasting the code again.</p>
+<p>A function looks something like this:</p>
+<pre><code class="lang-js">function makeCow() {
+    ...
 }
 </code></pre>
-<p><em>Put the <code>function</code> bits <strong>around</strong> your existing code.</em></p>
-<p>You’ll want to re-indent your code at this point–try selecting the code inside the function, and pressing the <kbd>Tab</kbd> key.</p>
-</li>
-</ul>
-<p>Save. You’ll notice the platform disappears. This is because we haven’t <strong>called</strong> our function; we’ve defined it, but not used it yet! Let’s do that now.</p>
-<ul>
-<li><p>Make a platform by calling your new function.</p>
-<pre><code class="lang-js">makePlatform()
+<p>Let’s start writing our function. We’re going to create a new sprite:</p>
+<pre><code class="lang-js">function makeCow() {
+    var cow = new Sprite
+    cow.costume = &#39;<img class="emojione" alt="🐄" title=":cow2:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f404.png"/>&#39;
+    ...
+}
 </code></pre>
-<p><em>Add this at the end of your program, before the final <code>})</code>.</em></p>
-</li>
-</ul>
-<p>Now we can easily make more platforms!</p>
-<ul>
-<li><p>Add some more platforms.</p>
-<pre><code class="lang-js">makePlatform()
-makePlatform()
-makePlatform()
-// ...
+<p>Let’s make one copy of our sprite, by “calling” our function. Add this at the <strong>end</strong> of your program. The brackets are important – they tell JavaScript that this is a function.</p>
+<pre><code class="lang-js">makeCow()
 </code></pre>
-</li>
-</ul>
-<p>The platforms are all being made at the same height - we really want to make each platform higher than the last. Let’s make a variable at the beginning of our program, to keep track of the height of the last one…</p>
-<ul>
-<li><p>Create a <code>lastY</code> variable.</p>
-<pre><code class="lang-js">var lastY = 100
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and check that the new sprite appears.</p>
+<h2 id="copying-a-sprite">Copying a sprite</h2>
+<p>Now we can easily create 100 copies of our sprite:</p>
+<pre><code class="lang-js">for (let num of uw.range(100)) {
+    makeCow()
+}
 </code></pre>
-<p><em>Add this before the <code>makePlatform</code> function.</em></p>
-</li>
-</ul>
-<p>Make sure not to put this <em>inside</em> <code>makePlatform</code>, or you’ll get a <strong>different</strong> version of the <code>lastY</code> variable each time. We need to remember it between calls to our function, so it has to go outside.</p>
-<p>Now let’s use it.</p>
-<ul>
-<li><p>Use <code>lastY</code> inside <code>makePlatform</code>.</p>
-<pre><code class="lang-js">    platform.posY = lastY
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Make sure there are 100 sprites created. You’ll need to randomize their positions (or something) or they’ll all be overlapping each other in the middle!</p>
+<h2 id="on-tap">On tap</h2>
+<p>We can use our new function to create a sprite when you <a href="05-events#taps">tap the screen</a>. </p>
+<pre><code class="lang-js">world.onTap(e =&gt; {
+    makeCow()
+})
 </code></pre>
-</li>
-<li><p><strong>Challenge:</strong> increase <code>lastY</code> every time you make a platform.</p>
-<p><em>Make sure you do this <strong>inside</strong> <code>makePlatform</code>!</em></p>
-</li>
-</ul>
+<h2 id="moving-clones">Moving clones</h2>
+<p>It’s important to note that the <code>cow</code> variable can only be used inside our <code>makeCow</code> function. <strong>Variables in a function can only be used in that function.</strong></p>
+<p>This means we can make variables specific to a clone by putting them inside the function. For example, we might decide to give our sprites gravity.</p>
+<p>We’ll start them off with a random amount of upward force. Put this <strong>at the top of your function</strong>.</p>
+<pre><code class="lang-js">function makeCow() {
+    var speedY = uw.randomInt(0, 10)
+    ...
+</code></pre>
+<p>Now let’s make them fall due to gravity. Add this <code>forever</code> block <strong>at the bottom of your function</strong>, just before the final <code>}</code>.</p>
+<pre><code class="lang-js">    cow.forever(() =&gt; {
+        cow.posY += speedY
+        speedY -= 0.5
+    })
+</code></pre>
+<p>Your final function should look something like this:</p>
+<pre><code class="lang-js">function makeCow() {
+    var speedY = uw.randomInt(0, 10)
+
+    var cow = new Sprite
+    cow.costume = &#39;<img class="emojione" alt="🐄" title=":cow2:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f404.png"/>&#39;
+
+    cow.forever(() =&gt; {
+        cow.posY += speedY
+        speedY -= 0.5
+    })
+}
+</code></pre>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Save, and check the sprites fall down independently. </p>
+<p>Each sprite made by our function gets its own <code>speedY</code>.</p>
 <h2 id="destroying-clones">Destroying clones</h2>
-<p>Finally, if we don’t destroy the bullets, eventually the game will get really slow! Let’s fix that, by destroying them once they’re completely off the screen:</p>
-<ul>
-<li><p>Destroy the bullets once they’re completely off-screen.</p>
-<pre><code class="lang-js">        if (!bullet.isOnScreen()) {
-            bullet.destroy()
-        }
+<p>If we keep creating sprites, but never destroy them, then the number of sprites in our world will grow and eventually our game will get really slow! We can fix that by destroying sprites once they’re no longer needed.</p>
+<p>For example, we can destroy sprites when they go off-screen. Add this <strong>inside your sprite’s <code>forever</code> block</strong>.</p>
+<pre><code class="lang-js">    if (!cow.isOnScreen()) {
+        cow.destroy()
+    }
 </code></pre>
-<p><em>This should go inside the bullet’s <code>forever</code>, just after the code to move it.</em></p>
-</li>
-</ul>
-<p>The <code>destroy()</code> function attached to a Sprite removes it from the screen permanently. This also stops any <code>forever</code> loops attached to it.</p>
+<p>Destroying a sprite removes it from the screen permanently. This also stops any <code>forever</code> loops attached to it.</p>
 
 </div>
 
