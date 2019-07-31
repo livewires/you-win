@@ -39,7 +39,7 @@ const names = [
     //'4-functions',
 
     // games
-    'jump',
+    //'jump',
 
     // api
     'reference',
