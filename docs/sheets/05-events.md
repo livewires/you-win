@@ -48,4 +48,9 @@ world.onTap(e => {
 })
 ```
 
+<!-- TODO we kinda need a dampening force -->
+
+---
+
+➡️ Next, let's see [how to detect collisions](06-hit)...
 

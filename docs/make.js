@@ -24,6 +24,8 @@ const names = [
     '03-random',
     '04-forever',
     '05-events',
+    '06-hit',
+    '07-cloning',
 
     // Recipes
     'bouncing',

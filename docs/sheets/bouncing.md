@@ -39,7 +39,7 @@ ball.forever(() => {
 
 👉 Save, and check your ball starts moving to the left.
 
-## Bouncing off the left and right edges
+## Left edge
 
 When the ball hits the left edge, we want to switch back to moving to the right again. We know the left edge of the screen has an X coordinate of zero. So we can check if we're touching the left edge by comparing the left edge of our sprite with zero. 
 
@@ -53,7 +53,9 @@ Add this **inside the `ball.forever` block**.
 
 👉 Save, and check your ball bounces off the left edge.
 
-When the ball hits the right edge, we want to start moving to the left instead. We know that the right edge of the screen has an X coordinate equal to the width of the world. So we can check if we're touching the right edge by comparing the right edge of our sprite with the width of the world.
+## Right edge
+
+Now, when the ball hits the right edge, we want to start moving to the left instead. We know that the right edge of the screen has an X coordinate equal to the width of the world. So we can check if we're touching the right edge by comparing the right edge of our sprite with the width of the world.
 
 Add this inside the forever block.
 ```js
@@ -65,7 +67,7 @@ Add this inside the forever block.
 
 👉 Save, and check your ball bounces off the left and right edges.
 
-## Bouncing off the bottom and top edges
+## Bottom edge
 
 Change the initial value of `speedY` to `-2`.
 
@@ -74,6 +76,8 @@ Change the initial value of `speedY` to `-2`.
 To make the ball bounce off the bottom edge of the screen, you need to add another `if` block. Hint: you want to compare `ball.bottom` with something, and then update `speedY`.
 
 👉 Make the ball bounce off the bottom edge.
+
+## Top edge
 
 Now add a final `if` block to make the ball bounce off the top edge of the screen. Hint: you want to compare `ball.top` with `world.height`.
 
