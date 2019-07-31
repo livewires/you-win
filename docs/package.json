@@ -5,7 +5,7 @@
   "main": "make.js",
   "scripts": {
     "make": "rm -f *.html; node make.js",
-    "start": "http-server ."
+    "start": "http-server -c0 ."
   },
   "dependencies": {
     "chrome-launcher": "^0.6.0",
