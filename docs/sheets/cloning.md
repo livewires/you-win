@@ -67,3 +67,18 @@ Now let's use it.
     _Make sure you do this **inside** `makePlatform`!_
 
 
+## Destroying clones
+
+Finally, if we don't destroy the bullets, eventually the game will get really slow! Let's fix that, by destroying them once they're completely off the screen:
+
+  * Destroy the bullets once they're completely off-screen.
+
+    ```js
+            if (!bullet.isOnScreen()) {
+                bullet.destroy()
+            }
+    ```
+    _This should go inside the bullet's `forever`, just after the code to move it._
+
+The `destroy()` function attached to a Sprite removes it from the screen permanently. This also stops any `forever` loops attached to it.
+

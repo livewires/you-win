@@ -27,6 +27,7 @@ const names = [
     '06-recipes',
 
     // Recipes
+    'angles',
     'bouncing',
     'cloning',
     'collisions',

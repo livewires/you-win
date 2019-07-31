@@ -1,8 +1,8 @@
 ---
-title: "04: Forever"
+title: "04: Animation"
 ---
 
-# Forever
+# Animation
 
 So far, our program doesn't do anything after it starts. Nothing will change, unless we change our program and re-run it!
 

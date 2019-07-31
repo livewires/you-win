@@ -1,7 +1,7 @@
 <!doctype html>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width, initial-scale=1.0">
-<title>you-win: Game</title>
+<title>you-win: Angles</title>
 
 <style>
 body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr, td, th,h1, h2, h3, h4, h5, a, button, input {margin: 0;padding: 0;border: 0;font: inherit;color: inherit;list-style: none;text-decoration: none;}strong {font-weight: 600;}em {font-style: italic;color: #555;}* {line-height: 1.5;}a {white-space: normal;cursor: pointer;}body {font-family: Open Sans, BlinkMacSystemFont, -apple-system, Helvetica Neue, Ubuntu, Arial, Helvetica, sans-serif;font-size: 1rem;background: #fff;color: #000;font-size: 16px;min-height: calc(100vh - 2em);}p {margin: 0.75em 0;}body {margin: 1.5em auto 6em;padding: 0 2em;max-width: 72em;position: relative;}.emojione {width: 1.25em;height: 1.25em;line-height: 0.8em;}.prose {font-size: 1rem;max-width: 36em;font-weight: normal;margin: 0 auto;}.prose a {color: #3786e3;text-decoration: none;border-bottom: 1px solid #3786e3;}.prose h1 {font-weight: 300;font-size: 2rem;}.prose h2 {font-weight: 500;font-size: 1.5em;margin: 1.333em 0 0;border-top: 2px solid #ddd;padding-top: 0.666em;}.prose h3 {font-weight: 600;font-size: 1.25em;margin: 2em 0 0;}.prose pre, .prose code {border-radius: 0.25em;background: #f8f8f8;font-size: 0.875em;line-height: 1.5em;font-family: Menlo, monospace;}.prose pre {max-width: 100%;white-space: pre-wrap;margin: 1.09375em 0;overflow: hidden;padding: 0.25em 0.5em;}.prose code {padding: 0.125em;}.prose pre code {display: block;white-space: pre-wrap;border: none;padding: 0;background-color: transparent;border-radius: 0;font-size: inherit;line-height: inherit;}.prose > p {margin: 1.5em 0;}.prose > ul, .prose ol {margin: 1.5em 0;}.prose ul, .prose ol {padding-left: 1.875em;position: relative;}.prose ul > li {list-style: square;}.prose ol > li {list-style: none;counter-increment: step-count;}.prose ol > li:before {content: counter(step-count);font-weight: 500;display: inline-block;position: absolute;left: 0.5em;}.prose img,.prose video {max-width: 100%;object-fit: scale-down;height: auto;}.prose blockquote {margin: 1.5em 0;border-left: 0.25em solid #555;padding-left: 1em;color: #222;}@media print {body {max-width: 100%;font-size: 12pt;}.prose a {border-bottom: none;}.prose {margin: 0 auto;}nav {display: none;}pre, blockquote {padding-right: 1em;page-break-inside: avoid;}tr, img {page-break-inside: avoid;}@page {margin: 20mm 15mm 20mm 15mm;}p, h2, h3 {orphans: 3;widows: 3;}h2, h3 {page-break-after: avoid;}.prose pre {border-left: 2px solid #ccc;padding-left: 0.75em;border-radius: 0;page-break-after: avoid;}}nav {margin: -0.5em -2em;border-bottom: 1px solid #aaa;margin-bottom: 1.5em;color: #364149;}nav ul {padding: 0;margin: 0;}nav a {color: inherit;text-decoration: none;display: block;overflow: hidden;text-overflow: ellipsis;padding: 0.375em 2em;white-space: nowrap;}.title a {font-size: 2rem;padding: 0 1em;font-weight: 300;}.page {display: block;}.page-title-active,.page-heading-active {color: #3786e3;}.page-heading {display: block;padding-left: 1.5em;}@media screen and (min-width: 36rem) {body.has-nav {margin-left: 12rem;}nav {margin: 0;position: fixed;width: 12rem;left: 0;top: 0;bottom: 0;overflow-y: auto;font-size: 0.875em;border-right: 1px solid #aaa;background: #fafafa;border-bottom: 0;}nav a {padding: 0.375em 1em;}.title a {padding: 0.75em 0.5em 0.625em;}nav > ul {position: relative;min-height: 100vh;padding-bottom: 6em;box-sizing: border-box;}.page-as-pdf {position: absolute;bottom: 3em;}.logo {position: absolute;bottom: 1em;display: block;background: url("data:image/svg+xml,<svg viewBox='10 0 38 7' xmlns='http://www.w3.org/2000/svg'><path fill='%233786e3' d='M17 3h-1V1h1zM18 5h-1V3h1zM20 5h-1V3h1zM21 3h-1V1h1zM11 5h2v1h-3V1h1zM25 2h-2v1h2v1h-2v1h2v1h-3V1h3zM14 6V1h1v5zM18 5h1v1h-1z'/><path d='M42 2h-2v1h2v1h-2v1h2v1h-3V1h3zM30 5V1h1v4zM28 5V2h1v3zM32 6V1h1v5zM43 2h1v1h-1zM44 3h2v1h-2zM43 5h3v1h-3zM44 1h3v1h-3zM46 4h1v1h-1zM26 5V1h1v4zM27 5h1v1h-1zM29 5h1v1h-1zM34 6V1h3v1h-2v1h2v2h-1V4h-1v2zM37 5h1v1h-1zM37 2h1v1h-1z'/></svg>") 100% 0 no-repeat;margin: 0.5em 1em 0;height: 14px;width: 76px;}.logo span {display: none;}}.hljs { display: block; background: white; padding: 0.5em; color: #333333; overflow-x: auto; } .hljs-comment, .hljs-meta { color: #969896; } .hljs-string, .hljs-variable, .hljs-template-variable, .hljs-strong, .hljs-emphasis, .hljs-quote { color: #df5000; } .hljs-keyword, .hljs-selector-tag, .hljs-type { color: #a71d5d; } .hljs-literal, .hljs-symbol, .hljs-bullet, .hljs-attribute { color: #0086b3; } .hljs-section, .hljs-name { color: #63a35c; } .hljs-tag { color: #333333; } .hljs-title, .hljs-attr, .hljs-selector-id, .hljs-selector-class, .hljs-selector-attr, .hljs-selector-pseudo { color: #795da3; } .hljs-addition { color: #55a532; background-color: #eaffea; } .hljs-deletion { color: #bd2c00; background-color: #ffecec; } .hljs-link { text-decoration: underline; }
@@ -21,7 +21,14 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
         <li class=page><a href="04-forever">04: Animation</a>
         <li class=page><a href="05-events">05: Events</a>
         <li class=page><a href="06-recipes">06: Overview</a>
-        <li class=page><a href="angles">Angles</a>
+        <li class=page>
+            <a href="#" class=page-title-active>Angles</a>
+            <ul>
+                <li class=page-heading><a href="#moving-at-an-angle">Moving at an angle</a>
+                <li class=page-heading><a href="#pointing-towards-your-finger">Pointing towards your finger</a>
+                <li class=page-heading><a href="#pointing-towards-a-sprite">Pointing towards a sprite</a>
+            </ul>
+        </li>
         <li class=page><a href="bouncing">Bouncing</a>
         <li class=page><a href="cloning">Cloning</a>
         <li class=page><a href="collisions">Collisions</a>
@@ -30,63 +37,42 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
         <li class=page><a href="2-animation">#2: Animation</a>
         <li class=page><a href="reference">API Reference</a>
 
-        <a class=page-as-pdf href="pdfs/jump.pdf">Page as PDF ↓</a>
+        <a class=page-as-pdf href="pdfs/angles.pdf">Page as PDF ↓</a>
         <a class=logo href="http://livewires.org.uk/"></a>
     </ul>
 </nav>
 
 <div class=prose>
-<h1 id="the-infinite-jumping-game">The Infinite Jumping Game</h1>
-<p>The game is about bouncing on platforms to get higher and higher…forever. Your score is based on how high you can jump.</p>
-<h2 id="gravity">Gravity</h2>
-<p>The first thing to do is to make our player fall down.</p>
-<p>We can simulate gravity using a <strong>constant acceleration</strong>. As you should know from Maths or Physics class, that means we need to keep track of <strong>velocity</strong> (speed and direction). Let’s add a variable for just that.</p>
-<ul>
-<li><p>Add a variable called <code>velY</code>, which stores a number.</p>
-<pre><code class="lang-js">var velY = -2
+<h1 id="angles">Angles</h1>
+<p>This sheet explains how to make a sprite move (or point!) in an angle, and how to get the right angle to move (or point!) in a particular direction.</p>
+<h2 id="moving-at-an-angle">Moving at an angle</h2>
+<p>You can use <em>sin</em> and <em>cos</em> to move a sprite at an angle. These take an angle in degrees and give us the change in X and Y position we need to make.</p>
+<pre><code class="lang-js">player.posX += uw.sin(player.angle)
+player.posY += uw.cos(player.angle)
 </code></pre>
-</li>
-<li><p>Add a <code>forever</code> loop for the player.</p>
-<pre><code class="lang-js">player.forever(() =&gt; {
-    player.posY += velY
+<p>If we want to move faster, or control the speed, we can multiply both the X and Y differences by a number:</p>
+<pre><code class="lang-js">player.posX += 3 * uw.sin(player.angle)
+player.posY += 3 * uw.cos(player.angle)
+</code></pre>
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Check the sprite moves in the same direction as it’s facing.</p>
+<h2 id="pointing-towards-your-finger">Pointing towards your finger</h2>
+<p>If you want to point towards something, to move in a particular direction, you can use <em>atan2</em>. This takes a difference in X/Y position and gives an angle in degrees. (This is a special version of inverse <em>tan()</em>.)</p>
+<p>For example, to point the sprite toward your finger when you tap, we first need to work out the difference in X and Y position between your finger and the sprite. We’ll call the difference in X <code>dx</code>, and the difference in Y will be <code>dy</code>.</p>
+<pre><code class="lang-js">world.onTap(e =&gt; {
+    var dx = e.fingerX - player.posX
+    var dy = e.fingerY - player.posY
+    ...
 })
 </code></pre>
-</li>
-</ul>
-<p>Save. You’ll notice the player falls at a constant speed, which isn’t right at all! Let’s change velocity over time, to simulate gravity:</p>
-<ul>
-<li><p>Decrease velocity, so the player falls.</p>
-<p><s></p>
-<pre><code class="lang-js">var velY = -2
+<p>We can then use the difference in position to get the right angle. This needs to go <strong>inside the <code>onTap</code> block</strong>.</p>
+<pre><code class="lang-js">    player.angle = uw.atan2(dx, dy)
 </code></pre>
-<p></s></p>
-<pre><code class="lang-js">var velY = 0
-
-player.forever(() =&gt; { // player
-    player.posY += velY
-    velY -= 2               // &lt;-- add this line
-})
+<p><img class="emojione" alt="👉" title=":point_right:" src="https://cdn.jsdelivr.net/emojione/assets/3.1/png/32/1f449.png"/> Check the sprite faces toward your finger when you tap.</p>
+<h2 id="pointing-towards-a-sprite">Pointing towards a sprite</h2>
+<p>We can point towards any X/Y position in just the same way. For example, we could point toward another sprite.</p>
+<pre><code class="lang-js">    var dx = target.posX - player.posX
+    var dy = target.posY - player.posY
 </code></pre>
-</li>
-</ul>
-<h2 id="platforms">Platforms</h2>
-<p>Now our player falls down! Let’s add some platforms for him to bounce on. (We won’t do the bouncing part just yet; that’ll have to wait for later.)</p>
-<ul>
-<li><p>Create a <code>platform</code>. This is going to be a <code>Polygon</code> instead of a <code>Sprite</code>.</p>
-<pre><code class="lang-js">var platform = new Polygon
-platform.points = [[-30, 0], [30, 0], [30, 10], [-30, 10]]
-platform.posY = 100
-</code></pre>
-</li>
-<li><p>Set the <code>fill</code> and <code>outline</code> colors for your Polygon, to taste.</p>
-</li>
-<li><p>Tweak the size of your platform as necessary. You can do this by changing its <code>points</code>.</p>
-</li>
-</ul>
-<p>Save. Check the platform appears below the player!</p>
-<ul>
-<li>But wait, the outline doesn’t go all the way around! That’s because we’ve only given it four points to connect so it doesn’t know to connect the last one to the first one. We could add the first point again to the end of the set of points or we could use the handy <code>platform.closed</code>.</li>
-</ul>
 
 </div>
 
