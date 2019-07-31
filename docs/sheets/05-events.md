@@ -52,5 +52,4 @@ world.onTap(e => {
 
 ---
 
-➡️ Next, let's see [how to detect collisions](06-hit)...
-
+Let's see [what to do next](06-recipes)...
