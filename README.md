@@ -3,7 +3,7 @@
 Mobile games for beginners.
 
   * [Install](https://livewires.github.io/you-win/install)
-  * Read the [Intro tutorial](https://livewires.github.io/you-win/1-numbers)
+  * Read the [Intro tutorial](https://livewires.github.io/you-win/00-new-world)
   * Make a [Doodle Jump clone](https://livewires.github.io/you-win/jump)
 
 For experts:

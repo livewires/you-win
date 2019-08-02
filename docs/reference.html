@@ -61,6 +61,7 @@ body, div, p, textarea, pre, ul, ol, li, blockquote, hr,table, tbody, thead, tr,
 <li><a href="#sprite">Sprite</a></li>
 <li><a href="#text">Text</a></li>
 <li><a href="#polygon">Polygon</a></li>
+<li><a href="#rect">Rect</a></li>
 <li><a href="#phone">Phone</a></li>
 <li><a href="#sound">Sound</a></li>
 </ul>
@@ -329,6 +330,7 @@ p.thickness = 2
 <p>See <a href="#polygon">Polygon</a> for more details.</p>
 </li>
 </ul>
+<p>Don’t forget you will need to use <code>new Rect</code> and not <code>new Polygon</code></p>
 <h2 id="touch-events">Touch Events</h2>
 <p>An <strong>event</strong> tells you that something has happened. Both Worlds and Sprites will emit events when they are tapped or dragged.</p>
 <p>If a tap overlaps more than one sprite (because the sprites are overlapping), then the sprites are told about the events in order. The front-most one sees the event first.</p>
