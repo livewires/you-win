@@ -52,6 +52,20 @@ for (let num of uw.range(100)) {
 
 👉 Make sure there are 100 sprites created. You'll need to randomize their positions (or something) or they'll all be overlapping each other in the middle!
 
+## Delaying the copies
+
+Or, if we wanted to make a new copy every 3 seconds, we could use `setInterval`. This allows us to give a function that we want to execute each time and the amount of time to wait in between.
+```JS
+setInterval(function() {
+    makeCow()
+}, 3000)
+```
+
+Note that the amount of time is in milliseconds (3000ms = 3seconds).
+
+If you wanted to only wait *once*, rather than multiple times, you can use `setTimeout` in exactly the same way.
+
+For more information on setTimeout and setInterval, including how to stop a `setInterval` from executing from running using `clearInterval`, have a look [here](https://www.w3schools.com/js/js_timing.asp).
 
 ## On tap
 

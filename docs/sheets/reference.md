@@ -14,6 +14,7 @@ title: API Reference
 * [Sprite](#sprite)
 * [Text](#text)
 * [Polygon](#polygon)
+* [Rect](#rect)
 * [Phone](#phone)
 * [Sound](#sound)
 
@@ -410,6 +411,7 @@ Instead of a `costume`, `Rect`s have the following:
 
     See [Polygon](#polygon) for more details.
 
+Don't forget you will need to use `new Rect` and not `new Polygon`
 
 ## Touch Events
 
