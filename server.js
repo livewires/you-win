@@ -86,12 +86,18 @@ if (command === 'bundle') {
   stream.on('error', err => {
     console.error(err)
   })
+  stream.on('end', err => {
+    process.exit(0)
+  })
 
 } else if (command === 'bundle-uw') {
   const stream = uw.bundle()
   stream.pipe(process.stdout)
   stream.on('error', err => {
     console.error(err)
+  })
+  stream.on('end', err => {
+    process.exit(0)
   })
 
 } else {
