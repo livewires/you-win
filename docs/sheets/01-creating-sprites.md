@@ -13,7 +13,7 @@ player.costume = '💩'
 
 👉 Save. Check that a tiny poop appears in the middle of the screen!
 
-You can find costumes using the emoji picker at [emoji.blob.codes](http://emoji.blob.codes/). Once you've found the one you want, click on it to copy it.
+You can find costumes using the emoji picker at [emoji.blob.codes](http://emoji.blob.codes/). Once you've found the one you want, **click on it to copy it**. You can then **paste** it into your program. Make sure it's in quotes.
 
 Change the poop to your favourite emoji.
 

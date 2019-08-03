@@ -9,7 +9,7 @@ So far our game isn't very interactive: you can't control anything. Let's change
 
 ## Taps
 
-We can use `world.onTap` to detect when the screen is tapped.
+We can use `world.onTap` to detect when the screen is tapped. Make sure this is **at the bottom of your program**, outside any `forever` blocks.
 
 ```js
 world.onTap(e => {

@@ -13,7 +13,7 @@ We can create more than one copy of a sprite by copying its code. But we don't w
 
 We can write a **function** to make this easier. (This is just like a custom block in Scratch.) A function lets you give a name to a piece of code. When we want to run that code, we can refer to it by name, rather than copy/pasting the code again.
 
-A function looks something like this:
+A function looks something like this. You can call it whatever you like, it doesn't have to be `makeCow`.
 
 ```js
 function makeCow() {
@@ -21,7 +21,7 @@ function makeCow() {
 }
 ```
 
-Let's start writing our function. We're going to create a new sprite:
+We then need to write the inside of our function, so our program knows how to make this sort of sprite.  Let's start writing our function:
 
 ```js
 function makeCow() {
@@ -31,18 +31,20 @@ function makeCow() {
 }
 ```
 
-Let's make one copy of our sprite, by "calling" our function. Add this at the **end** of your program. The brackets are important -- they tell JavaScript that this is a function.
+Let's make one copy of our sprite, by "calling" our function. Add this at the **end of your program**, after the last `}` of our function.
 
 ```js
 makeCow()
 ```
+
+The brackets are important -- they tell JavaScript that this is a function we want to run.
 
 👉 Save, and check that the new sprite appears.
 
 
 ## Copying a sprite
 
-Now we can easily create 100 copies of our sprite:
+Now we can easily create 100 copies of our sprite. This needs to go at the bottom of your program **below the function**, after the final `}` for the function.
 
 ```js
 for (let num of uw.range(100)) {
