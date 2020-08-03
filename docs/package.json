@@ -8,8 +8,8 @@
     "start": "http-server -c0 ."
   },
   "dependencies": {
-    "chrome-launcher": "^0.6.0",
-    "chrome-remote-interface": "^0.26.1",
+    "chrome-launcher": "^0.13.4",
+    "chrome-remote-interface": "^0.28.2",
     "handlebars": "^4.0.10",
     "metalsmith": "^2.3.0",
     "metalsmith-code-highlight": "0.0.4",
@@ -21,6 +21,6 @@
     "metalsmith-paths": "^3.0.1"
   },
   "devDependencies": {
-    "http-server": "^0.10.0"
+    "http-server": "^0.12.3"
   }
 }
