@@ -6,11 +6,10 @@ title: "00: New World"
 
 ## What you need
 
-You should have `you-win` running, with:
+You should have `you-win` running in Glitch, with:
 
-* a text editor, with a new game file open (e.g. a file called `game.js`).
-* a Chrome window open (probably on `http://localhost:8000/`)
-* (optional) a phone running Chrome or Safari, with your computer opened.
+* a new game file open (e.g. a file called `app.js`).
+* (optional) a phone running Chrome or Safari, with your glitch project opened.
 
 Put your text editor and Chrome window side-by-side, if you can (and/or keep your phone open in front of you!). Whenever save in your text editor, `you-win` will automatically refresh the page.
 
@@ -25,15 +24,18 @@ Have a look at the template that's open in your text editor. It should have the 
   * These lines load  `you-win`, the library we're using to help make our game.
 
     ```js
-    const uw = require('you-win')
-    const {Phone, World, Sprite, Text, Polygon} = uw
+    import * as UW from 'you-win'
+    import {forever, Phone, World, Sprite, Text, Polygon, Rect, Sound} from 'you-win'
     ```
 
   * We then load in all the sounds and images we need. By default this will load some emoji we can use to make sprites.
 
     ```js
-    // Load everything we need
-    await uw.begin()
+    UW.init({
+
+    })
+    .then(() => {
+
     ```
 
   * We then make our `World`, which represents the screen.
