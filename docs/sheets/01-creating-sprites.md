@@ -5,7 +5,7 @@ title: "01: Creating Sprites"
 
 We can add images to the World by creating `Sprites`. A Sprite is an image on the screen, which we can move about, rotate, flip, scale, make transparent, and so on.
 
-Let’s make our first sprite. Add this at the bottom of your program, after all the World-related code.
+Let’s make our first sprite. Add this at the bottom of your program, after all the World-related code (but before the final braces).
 ```js
 var player = new Sprite
 player.costume = '💩'
@@ -23,7 +23,7 @@ Change the poop to your favourite emoji.
 
 We can change the size of a sprite using the `scale` attribute. Let's make our sprite twice as big.
 
-👉 Add this at the bottom of your program, after creating the Sprite.
+👉 Add this at the bottom of your program, after creating the Sprite. 
 ```js
 player.scale = 2.0
 ```

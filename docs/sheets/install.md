@@ -74,11 +74,11 @@ Now open the `first.js` file you just created in your favourite text editor. Tex
 The template should look [like this](https://github.com/livewires/you-win/blob/master/template.js):
 
 ```js
-const uw = require('you-win')
-const {Phone, World, Sprite, Text, Polygon} = uw
+const UW = require('you-win')
+const {Phone, World, Sprite, Text, Polygon} = UW
 
 // Load everything we need
-await uw.begin()
+await UW.begin()
 
 // Make the world
 var world = new World
