@@ -79,6 +79,8 @@ world.height = 460
 
 👉 Save, and your world should change shape. It should be roughly the shape of a phone in portrait, with black bars around the edges.
 
+> ⚠️ All of this should go *before* the final two close braces in the program
+
 
 ---
 
