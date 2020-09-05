@@ -10,7 +10,7 @@
   "dependencies": {
     "chrome-launcher": "^0.13.4",
     "chrome-remote-interface": "^0.28.2",
-    "handlebars": "^4.0.10",
+    "handlebars": "^4.5.3",
     "metalsmith": "^2.3.0",
     "metalsmith-code-highlight": "0.0.4",
     "metalsmith-collections": "^0.9.0",
