@@ -173,6 +173,9 @@ var World = function(props) {
     window.addEventListener('resize', () => { this._needsResize = true })
     this._bindPointer()
 
+    this.keyPressed = Object.create(null)
+    this._bindKeys()
+
     //const de = document.documentElement
     Object.assign(this, {
         background: '#fff',
@@ -436,6 +439,26 @@ World.prototype.pointerUp = function(e) {
         }
         this.emitTap(finger)
     }
+}
+
+World.prototype._bindKeys = function(e) {
+    document.addEventListener('keydown', this.keyDown.bind(this))
+    document.addEventListener('keyup', this.keyUp.bind(this))
+
+    // Make sure all keys are released when the tab loses focus.
+    window.addEventListener('blur', e => {
+        for (const key in this.keyPressed) {
+            delete this.keyPressed[key]
+        }
+    })
+}
+
+World.prototype.keyDown = function(e) {
+  this.keyPressed[e.key] = true
+}
+
+World.prototype.keyUp = function(e) {
+  delete this.keyPressed[e.key]
 }
 
 
