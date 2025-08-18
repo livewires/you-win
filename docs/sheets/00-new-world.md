@@ -11,9 +11,13 @@ You should have `you-win` running in Glitch, with:
 * a new game file open (e.g. a file called `app.js`).
 * (optional) a phone running Chrome or Safari, with your glitch project opened.
 
-See the [install page](install) for details about getting going. If you're not using glitch, it's helpful to turn on line numbers and, if possible, syntax highlighting in your text editor. 
+See the [install page](install) for details about getting going.
 
-Your project window should have a white screen. This is a blank canvas in which we can start making a game!
+Put your text editor and Chrome window side-by-side, if you can (and/or keep your phone open in front of you!). Whenever save in your text editor, `you-win` will automatically refresh the page.
+
+Make sure you have line numbers turned on in your text editor.
+
+Your Chrome window should have a white screen. This is a blank canvas in which we can start making a game!
 
 ## The template
 
@@ -78,8 +82,6 @@ world.height = 460
 ```
 
 👉 Save, and your world should change shape. It should be roughly the shape of a phone in portrait, with black bars around the edges.
-
-> ⚠️ All of this should go *before* the final two close braces in the program
 
 
 ---
