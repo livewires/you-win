@@ -50,7 +50,7 @@ const topLevelAwait = (b, opts) => {
       next()
     },
     flush: function() {
-      this.push('})()')
+      this.push('\n})()')
       this.push(null)
     },
   })
