@@ -133,6 +133,14 @@ world.background = &#39;white&#39;
 <li><p><strong><code>world.background</code></strong></p>
 <p>The background colour of the world. Uses HTML/CSS colours, such as <code>red</code> or <code>#007de0</code>.</p>
 </li>
+<li><p><strong><code>world.keyPressed</code></strong></p>
+<p>An object with all of the keys that are currently held, based on their <a href="https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values">key value</a>.</p>
+<p>Check if keys are currently being pressed with code like:</p>
+<pre><code class="lang-js">if (world.keyPressed[&#39;w&#39;] || world.keyPressed[&#39;ArrowUp&#39;]) {
+    // Do something…
+}
+</code></pre>
+</li>
 </ul>
 <p>World has the following methods:</p>
 <ul>

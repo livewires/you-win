@@ -131,6 +131,17 @@ It has the following attributes:
 
     The background colour of the world. Uses HTML/CSS colours, such as `red` or `#007de0`.
 
+  * **`world.keyPressed`**
+
+    An object with all of the keys that are currently held, based on their [key value](https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values).
+
+    Check if keys are currently being pressed with code like:
+
+    ```js
+    if (world.keyPressed['w'] || world.keyPressed['ArrowUp']) {
+        // Do something…
+    }
+    ```
 
 World has the following methods:
 
